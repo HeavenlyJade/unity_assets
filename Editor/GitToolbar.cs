@@ -16,9 +16,6 @@ public class GitStatusViewerWindow : EditorWindow
     private const string SKIP_NO_EXTENSION_KEY = "GitStatusViewer_SkipNoExtension";
     private const string SKIP_CONFIG_KEY = "GitStatusViewer_SkipConfig";
     
-    // 添加调试模式控制
-    private const bool DEBUG_MODE = false; // 生产环境设为false
-    
     private string gitRepoPath = "";
     private Vector2 scrollPosition;
     private List<string> modifiedFiles = new List<string>();
@@ -33,23 +30,6 @@ public class GitStatusViewerWindow : EditorWindow
         "MaterialService.json",
         "Localization.json"
     };
-
-    // 添加调试日志方法
-    private static void DebugLog(string message)
-    {
-        if (DEBUG_MODE)
-        {
-            Debug.Log(message);
-        }
-    }
-
-    private static void DebugLogError(string message)
-    {
-        if (DEBUG_MODE)
-        {
-            Debug.LogError(message);
-        }
-    }
 
     [MenuItem("Tools/Git 状态查看器")]
     public static void ShowWindow()
@@ -166,6 +146,42 @@ public class GitStatusViewerWindow : EditorWindow
         }
     }
 
+    /// <summary>
+    /// 检查文件路径是否应该被跳过
+    /// </summary>
+    /// <param name="filePath">文件路径</param>
+    /// <returns>如果应该跳过返回true</returns>
+    private bool ShouldSkipFile(string filePath)
+    {
+        // 跳过 .git 目录下的所有文件
+        if (filePath.StartsWith(".git/") || filePath.StartsWith(".git\\"))
+        {
+            Debug.Log($"跳过.git目录下的文件: {filePath}");
+            return true;
+        }
+
+        // 检查文件名是否在跳过列表中
+        string fileName = Path.GetFileName(filePath);
+        if (skippingFiles.Contains(fileName))
+        {
+            return true;
+        }
+
+        // 跳过Config文件
+        if (skipConfig && fileName.EndsWith("Config.lua"))
+        {
+            return true;
+        }
+
+        // 跳过CloudMap相关文件
+        if (skipNoExtension && filePath.Contains("sandbox/assets"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     private string ProcessFloatNumbers(string content)
     {
         // 匹配浮点数的正则表达式，包括科学计数法
@@ -258,7 +274,7 @@ public class GitStatusViewerWindow : EditorWindow
         }
         catch (System.Exception e)
         {
-            DebugLogError($"Failed to check git diff for {filePath}: {e.Message}");
+            Debug.LogError($"Failed to check git diff for {filePath}: {e.Message}");
             return false;
         }
     }
@@ -267,7 +283,7 @@ public class GitStatusViewerWindow : EditorWindow
     {
         try
         {
-            DebugLog($"开始检查childrenIndex文件差异: {filePath}");
+            Debug.Log($"开始检查childrenIndex文件差异: {filePath}");
             
             // 获取git diff的输出
             ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -287,16 +303,16 @@ public class GitStatusViewerWindow : EditorWindow
                 // 如果没有差异，直接返回false
                 if (string.IsNullOrEmpty(output))
                 {
-                    DebugLog($"文件 {filePath} 没有差异");
+                    Debug.Log($"文件 {filePath} 没有差异");
                     return false;
                 }
 
-                DebugLog($"文件 {filePath} 的diff输出:\n{output}");
+                Debug.Log($"文件 {filePath} 的diff输出:\n{output}");
 
                 // 获取childrenIndex文件的修改时间
                 string fullPath = Path.Combine(gitRepoPath, filePath);
                 DateTime indexFileTime = File.GetLastWriteTime(fullPath);
-                DebugLog($"childrenIndex文件修改时间: {indexFileTime}");
+                Debug.Log($"childrenIndex文件修改时间: {indexFileTime}");
 
                 // 分析diff输出
                 string[] lines = output.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
@@ -310,7 +326,7 @@ public class GitStatusViewerWindow : EditorWindow
                     if (line.StartsWith("diff --git") || line.StartsWith("index ") || 
                         line.StartsWith("---") || line.StartsWith("+++"))
                     {
-                        DebugLog($"跳过git diff头部信息: {line}");
+                        Debug.Log($"跳过git diff头部信息: {line}");
                         continue;
                     }
 
@@ -318,7 +334,7 @@ public class GitStatusViewerWindow : EditorWindow
                     if (line.StartsWith("+") || line.StartsWith("-"))
                     {
                         string content = line.Substring(1).Trim();
-                        DebugLog($"检查内容行: {content}");
+                        Debug.Log($"检查内容行: {content}");
                         
                         // 如果行包含分号，检查分号后的内容是否变化
                         int semicolonIndex = content.IndexOf(';');
@@ -345,7 +361,7 @@ public class GitStatusViewerWindow : EditorWindow
                                 else
                                 {
                                     // 如果是新增的行，标记为需要更新
-                                    DebugLog($"检测到新增行: {content}");
+                                    Debug.Log($"检测到新增行: {content}");
                                     hasContentChange = true;
                                     break;
                                 }
@@ -353,19 +369,19 @@ public class GitStatusViewerWindow : EditorWindow
                         }
                         else
                         {
-                            DebugLog($"行不包含分号，忽略: {content}");
+                            Debug.Log($"行不包含分号，忽略: {content}");
                         }
                     }
                 }
 
                 if (removedContent.Count > 0)
                 {
-                    DebugLog($"检测到未匹配的删除行: {string.Join(", ", removedContent)}");
+                    Debug.Log($"检测到未匹配的删除行: {string.Join(", ", removedContent)}");
                     hasContentChange = true;
 
                     // 获取childrenIndex文件所在目录
                     string directory = Path.GetDirectoryName(fullPath);
-                    DebugLog($"检查目录: {directory}");
+                    Debug.Log($"检查目录: {directory}");
 
                     // 遍历目录中的所有文件
                     string[] allFiles = Directory.GetFiles(directory, "*.*");
@@ -394,34 +410,34 @@ public class GitStatusViewerWindow : EditorWindow
                                         if (!modifiedFiles.Contains(relativePath))
                                         {
                                             modifiedFiles.Add(relativePath);
-                                            DebugLog($"添加到修改文件列表: {relativePath}");
+                                            Debug.Log($"添加到修改文件列表: {relativePath}");
                                         }
                                     }
 
                                     // 删除文件夹
                                     Directory.Delete(folderPath, true);
-                                    DebugLog($"已删除文件夹: {folderPath}");
+                                    Debug.Log($"已删除文件夹: {folderPath}");
                                 }
 
                                 // 删除文件
                                 File.Delete(file);
-                                DebugLog($"已删除文件: {file}");
+                                Debug.Log($"已删除文件: {file}");
                             }
                         }
                         catch (System.Exception e)
                         {
-                            DebugLogError($"处理文件 {file} 失败: {e.Message}");
+                            Debug.LogError($"处理文件 {file} 失败: {e.Message}");
                         }
                     }
                 }
 
-                DebugLog($"文件 {filePath} 的检查结果: {(hasContentChange ? "需要更新" : "无需更新")}");
+                Debug.Log($"文件 {filePath} 的检查结果: {(hasContentChange ? "需要更新" : "无需更新")}");
                 return hasContentChange;
             }
         }
         catch (System.Exception e)
         {
-            DebugLogError($"检查childrenIndex文件差异失败 {filePath}: {e.Message}");
+            Debug.LogError($"检查childrenIndex文件差异失败 {filePath}: {e.Message}");
             return false;
         }
     }
@@ -562,52 +578,45 @@ public class GitStatusViewerWindow : EditorWindow
                     string status = line.Substring(0, 2).Trim();
                     
                     // 打印原始路径
-                    DebugLog($"原始Git输出行: '{line}'");
-                    DebugLog($"提取的文件路径: '{filePath}'");
+                    Debug.Log($"原始Git输出行: '{line}'");
+                    Debug.Log($"提取的文件路径: '{filePath}'");
 
                     // 解码Git路径
                     filePath = DecodeGitPath(filePath);
-                    DebugLog($"解码后的路径: '{filePath}'");
+                    Debug.Log($"解码后的路径: '{filePath}'");
 
                     // 移除文件路径中的引号并处理空格
                     string cleanFilePath = filePath.Trim('"');
-                    DebugLog($"清理后的路径: '{cleanFilePath}'");
+                    Debug.Log($"清理后的路径: '{cleanFilePath}'");
+
+                    // 检查是否应该跳过这个文件（包括.git目录下的文件）
+                    if (ShouldSkipFile(cleanFilePath))
+                    {
+                        Debug.Log($"跳过文件: {cleanFilePath}");
+                        continue;
+                    }
 
                     string fullPath;
                     try
                     {
                         fullPath = Path.Combine(gitRepoPath, cleanFilePath);
-                        DebugLog($"成功组合路径: '{fullPath}'");
+                        Debug.Log($"成功组合路径: '{fullPath}'");
                     }
                     catch (System.Exception e)
                     {
-                        DebugLogError($"路径组合失败!");
-                        DebugLogError($"Git仓库路径: '{gitRepoPath}'");
-                        DebugLogError($"文件路径: '{cleanFilePath}'");
-                        DebugLogError($"错误信息: {e.Message}");
+                        Debug.LogError($"路径组合失败!");
+                        Debug.LogError($"Git仓库路径: '{gitRepoPath}'");
+                        Debug.LogError($"文件路径: '{cleanFilePath}'");
+                        Debug.LogError($"错误信息: {e.Message}");
                         
                         // 检查路径中的每个字符
-                        DebugLogError("文件路径字符分析:");
+                        Debug.LogError("文件路径字符分析:");
                         for (int i = 0; i < cleanFilePath.Length; i++)
                         {
                             char c = cleanFilePath[i];
-                            DebugLogError($"字符[{i}]: '{c}' (ASCII: {(int)c})");
+                            Debug.LogError($"字符[{i}]: '{c}' (ASCII: {(int)c})");
                         }
                         continue; // 跳过这个文件，继续处理下一个
-                    }
-
-                    // 检查文件是否在跳过列表中
-                    string fileName = Path.GetFileName(cleanFilePath);
-                    if ((skipConfig && fileName.EndsWith("Config.lua")) || 
-                        skippingFiles.Contains(fileName) || 
-                        (skipNoExtension && cleanFilePath.Contains("sandbox/assets")))
-                    {
-                        // 将跳过的文件添加到unchangedFiles列表
-                        lock (modifiedFilesLock)
-                        {
-                            unchangedFiles.Add(cleanFilePath);
-                        }
-                        continue;
                     }
 
                     // 如果文件被删除，直接添加到修改列表中
@@ -642,7 +651,7 @@ public class GitStatusViewerWindow : EditorWindow
                         }
                         catch (System.Exception e)
                         {
-                            DebugLogError($"处理文件 {cleanFilePath} 失败: {e.Message}");
+                            Debug.LogError($"处理文件 {cleanFilePath} 失败: {e.Message}");
                         }
                     });
 
@@ -689,7 +698,7 @@ public class GitStatusViewerWindow : EditorWindow
                     }
                     catch (System.Exception e)
                     {
-                        DebugLogError($"恢复文件 {file} 失败: {e.Message}");
+                        Debug.LogError($"恢复文件 {file} 失败: {e.Message}");
                     }
                 }
             }
@@ -705,7 +714,7 @@ public class GitStatusViewerWindow : EditorWindow
         {
             EditorUtility.ClearProgressBar();
             EditorUtility.DisplayDialog("错误", $"执行 git 命令失败: {e.Message}", "确定");
-            DebugLogError(e.ToString());
+            Debug.LogError(e);
         }
         finally
         {
@@ -713,4 +722,4 @@ public class GitStatusViewerWindow : EditorWindow
             Repaint();
         }
     }
-} 
+}

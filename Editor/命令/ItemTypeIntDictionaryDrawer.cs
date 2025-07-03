@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using MiGame.Commands;
+using MiGame.Items;
 
 #if UNITY_EDITOR
 namespace MiGame.Commands.Editor
@@ -124,11 +125,11 @@ namespace MiGame.Commands.Editor
                 float keyWidth = position.width * 0.6f;
                 float valueWidth = position.width * 0.25f;
                 float buttonWidth = 25f;
-                float spacing = 2f;
+                float spacing = 5f;
 
-                // 物品选择器
+                // 物品选择器 - 使用 ObjectField 避免循环引用问题
                 Rect keyRect = new Rect(position.x, position.y, keyWidth - spacing, position.height);
-                EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
+                keyProp.objectReferenceValue = EditorGUI.ObjectField(keyRect, keyProp.objectReferenceValue, typeof(ItemType), false);
 
                 // 数量输入
                 Rect valueRect = new Rect(position.x + keyWidth, position.y, valueWidth - spacing, position.height);

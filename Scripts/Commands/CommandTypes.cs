@@ -14,12 +14,10 @@ namespace MiGame.Commands
     [Serializable]
     public class ItemTypeIntDictionary : SerializableDictionary<ItemType, int>
     {
-        public ItemTypeIntDictionary() : base() { }
     }
 
     [Serializable]
     public class SkillIntDictionary : SerializableDictionary<Skill, int>
     {
-        public SkillIntDictionary() : base() { }
     }
 }

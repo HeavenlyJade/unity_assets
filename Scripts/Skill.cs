@@ -78,27 +78,27 @@ public struct 前置条件
     public 消耗类型 消耗类型;
     
     [Header("玩家属性消耗")]
-    [ConditionalField(new[] { "条件类型", "消耗类型" }, new object[] { 前置条件类型.消耗条件, 消耗类型.玩家属性 })]
+    [ConditionalField(new[] { "条件类型", "消耗类型" }, 前置条件类型.消耗条件, 消耗类型.玩家属性)]
     public 玩家属性类型 属性类型;
     
-    [ConditionalField(new[] { "条件类型", "消耗类型" }, new object[] { 前置条件类型.消耗条件, 消耗类型.玩家属性 })]
+    [ConditionalField(new[] { "条件类型", "消耗类型" }, 前置条件类型.消耗条件, 消耗类型.玩家属性)]
     public 消耗方式 消耗方式;
     
-    [ConditionalField(new[] { "条件类型", "消耗类型" }, new object[] { 前置条件类型.消耗条件, 消耗类型.玩家属性 })]
+    [ConditionalField(new[] { "条件类型", "消耗类型" }, 前置条件类型.消耗条件, 消耗类型.玩家属性)]
     public int 消耗数值;
     
-    [ConditionalField(new[] { "条件类型", "消耗类型" }, new object[] { 前置条件类型.消耗条件, 消耗类型.玩家属性 })]
+    [ConditionalField(new[] { "条件类型", "消耗类型" }, 前置条件类型.消耗条件, 消耗类型.玩家属性)]
     [Range(0f, 100f)]
     public float 消耗百分比;
     
     [Header("物品消耗")]
-    [ConditionalField(new[] { "条件类型", "消耗类型" }, new object[] { 前置条件类型.消耗条件, 消耗类型.物品 })]
+    [ConditionalField(new[] { "条件类型", "消耗类型" }, 前置条件类型.消耗条件, 消耗类型.物品)]
     public string 物品ID;
     
-    [ConditionalField(new[] { "条件类型", "消耗类型" }, new object[] { 前置条件类型.消耗条件, 消耗类型.物品 })]
+    [ConditionalField(new[] { "条件类型", "消耗类型" }, 前置条件类型.消耗条件, 消耗类型.物品)]
     public string 物品名称;
     
-    [ConditionalField(new[] { "条件类型", "消耗类型" }, new object[] { 前置条件类型.消耗条件, 消耗类型.物品 })]
+    [ConditionalField(new[] { "条件类型", "消耗类型" }, 前置条件类型.消耗条件, 消耗类型.物品)]
     public int 物品数量;
     
     /// <summary>
@@ -256,26 +256,10 @@ public struct 升级素材
     public int 物品数量;
 }
 
-// 临时的占位符属性
-public class ServerNameAttrAttribute : PropertyAttribute { }
-
-public class ConditionalFieldAttribute : PropertyAttribute { 
-    public string fieldName;
-    public object value;
-    public string[] fieldNames;
-    public object[] values;
-    
-    // 单条件构造函数
-    public ConditionalFieldAttribute(string fieldName, object value) {
-        this.fieldName = fieldName;
-        this.value = value;
-    }
-    
-    // 多条件构造函数
-    public ConditionalFieldAttribute(string[] fieldNames, object[] values) {
-        this.fieldNames = fieldNames;
-        this.values = values;
-    }
+[Serializable]
+public partial class SkillLevelConf
+{
+    public int Damage;
 }
 
 [CreateAssetMenu(fileName = "Skill", menuName = "Battle/Skill")]
@@ -299,6 +283,7 @@ public class Skill : ScriptableObject
     public int 技能分类;
     [TextArea(1, 3)]
     public string 提升玩家等级;
+    [NonSerialized]
     public Skill[] 下一技能;
     public bool 无需装备也可生效 = false;
     

@@ -661,16 +661,51 @@ public class GitStatusViewerWindow : EditorWindow
 
             // 等待所有任务完成
             int totalTasks = fileTasks.Count;
-            int completedTasks = 0;
-
-            while (fileTasks.Count > 0)
+            if (totalTasks > 0)
             {
-                var completedTask = await Task.WhenAny(fileTasks);
-                fileTasks.Remove(completedTask);
-                completedTasks++;
-
-                float progress = 0.3f + (0.6f * completedTasks / totalTasks);
-                EditorUtility.DisplayProgressBar("检查文件", $"正在检查文件差异... ({completedTasks}/{totalTasks})", progress);
+                // 创建一个数组来跟踪任务完成状态
+                var taskArray = fileTasks.ToArray();
+                var completedFlags = new bool[totalTasks];
+                
+                // 使用轮询方式检查任务完成状态并更新进度
+                while (true)
+                {
+                    int completedCount = 0;
+                    for (int i = 0; i < totalTasks; i++)
+                    {
+                        if (!completedFlags[i] && taskArray[i].IsCompleted)
+                        {
+                            completedFlags[i] = true;
+                        }
+                        if (completedFlags[i])
+                        {
+                            completedCount++;
+                        }
+                    }
+                    
+                    // 更新进度条
+                    float progress = 0.3f + (0.6f * completedCount / totalTasks);
+                    EditorUtility.DisplayProgressBar("检查文件", $"正在检查文件差异... ({completedCount}/{totalTasks})", progress);
+                    
+                    // 如果所有任务都完成了，退出循环
+                    if (completedCount >= totalTasks)
+                    {
+                        break;
+                    }
+                    
+                    // 短暂等待避免CPU占用过高
+                    await Task.Delay(100);
+                }
+                
+                // 确保所有任务都完成并处理可能的异常
+                try
+                {
+                    await Task.WhenAll(fileTasks);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"某些文件处理任务失败: {ex.Message}");
+                }
             }
 
             // 对未修改的文件执行git checkout

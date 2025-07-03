@@ -1,0 +1,17 @@
+{
+    "name": "MiGame.Commands",
+    "rootNamespace": "MiGame.Commands",
+    "references": [
+        "MiGame.Items",
+        "MiGame.Data"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+} 

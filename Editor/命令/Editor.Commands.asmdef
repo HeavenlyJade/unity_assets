@@ -4,7 +4,9 @@
     "references": [
         "MiGame.Commands",
         "MiGame.Items",
-        "MiGame.Data"
+        "MiGame.Data",
+        "Unity.Editor.CoreModule",
+        "Unity.Engine.CoreModule"
     ],
     "includePlatforms": [
         "Editor"
@@ -17,4 +19,4 @@
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
-} 
+}

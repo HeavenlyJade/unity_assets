@@ -19,7 +19,7 @@ public class MailCommand : AbstractCommand
     public string 标题;
     public string 内容;
     
-    [CommandParamDesc("邮件中包含的物品")]
+    [CommandParamDesc("邮件中包含的物品和数量")]
     public ItemTypeIntDictionary 物品;
     
     [CommandParamDesc("邮件中包含的技能")]

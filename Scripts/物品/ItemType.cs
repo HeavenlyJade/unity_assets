@@ -14,10 +14,13 @@ namespace MiGame.Items
         public float 强化倍率;
         public float 强化材料增加倍率;
         public int 最大强化等级;
+        [NonSerialized]
         public ItemType 图鉴完成奖励;
         public int 图鉴完成奖励数量;
         public int 图鉴高级完成奖励数量;
+        [NonSerialized]
         public ItemType 可进阶为;
+        [NonSerialized]
         public ItemType 可售出为;
         public int 售出价格;
         public bool 在背包里显示 = true;

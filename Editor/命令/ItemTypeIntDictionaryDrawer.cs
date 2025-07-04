@@ -4,7 +4,7 @@ using MiGame.Commands;
 using MiGame.Items;
 
 #if UNITY_EDITOR
-namespace MiGame.Commands.Editor
+namespace MiGame.CommandSystem.Editor
 {
     [CustomPropertyDrawer(typeof(ItemTypeIntDictionary))]
     public class ItemTypeIntDictionaryDrawer : PropertyDrawer

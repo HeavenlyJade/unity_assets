@@ -2,16 +2,16 @@ using System;
 
 namespace MiGame.Commands
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public sealed class CommandAttribute : Attribute
     {
-        public string commandName { get; }
-        public string description { get; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
 
-        public CommandAttribute(string commandName, string description = "")
+        public CommandAttribute(string name, string description)
         {
-            this.commandName = commandName;
-            this.description = description;
+            Name = name;
+            Description = description;
         }
     }
 

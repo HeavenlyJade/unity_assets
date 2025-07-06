@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796686dd274237b4eb709fd3e4e3d733, type: 3}
+  m_Name: jump1
+  m_EditorClassIdentifier: 
+  "\u540D\u5B57": NewSceneNodeConfig
+  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": Ground/init_map/Scene/jump_plat
+  "\u573A\u666F\u7C7B\u578B": 1
+  "\u97F3\u6548\u8D44\u6E90": 
+  "\u8FDB\u5165\u6307\u4EE4": 
+  "\u79BB\u5F00\u6307\u4EE4": 
+  "\u5B9A\u65F6\u6307\u4EE4\u5217\u8868": []

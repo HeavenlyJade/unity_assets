@@ -1,0 +1,70 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+namespace MiGame.Scene
+{
+    /// <summary>
+    /// 场景中特殊节点的类型
+    /// </summary>
+    public enum SceneNodeType
+    {
+        陷阱,
+        跳台,
+        安全区
+    }
+
+    /// <summary>
+    /// 用于存储定时指令和其触发间隔的组合
+    /// </summary>
+    [System.Serializable]
+    public class TimedCommand
+    {
+        [Tooltip("要执行的定时指令")]
+        public string 指令;
+
+        [Tooltip("距离上一次执行的间隔时间（秒）")]
+        public float 间隔 = 1f;
+    }
+
+
+    /// <summary>
+    /// 场景节点配置
+    /// </summary>
+    [CreateAssetMenu(fileName = "NewSceneNodeConfig", menuName = "场景节点配置")]
+    public class SceneNodeConfig : ScriptableObject
+    {
+        [Header("基本信息")]
+        [Tooltip("节点的名称(根据文件名自动生成)")]
+        [ReadOnly]
+        public string 名字;
+
+        [Tooltip("场景中预制体的路径，用于加载")]
+        public string 场景节点路径;
+
+        [Header("节点属性")]
+        [Tooltip("节点的类型")]
+        public SceneNodeType 场景类型;
+
+        [Tooltip("节点触发时的音效，填写资源的路径")]
+        public string 音效资源;
+
+        [Header("指令")]
+        [Tooltip("进入节点时触发的指令")]
+        public string 进入指令;
+
+        [Tooltip("离开节点时触发的指令")]
+        public string 离开指令;
+
+        [Tooltip("定时触发的指令列表，可以添加多个")]
+        public List<TimedCommand> 定时指令列表;
+
+        private void OnValidate()
+        {
+            // 自动将资产文件名同步到"名字"字段
+            if (name != 名字)
+            {
+                名字 = name;
+            }
+        }
+    }
+} 

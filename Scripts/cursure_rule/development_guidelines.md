@@ -50,3 +50,124 @@ return {ConfigName}
 
 - `{ConfigName}` 会根据导出器类名动态替换（例如，`SkillConfigExporter` -> `SkillConfig`）。
 - 整个结构，包括文件顶部的注释、LuaDoc、`local` 变量的创建和赋值，以及最后的 `return` 语句，都必须由基类 `ConfigExporter<T>` 中的通用 `Export` 方法统一生成。 
+
+### 3.3. 强制规则：文件名与ID同步
+
+为了确保配置的唯一标识符（ID）和文件名绝对一致，从而避免在代码中因ID不匹配导致的数据加载失败，所有配置类都**必须**遵守以下规则：
+
+1.  **必须包含只读的 `名字` 字段**:
+    -   每个配置类都必须包含一个 `public string 名字;` 字段。
+    -   这个字段必须使用 `[ReadOnly]` 特性，以防止在 Inspector 中被手动修改。
+
+2.  **必须实现 `OnValidate` 同步逻辑**:
+    -   每个配置类都必须实现 `OnValidate()` 方法。
+    -   在此方法中，必须将 `ScriptableObject` 的 `name` 属性（即文件名）赋值给 `名字` 字段。
+
+**标准实现代码模板:**
+
+```csharp
+// 放在你的 ScriptableObject 类中
+
+[Header("基本信息")]
+[Tooltip("配置的唯一ID (根据文件名自动生成)")]
+[ReadOnly]
+public string 名字;
+
+private void OnValidate()
+{
+    // 自动将资产文件名同步到"名字"字段
+    if (name != 名字)
+    {
+        名字 = name;
+    }
+}
+```
+
+这条规则将作为 `## 4. 新配置类型添加流程` 的前置和补充，在创建新配置的 C# 脚本时，必须首先包含这段逻辑。
+
+## 4. 新配置类型添加流程
+
+当需要为游戏添加一种全新的配置类型时（例如"任务配置"、"成就配置"等），请严格遵循以下步骤：
+
+### 第 1 步：定义 C# 数据结构
+
+首先，在 `Assets/Scripts` 下为你的新配置创建一个子目录（如果尚不存在）。然后创建定义数据结构的 C# 脚本。
+
+1.  **创建主配置类**: 这个类必须继承自 `ScriptableObject`，并使用 `[CreateAssetMenu]` 特性以便在编辑器中轻松创建。
+
+    ```csharp
+    // 文件: Scripts/玩法/GameModeConfig.cs
+    using UnityEngine;
+
+    namespace MiGame.Data
+    {
+        [CreateAssetMenu(fileName = "NewGameMode", menuName = "玩法配置")]
+        public class GameModeConfig : ScriptableObject
+        {
+            public string 玩法名称;
+            public int 最少人数;
+            public int 最多人数;
+            // ... 其他字段
+            public GameRule 玩法规则 = new GameRule();
+        }
+    }
+    ```
+
+2.  **创建嵌套数据类 (如果需要)**: 如果你的配置包含复杂的子结构 (例如一个对象或列表)，请为它创建一个单独的、标记为 `[Serializable]` 的普通类。
+
+    ```csharp
+    // 文件: Scripts/玩法/GameRule.cs
+    using System;
+
+    namespace MiGame.Data
+    {
+        [Serializable]
+        public class GameRule
+        {
+            public int 比赛时长;
+            public int 准备时间;
+            // ... 其他规则字段
+        }
+    }
+    ```
+
+### 第 2 步：创建配置导出器
+
+接下来，为新的配置类型创建一个对应的导出器脚本。
+
+1.  **创建导出器类**: 在 `Assets/Scripts/配置导出/` 目录下创建一个新的 C# 脚本。它必须继承自泛型基类 `ConfigExporter<T>`，其中 `T` 是你在上一步中创建的 `ScriptableObject` 类。
+2.  **实现 GetAssetPath()**: 你 **必须** 重写 `GetAssetPath()` 方法，返回存放该类型配置 `.asset` 文件的目录路径。这是导出系统找到数据源的唯一方式。
+
+    ```csharp
+    // 文件: Scripts/配置导出/GameModeConfigExporter.cs
+    using MiGame.Data;
+
+    namespace MiGame.Editor.Exporter
+    {
+        public class GameModeConfigExporter : ConfigExporter<GameModeConfig>
+        {
+            public override string GetAssetPath()
+            {
+                // 返回你的 .asset 文件存放的路径
+                return "Assets/GameConf/玩法";
+            }
+        }
+    }
+    ```
+
+### 第 3 步：在 Unity 编辑器中创建配置
+
+脚本和导出器都准备好后，就可以在编辑器里创建和编辑实际的配置数据了。
+
+1.  在项目窗口中，导航到你在 `GetAssetPath()` 中指定的目录 (例如 `Assets/GameConf/玩法`)。
+2.  右键点击 -> `Create` -> `玩法配置` (这对应于 `[CreateAssetMenu]` 中定义的 `menuName`)。
+3.  创建一个或多个配置，并为它们命名（例如 `CanyonRace.asset`）。这个文件名将成为 Lua 文件中的 `key`。
+4.  选中新创建的 `.asset` 文件，在 Inspector 窗口中填写所有数据。
+
+### 第 4 步：导出配置
+
+最后一步是将你在编辑器中创建的数据转换为 Lua 文件。
+
+1.  从顶部菜单栏打开 `窗口` -> `配置导出`。
+2.  在打开的面板中，你可以选择只导出刚刚创建的 `GameModeConfig`，或者点击 `全部导出`。
+3.  导出的 `GameModeConfig.lua` 文件会自动生成在 `Assets/Lua/Config/` 目录下。 

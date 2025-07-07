@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796686dd274237b4eb709fd3e4e3d733, type: 3}
   m_Name: jump1
   m_EditorClassIdentifier: 
-  "\u540D\u5B57": NewSceneNodeConfig
+  "\u540D\u5B57": jump1
   "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": Ground/init_map/Scene/jump_plat
   "\u573A\u666F\u7C7B\u578B": 1
   "\u97F3\u6548\u8D44\u6E90": 

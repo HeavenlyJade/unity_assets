@@ -22,9 +22,6 @@ namespace MiGame.Data
         [Tooltip("用于在UI上显示的图标资源路径")]
         public string 图标资源;
 
-        [Tooltip("详细的玩法规则设置")]
-        public GameRule 玩法规则 = new GameRule();
-        
         private void OnValidate()
         {
             // 自动将资产文件名同步到"名字"字段

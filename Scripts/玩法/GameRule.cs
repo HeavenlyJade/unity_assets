@@ -1,9 +1,13 @@
 using System;
-using MiGame.Scene;
 using UnityEngine;
 
 namespace MiGame.Data
 {
+    public enum 胜利条件类型
+    {
+        比赛时长结束
+    }
+
     [Serializable]
     public class GameRule
     {
@@ -13,10 +17,7 @@ namespace MiGame.Data
         [Tooltip("玩家进入后的准备时间（秒）")]
         public int 准备时间 = 10;
 
-        [Tooltip("指定作为入口的场景节点配置")]
-        public SceneNodeConfig 入口节点;
-
         [Tooltip("胜利条件的逻辑标识")]
-        public string 胜利条件 = "HIGHEST_SCORE";
+        public 胜利条件类型 胜利条件;
     }
 } 

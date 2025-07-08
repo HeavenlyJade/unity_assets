@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using MiGame.Data;
 
 namespace MiGame.Scene
 {
@@ -10,7 +11,8 @@ namespace MiGame.Scene
     {
         陷阱,
         跳台,
-        安全区
+        安全区,
+        飞行比赛
     }
 
     /// <summary>
@@ -38,12 +40,19 @@ namespace MiGame.Scene
         [ReadOnly]
         public string 名字;
 
+        [Tooltip("节点的唯一标识符，自动生成")]
+        [ReadOnly]
+        public string 唯一ID;
+
         [Tooltip("场景中预制体的路径，用于加载")]
         public string 场景节点路径;
 
         [Header("节点属性")]
         [Tooltip("节点的类型")]
         public SceneNodeType 场景类型;
+
+        [Tooltip("该节点关联的关卡配置")]
+        public LevelConfig 关联关卡;
 
         [Tooltip("节点触发时的音效，填写资源的路径")]
         public string 音效资源;
@@ -65,6 +74,30 @@ namespace MiGame.Scene
             {
                 名字 = name;
             }
+
+#if UNITY_EDITOR
+            // 自动生成唯一ID
+            if (string.IsNullOrEmpty(唯一ID))
+            {
+                唯一ID = System.Guid.NewGuid().ToString();
+                UnityEditor.EditorUtility.SetDirty(this);
+            }
+            else
+            {
+                // 检查ID是否重复
+                string[] guids = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(SceneNodeConfig)}");
+                foreach (string guid in guids)
+                {
+                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                    SceneNodeConfig otherNode = UnityEditor.AssetDatabase.LoadAssetAtPath<SceneNodeConfig>(path);
+                    if (otherNode != this && otherNode.唯一ID == this.唯一ID)
+                    {
+                        Debug.LogError($"唯一ID冲突! 场景节点 '{this.name}' 和 '{otherNode.name}' 的唯一ID相同 ({this.唯一ID})。请重新为其中一个生成ID。", this);
+                        break;
+                    }
+                }
+            }
+#endif
         }
     }
 } 

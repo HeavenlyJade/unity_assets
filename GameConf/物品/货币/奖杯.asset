@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de0df1a0585c7c74390f891ee4088c4a, type: 3}
-  m_Name: "\u52A0\u901F\u5361"
+  m_Name: "\u5956\u676F"
   m_EditorClassIdentifier: 
-  "\u540D\u5B57": "\u52A0\u901F\u5361"
-  "\u7269\u54C1\u7C7B\u578B": 1
-  "\u63CF\u8FF0": 
+  "\u540D\u5B57": "\u5956\u676F"
+  "\u7269\u54C1\u7C7B\u578B": 4
+  "\u63CF\u8FF0": "\u53EF\u4EE5\u5347\u7EA7\u5929\u8D4B"
   "\u56FE\u6807": 
   "\u54C1\u7EA7": 3
   "\u6218\u529B": 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   "\u56FE\u9274\u9AD8\u7EA7\u5B8C\u6210\u5956\u52B1\u6570\u91CF": 0
   "\u552E\u51FA\u4EF7\u683C": 0
   "\u5728\u80CC\u5305\u91CC\u663E\u793A": 1
-  "\u8D27\u5E01\u5E8F\u53F7": 1
+  "\u8D27\u5E01\u5E8F\u53F7": 2
   "\u83B7\u5F97\u97F3\u6548": 
   "\u53D6\u6D88\u83B7\u5F97\u7269\u54C1": 0
   "\u83B7\u5F97\u6267\u884C\u6307\u4EE4": []

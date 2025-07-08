@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: jump1
   m_EditorClassIdentifier: 
   "\u540D\u5B57": jump1
-  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": Ground/init_map/Scene/jump_plat
-  "\u573A\u666F\u7C7B\u578B": 1
+  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": Ground/init_map/terrain/Scene/jump_plat
+  "\u573A\u666F\u7C7B\u578B": 3
+  "\u6E38\u620F\u6A21\u5F0F": {fileID: 11400000, guid: 52b31ce8fc96af0439b82b6794de08ad, type: 2}
+  "\u73A9\u6CD5\u89C4\u5219":
+    "\u6BD4\u8D5B\u65F6\u957F": 60
+    "\u51C6\u5907\u65F6\u95F4": 10
+    "\u80DC\u5229\u6761\u4EF6": 0
   "\u97F3\u6548\u8D44\u6E90": 
   "\u8FDB\u5165\u6307\u4EE4": 
   "\u79BB\u5F00\u6307\u4EE4": 

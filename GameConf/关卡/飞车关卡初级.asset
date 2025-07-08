@@ -17,15 +17,16 @@ MonoBehaviour:
   "\u9ED8\u8BA4\u73A9\u6CD5": {fileID: 11400000, guid: 52b31ce8fc96af0439b82b6794de08ad, type: 2}
   "\u6700\u5C11\u4EBA\u6570": 1
   "\u6700\u591A\u4EBA\u6570": 8
+  "\u6BCF\u7C73\u5F97\u5206\u6570": 1.5
   "\u57FA\u7840\u5956\u52B1":
-  - "\u7269\u54C1": {fileID: 11400000, guid: d527086086f9bc34f8495916f95517d2, type: 2}
-    "\u6570\u91CF": 2
+  - "\u7269\u54C1": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
+    "\u6570\u91CF": 100
   "\u6392\u540D\u5956\u52B1":
   - "\u540D\u6B21": 1
     "\u5956\u52B1\u5217\u8868":
-    - "\u7269\u54C1": {fileID: 11400000, guid: d527086086f9bc34f8495916f95517d2, type: 2}
+    - "\u7269\u54C1": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
       "\u6570\u91CF": 7
   - "\u540D\u6B21": 2
     "\u5956\u52B1\u5217\u8868":
-    - "\u7269\u54C1": {fileID: 11400000, guid: d527086086f9bc34f8495916f95517d2, type: 2}
+    - "\u7269\u54C1": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
       "\u6570\u91CF": 5

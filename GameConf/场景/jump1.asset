@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: jump1
   m_EditorClassIdentifier: 
   "\u540D\u5B57": jump1
+  "\u552F\u4E00ID": acd1a360-1a02-4406-b9ed-70f96a5a46a7
   "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": Ground/init_map/terrain/Scene/jump_plat
   "\u573A\u666F\u7C7B\u578B": 3
-  "\u6E38\u620F\u6A21\u5F0F": {fileID: 11400000, guid: 52b31ce8fc96af0439b82b6794de08ad, type: 2}
+  "\u533A\u57DF\u8282\u70B9\u914D\u7F6E":
+    "\u540D\u5B57": jump1_TriggerBox
+  "\u5173\u8054\u5173\u5361": {fileID: 11400000, guid: ecfdb514301f40644970a882e0ae7da1, type: 2}
   "\u73A9\u6CD5\u89C4\u5219":
     "\u6BD4\u8D5B\u65F6\u957F": 60
     "\u51C6\u5907\u65F6\u95F4": 10

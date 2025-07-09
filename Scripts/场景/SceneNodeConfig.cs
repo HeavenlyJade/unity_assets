@@ -28,6 +28,16 @@ namespace MiGame.Scene
         public float 间隔 = 1f;
     }
 
+    /// <summary>
+    /// 区域节点配置
+    /// </summary>
+    [System.Serializable]
+    public class 区域节点配置
+    {
+        [Tooltip("区域的名字")]
+        public string 名字;
+    }
+
 
     /// <summary>
     /// 场景节点配置
@@ -40,7 +50,7 @@ namespace MiGame.Scene
         [ReadOnly]
         public string 名字;
 
-        [Tooltip("节点的唯一标识符，自动生成")]
+        [Tooltip("节点的唯一ID，在创建时自动生成")]
         [ReadOnly]
         public string 唯一ID;
 
@@ -51,8 +61,14 @@ namespace MiGame.Scene
         [Tooltip("节点的类型")]
         public SceneNodeType 场景类型;
 
+        [Tooltip("区域节点配置")]
+        public 区域节点配置 区域节点配置 = new 区域节点配置();
+
         [Tooltip("该节点关联的关卡配置")]
         public LevelConfig 关联关卡;
+
+        [Tooltip("具体的玩法规则，当此节点触发时生效")]
+        public GameRule 玩法规则 = new GameRule();
 
         [Tooltip("节点触发时的音效，填写资源的路径")]
         public string 音效资源;
@@ -75,29 +91,10 @@ namespace MiGame.Scene
                 名字 = name;
             }
 
-#if UNITY_EDITOR
-            // 自动生成唯一ID
             if (string.IsNullOrEmpty(唯一ID))
             {
                 唯一ID = System.Guid.NewGuid().ToString();
-                UnityEditor.EditorUtility.SetDirty(this);
             }
-            else
-            {
-                // 检查ID是否重复
-                string[] guids = UnityEditor.AssetDatabase.FindAssets($"t:{nameof(SceneNodeConfig)}");
-                foreach (string guid in guids)
-                {
-                    string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-                    SceneNodeConfig otherNode = UnityEditor.AssetDatabase.LoadAssetAtPath<SceneNodeConfig>(path);
-                    if (otherNode != this && otherNode.唯一ID == this.唯一ID)
-                    {
-                        Debug.LogError($"唯一ID冲突! 场景节点 '{this.name}' 和 '{otherNode.name}' 的唯一ID相同 ({this.唯一ID})。请重新为其中一个生成ID。", this);
-                        break;
-                    }
-                }
-            }
-#endif
         }
     }
 } 

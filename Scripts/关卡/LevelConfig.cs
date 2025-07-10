@@ -34,7 +34,7 @@ namespace MiGame.Data
         
         [Header("奖励信息")]
         [Tooltip("所有参与者都能获得的基础奖励")]
-        public List<ItemReward> 基础奖励;
+        public List<RewardRule> 基础奖励;
 
         [Tooltip("根据最终排名配置的奖励")]
         public List<LevelRankReward> 排名奖励;

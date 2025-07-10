@@ -34,10 +34,18 @@ namespace MiGame.Scene
     [System.Serializable]
     public class 区域节点配置
     {
-        [Tooltip("区域的名字")]
-        public string 名字;
-    }
+        [Tooltip("作为触发区域的包围盒节点名字")]
+        public string 包围盒节点;
 
+        [Tooltip("该区域关联的复活点标识")]
+        public string 复活节点;
+
+        [Tooltip("该区域关联的传送门标识")]
+        public string 传送节点;
+
+        [Tooltip("该区域关联的比赛场景标识")]
+        public string 比赛场景;
+    }
 
     /// <summary>
     /// 场景节点配置

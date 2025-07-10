@@ -17,7 +17,10 @@ MonoBehaviour:
   "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": Ground/init_map/terrain/Scene/jump_plat
   "\u573A\u666F\u7C7B\u578B": 3
   "\u533A\u57DF\u8282\u70B9\u914D\u7F6E":
-    "\u540D\u5B57": jump1_TriggerBox
+    "\u5305\u56F4\u76D2\u8282\u70B9": jump1_TriggerBox
+    "\u590D\u6D3B\u8282\u70B9": BasicRespawn
+    "\u4F20\u9001\u8282\u70B9": TeleportNode
+    "\u6BD4\u8D5B\u573A\u666F": Ground/init_map/terrain/Scene/track
   "\u5173\u8054\u5173\u5361": {fileID: 11400000, guid: ecfdb514301f40644970a882e0ae7da1, type: 2}
   "\u73A9\u6CD5\u89C4\u5219":
     "\u6BD4\u8D5B\u65F6\u957F": 60

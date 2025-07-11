@@ -26,9 +26,6 @@ namespace MiGame.Data
         public int 最多人数 = 8;
 
         [Header("玩法参数")]
-        [Tooltip("在该关卡中，每前进一米转换的分数")]
-        public float 每米得分数 = 1.5f;
-
         [Tooltip("该关卡的详细玩法规则")]
         public GameRule 玩法规则 = new GameRule();
         

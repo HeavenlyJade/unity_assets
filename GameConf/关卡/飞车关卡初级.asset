@@ -17,22 +17,18 @@ MonoBehaviour:
   "\u9ED8\u8BA4\u73A9\u6CD5": {fileID: 11400000, guid: 52b31ce8fc96af0439b82b6794de08ad, type: 2}
   "\u6700\u5C11\u4EBA\u6570": 1
   "\u6700\u591A\u4EBA\u6570": 8
-  "\u6BCF\u7C73\u5F97\u5206\u6570": 1.5
   "\u73A9\u6CD5\u89C4\u5219":
-    "\u6BD4\u8D5B\u65F6\u957F": 300
+    "\u6BD4\u8D5B\u65F6\u957F": 30
     "\u51C6\u5907\u65F6\u95F4": 10
     "\u80DC\u5229\u6761\u4EF6": 0
   "\u57FA\u7840\u5956\u52B1":
   - "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
-    "\u8BA1\u7B97\u65B9\u5F0F": 2
-    "\u56FA\u5B9A\u6570\u91CF": 0
-    "\u5956\u52B1\u516C\u5F0F": LVL
-  "\u6392\u540D\u5956\u52B1":
-  - "\u540D\u6B21": 1
-    "\u5956\u52B1\u5217\u8868":
-    - "\u7269\u54C1": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
-      "\u6570\u91CF": 7
-  - "\u540D\u6B21": 2
-    "\u5956\u52B1\u5217\u8868":
-    - "\u7269\u54C1": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
-      "\u6570\u91CF": 5
+    "\u8BA1\u7B97\u65B9\u5F0F": 0
+    "\u5956\u52B1\u516C\u5F0F": distance/100
+  "\u6392\u540D\u5956\u52B1": []
+  "\u5B9E\u65F6\u5956\u52B1\u89C4\u5219":
+  - "\u89E6\u53D1\u6761\u4EF6":
+      "\u89E6\u53D1\u6761\u4EF6\u53D8\u91CF": flay_dist
+      "\u89E6\u53D1\u6761\u4EF6\u6570\u91CF": 1000
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 10

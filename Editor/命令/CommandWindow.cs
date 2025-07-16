@@ -220,13 +220,13 @@ namespace MiGame.CommandSystem.Editor
                 // Conditional serialization logic
                 if (field.Name == "发件人ID")
                 {
-                    var senderType = (MailCommand.MailSenderType)commandType.GetField("发件人类型").GetValue(_selectedCommandInstance);
-                    if (senderType != MailCommand.MailSenderType.玩家) continue;
+                    var senderType = (MailCommand.SenderType)commandType.GetField("发件人").GetValue(_selectedCommandInstance);
+                    if (senderType != MailCommand.SenderType.玩家) continue;
                 }
-                if (field.Name == "收件人ID")
+                if (field.Name == "收件人")
                 {
-                    var recipientType = (MailCommand.MailRecipientType)commandType.GetField("收件人类型").GetValue(_selectedCommandInstance);
-                    if (recipientType != MailCommand.MailRecipientType.玩家) continue;
+                    var deliveryMethod = (MailCommand.DeliveryMethod)commandType.GetField("投递方式").GetValue(_selectedCommandInstance);
+                    if (deliveryMethod != MailCommand.DeliveryMethod.个人) continue;
                 }
 
                 // For command string, only include non-default values, but always include enums

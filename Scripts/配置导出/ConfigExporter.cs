@@ -88,12 +88,12 @@ namespace MiGame.Editor.Exporter
                 }
 
                 sb.Append($"{indent}['{field.Name}'] = ");
-                ValueToLua(field.GetValue(obj), sb, indentLevel);
+                ValueToLua(field.GetValue(obj), sb, indentLevel, field.Name);
                 sb.AppendLine(",");
             }
         }
 
-        protected void ValueToLua(object value, StringBuilder sb, int indentLevel)
+        protected void ValueToLua(object value, StringBuilder sb, int indentLevel, string fieldName = null)
         {
             if (value == null)
             {
@@ -106,7 +106,17 @@ namespace MiGame.Editor.Exporter
 
             if (type == typeof(string))
             {
-                sb.Append($"'{value.ToString().Replace("'", "\\''").Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "")}'");
+                var stringValue = value.ToString();
+                
+                // 特殊处理奖励公式字段：如果内容是纯数字，则导出为数字类型
+                if (fieldName == "奖励公式" && IsNumericString(stringValue))
+                {
+                    sb.Append(stringValue);
+                }
+                else
+                {
+                    sb.Append($"'{stringValue.Replace("'", "\\''").Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "")}'");
+                }
             }
             else if (type == typeof(bool))
             {
@@ -143,7 +153,7 @@ namespace MiGame.Editor.Exporter
                 foreach (var item in enumerable)
                 {
                     sb.Append(new string(' ', (indentLevel + 1) * 2));
-                    ValueToLua(item, sb, indentLevel + 1);
+                    ValueToLua(item, sb, indentLevel + 1, null);
                     sb.AppendLine(",");
                 }
                 sb.Append(indent + "}");
@@ -158,6 +168,23 @@ namespace MiGame.Editor.Exporter
             {
                 sb.Append("nil --[[ Unhandled Type: " + type.Name + " ]]");
             }
+        }
+
+        /// <summary>
+        /// 检查字符串是否为纯数字（整数或浮点数）
+        /// </summary>
+        /// <param name="input">要检查的字符串</param>
+        /// <returns>如果是纯数字返回true，否则返回false</returns>
+        private bool IsNumericString(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            // 移除前后空白字符
+            input = input.Trim();
+            
+            // 检查是否为整数或浮点数
+            return double.TryParse(input, out _);
         }
         
         /// <summary>

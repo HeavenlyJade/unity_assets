@@ -36,6 +36,10 @@ namespace MiGame.Data
         [Tooltip("根据最终排名配置的奖励")]
         public List<LevelRankReward> 排名奖励;
 
+        [Header("实时奖励")]
+        [Tooltip("实时奖励触发规则列表，当满足指定条件时立即给予奖励")]
+        public List<RealtimeRewardRule> 实时奖励规则;
+
         private void OnValidate()
         {
             // 自动将资产文件名同步到"名字"字段

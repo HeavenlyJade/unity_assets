@@ -29,7 +29,10 @@ namespace MiGame.Items
         public ItemType 可售出为;
         public int 售出价格;
         public bool 在背包里显示 = true;
-        public int 货币序号 = 0;
+        /// <summary>是否可堆叠</summary>
+        public bool 是否可堆叠 = false;
+        /// <summary>最大可堆叠数量，范围1~100,000,000,000,000</summary>
+        public long 最大数量 = 1;
         public string 获得音效;
         public bool 取消获得物品 = false;
         public List<string> 获得执行指令;
@@ -41,21 +44,7 @@ namespace MiGame.Items
             名字 = name;
             
 #if UNITY_EDITOR
-            if (物品类型 == 物品种类.货币 && 货币序号 != 0)
-            {
-                string[] guids = AssetDatabase.FindAssets($"t:{nameof(ItemType)}");
-                foreach (string guid in guids)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
-                    ItemType otherItem = AssetDatabase.LoadAssetAtPath<ItemType>(path);
-
-                    if (otherItem != this && otherItem.物品类型 == 物品种类.货币 && otherItem.货币序号 == this.货币序号)
-                    {
-                        Debug.LogError($"货币序号冲突! 物品 '{this.name}' 和 '{otherItem.name}' 的货币序号同为 {this.货币序号}。请确保每个货币的序号是唯一的。", this);
-                        break; 
-                    }
-                }
-            }
+            // 货币序号相关校验已移除
 #endif
         }
 

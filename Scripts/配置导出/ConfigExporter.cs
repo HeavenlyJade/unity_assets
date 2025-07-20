@@ -108,8 +108,8 @@ namespace MiGame.Editor.Exporter
             {
                 var stringValue = value.ToString();
                 
-                // 特殊处理奖励公式字段：如果内容是纯数字，则导出为数字类型
-                if (fieldName == "奖励公式" && IsNumericString(stringValue))
+                // 特殊处理：如果字符串内容是纯数字，则导出为数字类型
+                if (IsNumericString(stringValue))
                 {
                     sb.Append(stringValue);
                 }
@@ -147,6 +147,18 @@ namespace MiGame.Editor.Exporter
             {
                 sb.Append(rac != null ? $"'{rac.name}'" : "nil");
             }
+            else if (value is IDictionary dictionary)
+            {
+                sb.AppendLine("{");
+                foreach (DictionaryEntry entry in dictionary)
+                {
+                    sb.Append(new string(' ', (indentLevel + 1) * 2));
+                    sb.Append($"[{ValueToLuaString(entry.Key, indentLevel + 1)}] = ");
+                    ValueToLua(entry.Value, sb, indentLevel + 1, null);
+                    sb.AppendLine(",");
+                }
+                sb.Append(indent + "}");
+            }
             else if (value is IEnumerable enumerable and not string)
             {
                 sb.AppendLine("{");
@@ -167,6 +179,41 @@ namespace MiGame.Editor.Exporter
             else
             {
                 sb.Append("nil --[[ Unhandled Type: " + type.Name + " ]]");
+            }
+        }
+
+        /// <summary>
+        /// 将值转换为Lua字符串格式（用于字典键）
+        /// </summary>
+        /// <param name="value">要转换的值</param>
+        /// <param name="indentLevel">缩进级别</param>
+        /// <returns>Lua格式的字符串</returns>
+        private string ValueToLuaString(object value, int indentLevel)
+        {
+            if (value == null) return "nil";
+            
+            var type = value.GetType();
+            
+            if (type == typeof(string))
+            {
+                var stringValue = value.ToString();
+                return $"'{stringValue.Replace("'", "\\''").Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "")}'";
+            }
+            else if (type == typeof(bool))
+            {
+                return value.ToString().ToLower();
+            }
+            else if (type.IsPrimitive)
+            {
+                return value.ToString();
+            }
+            else if (type.IsEnum)
+            {
+                return $"'{value.ToString()}'";
+            }
+            else
+            {
+                return $"'{value.ToString()}'";
             }
         }
 

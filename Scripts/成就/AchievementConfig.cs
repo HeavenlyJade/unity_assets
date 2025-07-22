@@ -101,6 +101,9 @@ namespace MiGame.Achievement
         [ReadOnly]
         public string 名字;
         
+        [Tooltip("排序（用于成就显示顺序）")]
+        public int 排序;
+        
         [Tooltip("区分普通成就或天赋成就")]
         public AchievementType 类型;
         

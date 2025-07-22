@@ -10,22 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e056f5c793c16e48b5e3cbc5266edd1, type: 3}
-  m_Name: "\u91CD\u751F"
+  m_Name: "\u5956\u676F\u52A0\u6210"
   m_EditorClassIdentifier: 
-  "\u540D\u5B57": "\u91CD\u751F"
+  "\u540D\u5B57": "\u5956\u676F\u52A0\u6210"
+  "\u6392\u5E8F": 3
   "\u7C7B\u578B": 1
-  "\u63CF\u8FF0": "\u91CD\u751F\u680F\u4F4D"
+  "\u63CF\u8FF0": "\u52A0\u6210\u5956\u676F\u7684\u83B7\u53D6"
   "\u56FE\u6807": 
   "\u89E3\u9501\u6761\u4EF6": []
   "\u89E3\u9501\u5956\u52B1": []
-  "\u6700\u5927\u7B49\u7EA7": 20
+  "\u6700\u5927\u7B49\u7EA7": 1
   "\u5347\u7EA7\u6761\u4EF6":
   - "\u6D88\u8017\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u6D88\u8017\u6570\u91CF": 
-  - "\u6D88\u8017\u7269\u54C1": {fileID: 0}
-    "\u6D88\u8017\u6570\u91CF": 
+    "\u6D88\u8017\u6570\u91CF": T_LVL*2+10
+  - "\u6D88\u8017\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u6D88\u8017\u6570\u91CF": T_LVL*2000+10
   "\u7B49\u7EA7\u6548\u679C":
   - "\u6548\u679C\u7C7B\u578B": 0
-    "\u6548\u679C\u5B57\u6BB5\u540D\u79F0": "\u89E3\u9501_\u91CD\u751F"
-    "\u6548\u679C\u6570\u503C": T_LVL*2+1
-    "\u6548\u679C\u63CF\u8FF0": "\u91CD\u751F\u680F\u4F4D\u589E\u52A0\uFF0CT_LVL\u662F\u5929\u8D4B\u7B49\u7EA7"
+    "\u6548\u679C\u5B57\u6BB5\u540D\u79F0": "\u52A0\u6210_\u5956\u676F\u52A0\u6210"
+    "\u6548\u679C\u6570\u503C": T_LVL*0.2
+    "\u6548\u679C\u63CF\u8FF0": "\u6BCF\u7EA7\u52A0\u6210\u767E\u5206\u4E4B20\u7684\u5956\u676F"

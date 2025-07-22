@@ -63,9 +63,9 @@ namespace MiGame.Achievement
     }
 
     /// <summary>
-    /// 效果类型枚举
+    /// 玩家变量类型枚举
     /// </summary>
-    public enum EffectType
+    public enum PlayerVariableType
     {
         玩家变量,
         玩家属性
@@ -78,7 +78,7 @@ namespace MiGame.Achievement
     public class LevelEffect
     {
         [Tooltip("效果类型")]
-        public EffectType 效果类型;
+        public PlayerVariableType 效果类型;
         
         [Tooltip("效果字段名称")]
         public string 效果字段名称;

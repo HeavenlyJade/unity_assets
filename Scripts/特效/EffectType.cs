@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace MiGame.Items
 {
-    [CreateAssetMenu(fileName = "特效", menuName = "公用/物品/特效")]
+    [CreateAssetMenu(fileName = "特效", menuName = "特效配置")]
     public class EffectType : ScriptableObject
     {
         public string 特效名;

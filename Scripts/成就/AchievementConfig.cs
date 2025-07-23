@@ -83,6 +83,9 @@ namespace MiGame.Achievement
         [Tooltip("效果字段名称")]
         public string 效果字段名称;
         
+        [Tooltip("基础数值")]
+        public float 基础数值;
+        
         [Tooltip("效果数值（公式，随天赋等级变化）")]
         public string 效果数值;
         

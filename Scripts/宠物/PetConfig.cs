@@ -196,17 +196,14 @@ namespace MiGame.Pet
     [Serializable]
     public class 携带效果
     {
-        [Tooltip("星级")]
-        public int 星级;
-        
-        [Tooltip("效果名称")]
-        public string 效果名称;
-        
-        [Tooltip("效果描述")]
-        public string 效果描述;
-        
-        [Tooltip("效果触发条件列表")]
-        public List<效果触发条件> 触发条件列表;
+        [Tooltip("变量类型")]
+        public 变量类型 变量类型 = 变量类型.玩家属性;
+
+        [Tooltip("变量名称")]
+        public string 变量名称;
+
+        [Tooltip("效果数值或公式")]
+        public string 效果数值;
     }
 
     /// <summary>
@@ -273,7 +270,7 @@ namespace MiGame.Pet
 
         [Header("携带效果")]
         [Tooltip("携带效果配置")]
-        public List<携带效果> 携带效果列表;
+        public List<携带效果> 携带效果;
 
         [Header("技能与进化")]
         [Tooltip("技能列表")]
@@ -295,6 +292,9 @@ namespace MiGame.Pet
         
         [Tooltip("头像资源路径")]
         public string 头像资源;
+        
+        [Tooltip("动画资源路径")]
+        public string 动画资源;
         
         [Tooltip("音效资源路径")]
         public string 音效资源;

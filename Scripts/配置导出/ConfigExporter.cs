@@ -72,6 +72,16 @@ namespace MiGame.Editor.Exporter
             UnityEngine.Debug.Log($"导出 {typeof(T).Name} 配置到: {outputPath}");
         }
 
+        /// <summary>
+        /// 子类可重写，指定多个包含 .asset 文件的目录路径。
+        /// </summary>
+        /// <returns>资产文件所在的目录路径数组</returns>
+        public virtual string[] GetAssetPaths()
+        {
+            var single = GetAssetPath();
+            return string.IsNullOrEmpty(single) ? new string[0] : new[] { single };
+        }
+
         protected void ObjectToLua(object obj, StringBuilder sb, int indentLevel)
         {
             if (obj == null) return;
@@ -240,18 +250,18 @@ namespace MiGame.Editor.Exporter
         /// <returns>找到的资产对象列表</returns>
         protected List<T> FindAssets()
         {
-            var assetPath = GetAssetPath();
-            if (string.IsNullOrEmpty(assetPath))
+            var assetPaths = GetAssetPaths();
+            if (assetPaths == null || assetPaths.Length == 0)
             {
-                Debug.LogError($"导出器 {GetType().Name} 未指定有效的资产路径 (GetAssetPath 返回空值)。");
+                Debug.LogError($"导出器 {GetType().Name} 未指定有效的资产路径 (GetAssetPaths 返回空值)。");
                 return new List<T>();
             }
 
-            string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}", new[] { assetPath });
+            string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}", assetPaths);
 
             if (guids.Length == 0)
             {
-                Debug.LogWarning($"在路径 '{assetPath}' 中没有找到任何类型为 '{typeof(T).Name}' 的资产。");
+                Debug.LogWarning($"在路径 '{string.Join(",", assetPaths)}' 中没有找到任何类型为 '{typeof(T).Name}' 的资产。");
             }
 
             return guids

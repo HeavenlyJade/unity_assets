@@ -257,13 +257,13 @@ namespace MiGame.Pet
         [Tooltip("成长率配置列表")]
         public List<成长率配置> 成长率列表;
 
-        [Header("等级效果")]
-        [Tooltip("各等级的效果配置")]
-        public List<等级效果> 等级效果列表;
+        //[Header("等级效果")]
+        //[Tooltip("各等级的效果配置")]
+        //public List<等级效果> 等级效果列表;
 
         [Header("升星系统")]
-        [Tooltip("升星效果配置")]
-        public List<升星效果> 升星效果列表;
+        //[Tooltip("升星效果配置")]
+        //public List<升星效果> 升星效果列表;
         
         [Tooltip("升星消耗配置")]
         public List<升星消耗> 升星消耗列表;

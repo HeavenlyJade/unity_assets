@@ -247,7 +247,16 @@ namespace MiGame.CommandSystem.Editor
                     }
                 }
 
-                string valueString = ConvertValueToString(currentValue, field.FieldType);
+                string valueString;
+                if(currentValue is UnityEngine.Object obj && obj != null)
+                {
+                    valueString = $"\"{obj.name}\"";
+                }
+                else
+                {
+                    valueString = ConvertValueToString(currentValue, field.FieldType);
+                }
+
                 fieldStrings.Add($"\"{field.Name}\": {valueString}");
             }
 

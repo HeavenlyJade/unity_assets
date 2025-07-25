@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace MiGame.Editor.Exporter
 {
-    public class PetConfigExporter : ConfigExporter<PetConfig>
+    public class PartnerConfigExporter : ConfigExporter<PartnerConfig>
     {
         public override string[] GetAssetPaths()
         {
-            return new[] { "Assets/GameConf/宠物" };
+            return new[] { "Assets/GameConf/伙伴" };
         }
         public override string GetAssetPath()
         {

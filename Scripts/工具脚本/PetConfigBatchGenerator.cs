@@ -48,13 +48,12 @@ public class PetConfigBatchGenerator : EditorWindow
                 AssetDatabase.CreateFolder(parent, newFolder);
             }
             string assetPath = Path.Combine(folder, pet.名称 + ".asset").Replace("\\", "/");
-            PetConfig asset = AssetDatabase.LoadAssetAtPath<PetConfig>(assetPath);
+            PartnerConfig asset = AssetDatabase.LoadAssetAtPath<PartnerConfig>(assetPath);
             if (asset == null)
             {
-                asset = ScriptableObject.CreateInstance<PetConfig>();
+                asset = ScriptableObject.CreateInstance<PartnerConfig>();
             }
             asset.宠物名称 = pet.名称;
-            asset.宠物类型 = 宠物类型.伙伴;
             asset.稀有度 = ParseQuality(pet.品级);
             asset.头像资源 = pet.图片;
             asset.模型资源 = pet.模型;

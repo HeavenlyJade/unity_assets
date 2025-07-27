@@ -13,7 +13,9 @@ namespace MiGame.Pet
         [Tooltip("普通物品")]
         物品,
         [Tooltip("宠物材料")]
-        宠物
+        宠物,
+        [Tooltip("伙伴")]
+        伙伴
     }
 
     /// <summary>
@@ -124,15 +126,15 @@ namespace MiGame.Pet
         [Tooltip("材料物品（消耗类型为物品时使用）")]
         public ItemType 材料物品;
         
-        [Tooltip("消耗宠物（消耗类型为宠物时使用）")]
-        public PetConfig 消耗宠物;
+        [Tooltip("消耗名称（消耗类型为宠物或伙伴时使用）")]
+        public BasePetConfig 消耗名称;
         
         [Tooltip("需要数量")]
         public int 需要数量;
         
-        [Tooltip("宠物星级要求（消耗类型为宠物时使用）")]
+        [Tooltip("消耗星级要求（消耗类型为宠物或伙伴时使用）")]
         [Range(1, 10)]
-        public int 宠物星级 = 1;
+        public int 消耗星级 = 1;
     }
 
     /// <summary>
@@ -190,7 +192,13 @@ namespace MiGame.Pet
         public string 效果数值;
     }
 
-
+    /// <summary>
+    /// 加成类型
+    /// </summary>
+    public enum 加成类型
+    {
+        物品
+    }
 
     /// <summary>
     /// 携带效果结构
@@ -206,6 +214,12 @@ namespace MiGame.Pet
 
         [Tooltip("效果数值或公式")]
         public string 效果数值;
+
+        [Tooltip("加成类型")]
+        public 加成类型 加成类型;
+
+        [Tooltip("加成目标")]
+        public ItemType 物品目标;
     }
 
     /// <summary>

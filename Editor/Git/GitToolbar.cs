@@ -9,6 +9,8 @@ using Debug = UnityEngine.Debug;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using System.Threading;
 
 public class GitStatusViewerWindow : EditorWindow
 {
@@ -31,7 +33,7 @@ public class GitStatusViewerWindow : EditorWindow
         "Localization.json"
     };
 
-    [MenuItem("Tools/Git 状态查看器")]
+    [MenuItem("工具/Git 状态查看器")]
     public static void ShowWindow()
     {
         GetWindow<GitStatusViewerWindow>("Git 状态查看器");
@@ -203,244 +205,6 @@ public class GitStatusViewerWindow : EditorWindow
         return result;
     }
 
-    private bool HasGitDiff(string filePath)
-    {
-        try
-        {
-            string fullPath = Path.Combine(gitRepoPath, filePath);
-            string content = File.ReadAllText(fullPath);
-            string extension = Path.GetExtension(filePath).ToLower();
-            
-            // 如果不是lua文件，处理浮点数
-            if (extension != ".lua")
-            {
-                string processedContent = ProcessFloatNumbers(content);
-                if (processedContent != content)
-                {
-                    // 如果内容有变化，写入处理后的内容
-                    File.WriteAllText(fullPath, processedContent);
-                    
-                    // 检查处理后的文件是否还有差异
-                    ProcessStartInfo checkStartInfo = new ProcessStartInfo();
-                    checkStartInfo.FileName = "git";
-                    checkStartInfo.Arguments = $"diff --quiet \"{filePath}\"";
-                    checkStartInfo.WorkingDirectory = gitRepoPath;
-                    checkStartInfo.UseShellExecute = false;
-                    checkStartInfo.RedirectStandardOutput = true;
-                    checkStartInfo.CreateNoWindow = true;
-                    checkStartInfo.StandardOutputEncoding = Encoding.UTF8;
-
-                    using (Process checkProcess = Process.Start(checkStartInfo))
-                    {
-                        checkProcess.WaitForExit();
-                        // 如果处理后的文件没有差异，执行checkout
-                        if (checkProcess.ExitCode == 0)
-                        {
-                            ProcessStartInfo checkoutStartInfo = new ProcessStartInfo();
-                            checkoutStartInfo.FileName = "git";
-                            checkoutStartInfo.Arguments = $"checkout -- \"{filePath}\"";
-                            checkoutStartInfo.WorkingDirectory = gitRepoPath;
-                            checkoutStartInfo.UseShellExecute = false;
-                            checkoutStartInfo.RedirectStandardOutput = true;
-                            checkoutStartInfo.CreateNoWindow = true;
-                            checkoutStartInfo.StandardOutputEncoding = Encoding.UTF8;
-
-                            using (Process checkoutProcess = Process.Start(checkoutStartInfo))
-                            {
-                                checkoutProcess.WaitForExit();
-                            }
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-            }
-
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "git";
-            startInfo.Arguments = $"diff --quiet \"{filePath}\"";
-            startInfo.WorkingDirectory = gitRepoPath;
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.CreateNoWindow = true;
-            startInfo.StandardOutputEncoding = Encoding.UTF8;
-
-            using (Process process = Process.Start(startInfo))
-            {
-                process.WaitForExit();
-                // git diff --quiet 在文件有差异时返回1，无差异时返回0
-                return process.ExitCode == 1;
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Failed to check git diff for {filePath}: {e.Message}");
-            return false;
-        }
-    }
-
-    private bool HasChildrenIndexDiff(string filePath)
-    {
-        try
-        {
-            Debug.Log($"开始检查childrenIndex文件差异: {filePath}");
-            
-            // 获取git diff的输出
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "git";
-            startInfo.Arguments = $"diff \"{filePath}\"";
-            startInfo.WorkingDirectory = gitRepoPath;
-            startInfo.UseShellExecute = false;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.CreateNoWindow = true;
-            startInfo.StandardOutputEncoding = Encoding.UTF8;
-
-            using (Process process = Process.Start(startInfo))
-            {
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-
-                // 如果没有差异，直接返回false
-                if (string.IsNullOrEmpty(output))
-                {
-                    Debug.Log($"文件 {filePath} 没有差异");
-                    return false;
-                }
-
-                Debug.Log($"文件 {filePath} 的diff输出:\n{output}");
-
-                // 获取childrenIndex文件的修改时间
-                string fullPath = Path.Combine(gitRepoPath, filePath);
-                DateTime indexFileTime = File.GetLastWriteTime(fullPath);
-                Debug.Log($"childrenIndex文件修改时间: {indexFileTime}");
-
-                // 分析diff输出
-                string[] lines = output.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-                bool hasContentChange = false;
-                List<string> removedContent = new List<string>();
-                List<string> addedContent = new List<string>();
-
-                foreach (string line in lines)
-                {
-                    // 跳过git diff的头部信息
-                    if (line.StartsWith("diff --git") || line.StartsWith("index ") || 
-                        line.StartsWith("---") || line.StartsWith("+++"))
-                    {
-                        Debug.Log($"跳过git diff头部信息: {line}");
-                        continue;
-                    }
-
-                    // 检查是否是内容行（以+或-开头）
-                    if (line.StartsWith("+") || line.StartsWith("-"))
-                    {
-                        string content = line.Substring(1).Trim();
-                        Debug.Log($"检查内容行: {content}");
-                        
-                        // 如果行包含分号，检查分号后的内容是否变化
-                        int semicolonIndex = content.IndexOf(';');
-                        if (semicolonIndex != -1)
-                        {
-                            string beforeSemicolon = content.Substring(0, semicolonIndex);
-                            string afterSemicolon = content.Substring(semicolonIndex + 1);
-                            
-                            if (line.StartsWith("-"))
-                            {
-                                // 记录被删除行的分号后内容
-                                removedContent.Add(afterSemicolon);
-                            }
-                            else if (line.StartsWith("+"))
-                            {
-                                // 记录新增行的分号后内容
-                                addedContent.Add(afterSemicolon);
-                                // 检查是否有对应的删除行（分号后内容相同）
-                                if (removedContent.Contains(afterSemicolon))
-                                {
-                                    // 如果找到匹配的删除行，移除它
-                                    removedContent.Remove(afterSemicolon);
-                                }
-                                else
-                                {
-                                    // 如果是新增的行，标记为需要更新
-                                    Debug.Log($"检测到新增行: {content}");
-                                    hasContentChange = true;
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log($"行不包含分号，忽略: {content}");
-                        }
-                    }
-                }
-
-                if (removedContent.Count > 0)
-                {
-                    Debug.Log($"检测到未匹配的删除行: {string.Join(", ", removedContent)}");
-                    hasContentChange = true;
-
-                    // 获取childrenIndex文件所在目录
-                    string directory = Path.GetDirectoryName(fullPath);
-                    Debug.Log($"检查目录: {directory}");
-
-                    // 遍历目录中的所有文件
-                    string[] allFiles = Directory.GetFiles(directory, "*.*");
-                    foreach (string file in allFiles)
-                    {
-                        try
-                        {
-                            // 检查文件修改时间是否在childrenIndex文件的10秒前
-                            DateTime fileTime = File.GetLastWriteTime(file);
-                            if (fileTime < indexFileTime.AddSeconds(-10))
-                            {
-                                string fileName = Path.GetFileName(file);
-                                string fileNameWithoutExt = Path.GetFileNameWithoutExtension(file);
-                                
-                                // 检查是否有同名文件夹
-                                string folderPath = Path.Combine(directory, fileNameWithoutExt);
-                                if (Directory.Exists(folderPath))
-                                {
-                                    // 获取文件夹中的所有文件
-                                    string[] folderFiles = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories);
-                                    foreach (string folderFile in folderFiles)
-                                    {
-                                        // 获取相对路径
-                                        string relativePath = folderFile.Substring(gitRepoPath.Length).TrimStart(Path.DirectorySeparatorChar);
-                                        // 添加到修改文件列表
-                                        if (!modifiedFiles.Contains(relativePath))
-                                        {
-                                            modifiedFiles.Add(relativePath);
-                                            Debug.Log($"添加到修改文件列表: {relativePath}");
-                                        }
-                                    }
-
-                                    // 删除文件夹
-                                    Directory.Delete(folderPath, true);
-                                    Debug.Log($"已删除文件夹: {folderPath}");
-                                }
-
-                                // 删除文件
-                                File.Delete(file);
-                                Debug.Log($"已删除文件: {file}");
-                            }
-                        }
-                        catch (System.Exception e)
-                        {
-                            Debug.LogError($"处理文件 {file} 失败: {e.Message}");
-                        }
-                    }
-                }
-
-                Debug.Log($"文件 {filePath} 的检查结果: {(hasContentChange ? "需要更新" : "无需更新")}");
-                return hasContentChange;
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"检查childrenIndex文件差异失败 {filePath}: {e.Message}");
-            return false;
-        }
-    }
     private string DecodeUtf8Escape(string input)
     {
         // 将八进制转义序列转换为字节数组
@@ -542,19 +306,21 @@ public class GitStatusViewerWindow : EditorWindow
         {
             EditorUtility.DisplayProgressBar("检查文件", "正在获取Git状态...", 0.1f);
 
-            // 获取git status输出
+            // 1. 一次性获取所有Git状态
             string output = await Task.Run(() =>
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.FileName = "git";
-                startInfo.Arguments = "status --porcelain";
-                startInfo.WorkingDirectory = gitRepoPath;
-                startInfo.UseShellExecute = false;
-                startInfo.RedirectStandardOutput = true;
-                startInfo.CreateNoWindow = true;
-                startInfo.StandardOutputEncoding = Encoding.UTF8;
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = "git",
+                    Arguments = "status --porcelain",
+                    WorkingDirectory = gitRepoPath,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    StandardOutputEncoding = Encoding.UTF8
+                };
 
-                using (Process process = Process.Start(startInfo))
+                using (var process = Process.Start(startInfo))
                 {
                     string result = process.StandardOutput.ReadToEnd();
                     process.WaitForExit();
@@ -562,197 +328,133 @@ public class GitStatusViewerWindow : EditorWindow
                 }
             });
 
-            string[] lines = output.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-            var fileTasks = new List<Task>();
-            var modifiedFilesLock = new object();
-            var unchangedFiles = new List<string>();
-
-            EditorUtility.DisplayProgressBar("检查文件", "正在检查文件差异...", 0.3f);
-
-            // 创建任务列表
-            foreach (string line in lines)
+            // 2. 解析和过滤文件列表
+            string[] lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var filesToCheck = new List<(string status, string path)>();
+            foreach (var line in lines)
             {
-                if (line.Length > 3)
+                if (line.Length <= 3) continue;
+
+                string status = line.Substring(0, 2).Trim();
+                // 原始路径可能包含UTF-8转义和引号，先解码再清理
+                string rawPath = line.Substring(3);
+                string decodedPath = DecodeGitPath(rawPath);
+                string cleanFilePath = decodedPath.Trim('"');
+
+                if (ShouldSkipFile(cleanFilePath))
                 {
-                    string filePath = line.Substring(3).Trim();
-                    string status = line.Substring(0, 2).Trim();
-                    
-                    // 打印原始路径
-                    Debug.Log($"原始Git输出行: '{line}'");
-                    Debug.Log($"提取的文件路径: '{filePath}'");
+                    Debug.Log($"跳过文件: {cleanFilePath}");
+                    continue;
+                }
+                filesToCheck.Add((status, cleanFilePath));
+            }
 
-                    // 解码Git路径
-                    filePath = DecodeGitPath(filePath);
-                    Debug.Log($"解码后的路径: '{filePath}'");
+            var trulyModifiedFiles = new System.Collections.Concurrent.ConcurrentBag<string>();
+            var filesToRevert = new System.Collections.Concurrent.ConcurrentBag<string>();
+            
+            EditorUtility.DisplayProgressBar("检查文件", $"准备并发检查 {filesToCheck.Count} 个文件...", 0.3f);
 
-                    // 移除文件路径中的引号并处理空格
-                    string cleanFilePath = filePath.Trim('"');
-                    Debug.Log($"清理后的路径: '{cleanFilePath}'");
+            // 3. 并行检查文件差异
+            await Task.Run(() =>
+            {
+                var po = new ParallelOptions { MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount / 2) };
+                Parallel.ForEach(filesToCheck, po, fileInfo =>
+                {
+                    var (status, filePath) = fileInfo;
+                    var fullPath = Path.Combine(gitRepoPath, filePath);
 
-                    // 检查是否应该跳过这个文件（包括.git目录下的文件）
-                    if (ShouldSkipFile(cleanFilePath))
-                    {
-                        Debug.Log($"跳过文件: {cleanFilePath}");
-                        continue;
-                    }
-
-                    string fullPath;
-                    try
-                    {
-                        fullPath = Path.Combine(gitRepoPath, cleanFilePath);
-                        Debug.Log($"成功组合路径: '{fullPath}'");
-                    }
-                    catch (System.Exception e)
-                    {
-                        Debug.LogError($"路径组合失败!");
-                        Debug.LogError($"Git仓库路径: '{gitRepoPath}'");
-                        Debug.LogError($"文件路径: '{cleanFilePath}'");
-                        Debug.LogError($"错误信息: {e.Message}");
-                        
-                        // 检查路径中的每个字符
-                        Debug.LogError("文件路径字符分析:");
-                        for (int i = 0; i < cleanFilePath.Length; i++)
-                        {
-                            char c = cleanFilePath[i];
-                            Debug.LogError($"字符[{i}]: '{c}' (ASCII: {(int)c})");
-                        }
-                        continue; // 跳过这个文件，继续处理下一个
-                    }
-
-                    // 如果文件被删除，直接添加到修改列表中
+                    // 已删除的文件直接标记为修改
                     if (status == "D" || !File.Exists(fullPath))
                     {
-                        lock (modifiedFilesLock)
-                        {
-                            modifiedFiles.Add(cleanFilePath);
-                        }
-                        continue;
-                    }
-
-                    // 创建检查文件差异的任务
-                    var task = Task.Run(() =>
-                    {
-                        try
-                        {
-                            if (HasGitDiff(cleanFilePath))
-                            {
-                                lock (modifiedFilesLock)
-                                {
-                                    modifiedFiles.Add(cleanFilePath);
-                                }
-                            }
-                            else
-                            {
-                                lock (modifiedFilesLock)
-                                {
-                                    unchangedFiles.Add(cleanFilePath);
-                                }
-                            }
-                        }
-                        catch (System.Exception e)
-                        {
-                            Debug.LogError($"处理文件 {cleanFilePath} 失败: {e.Message}");
-                        }
-                    });
-
-                    fileTasks.Add(task);
-                }
-            }
-
-            // 等待所有任务完成
-            int totalTasks = fileTasks.Count;
-            if (totalTasks > 0)
-            {
-                // 创建一个数组来跟踪任务完成状态
-                var taskArray = fileTasks.ToArray();
-                var completedFlags = new bool[totalTasks];
-                
-                // 使用轮询方式检查任务完成状态并更新进度
-                while (true)
-                {
-                    int completedCount = 0;
-                    for (int i = 0; i < totalTasks; i++)
-                    {
-                        if (!completedFlags[i] && taskArray[i].IsCompleted)
-                        {
-                            completedFlags[i] = true;
-                        }
-                        if (completedFlags[i])
-                        {
-                            completedCount++;
-                        }
+                        trulyModifiedFiles.Add(filePath);
+                        return; // continue
                     }
                     
-                    // 更新进度条
-                    float progress = 0.3f + (0.6f * completedCount / totalTasks);
-                    EditorUtility.DisplayProgressBar("检查文件", $"正在检查文件差异... ({completedCount}/{totalTasks})", progress);
-                    
-                    // 如果所有任务都完成了，退出循环
-                    if (completedCount >= totalTasks)
+                    // Lua文件不处理浮点数，直接视为修改
+                    if (Path.GetExtension(filePath).ToLower() == ".lua")
                     {
-                        break;
+                        trulyModifiedFiles.Add(filePath);
+                        return; // continue
                     }
-                    
-                    // 短暂等待避免CPU占用过高
-                    await Task.Delay(100);
-                }
-                
-                // 确保所有任务都完成并处理可能的异常
-                try
-                {
-                    await Task.WhenAll(fileTasks);
-                }
-                catch (System.Exception ex)
-                {
-                    Debug.LogError($"某些文件处理任务失败: {ex.Message}");
-                }
-            }
 
-            // 对未修改的文件执行git checkout
-            if (unchangedFiles.Count > 0)
-            {
-                EditorUtility.DisplayProgressBar("检查文件", "正在恢复未修改的文件...", 0.9f);
-                
-                foreach (string file in unchangedFiles)
-                {
+                    // 在内存中进行差异比较
                     try
                     {
-                        ProcessStartInfo checkoutStartInfo = new ProcessStartInfo();
-                        checkoutStartInfo.FileName = "git";
-                        checkoutStartInfo.Arguments = $"checkout -- \"{file}\"";
-                        checkoutStartInfo.WorkingDirectory = gitRepoPath;
-                        checkoutStartInfo.UseShellExecute = false;
-                        checkoutStartInfo.RedirectStandardOutput = true;
-                        checkoutStartInfo.CreateNoWindow = true;
-                        checkoutStartInfo.StandardOutputEncoding = Encoding.UTF8;
-
-                        using (Process process = Process.Start(checkoutStartInfo))
+                        // 使用 git show 获取暂存区或HEAD的文件原始内容
+                        string originalContent;
+                        var showInfo = new ProcessStartInfo
                         {
-                            process.WaitForExit();
+                            FileName = "git",
+                            // 使用 :"" 来处理带空格和特殊字符的路径
+                            Arguments = $"show :\"{filePath.Replace("\"", "\\\"")}\"",
+                            WorkingDirectory = gitRepoPath,
+                            UseShellExecute = false,
+                            RedirectStandardOutput = true,
+                            CreateNoWindow = true,
+                            StandardOutputEncoding = Encoding.UTF8
+                        };
+                        using (var p = Process.Start(showInfo))
+                        {
+                            originalContent = p.StandardOutput.ReadToEnd();
+                            p.WaitForExit();
+                        }
+                        
+                        string currentContent = File.ReadAllText(fullPath);
+                        string processedContent = ProcessFloatNumbers(currentContent);
+                        
+                        // 归一化行尾符进行比较
+                        if (originalContent.Replace("\r\n", "\n") == processedContent.Replace("\r\n", "\n"))
+                        {
+                            filesToRevert.Add(filePath);
+                        }
+                        else
+                        {
+                            trulyModifiedFiles.Add(filePath);
                         }
                     }
-                    catch (System.Exception e)
+                    catch (Exception e)
                     {
-                        Debug.LogError($"恢复文件 {file} 失败: {e.Message}");
+                        Debug.LogError($"处理文件 {filePath} 差异失败，将标记为已修改: {e.Message}");
+                        trulyModifiedFiles.Add(filePath);
+                    }
+                });
+            });
+
+            // 4. 批量恢复仅有浮点数差异的文件
+            if (!filesToRevert.IsEmpty)
+            {
+                EditorUtility.DisplayProgressBar("检查文件", $"正在批量恢复 {filesToRevert.Count} 个文件...", 0.9f);
+                var files = filesToRevert.ToList();
+                int batchSize = 50; // 避免命令行过长
+                for (int i = 0; i < files.Count; i += batchSize)
+                {
+                    var batch = files.Skip(i).Take(batchSize).Select(f => $"\"{f.Replace("\"", "\\\"")}\"");
+                    var checkoutInfo = new ProcessStartInfo
+                    {
+                        FileName = "git",
+                        Arguments = $"checkout -- {string.Join(" ", batch)}",
+                        WorkingDirectory = gitRepoPath,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    };
+                    using (var p = Process.Start(checkoutInfo))
+                    {
+                        p.WaitForExit();
                     }
                 }
             }
-
-            EditorUtility.DisplayProgressBar("检查文件", "完成", 1.0f);
-            await Task.Delay(500); // 短暂延迟以确保进度条显示完成
-            EditorUtility.ClearProgressBar();
-
-            // 更新UI
-            Repaint();
+            
+            modifiedFiles.AddRange(trulyModifiedFiles.OrderBy(f => f));
         }
         catch (System.Exception e)
         {
-            EditorUtility.ClearProgressBar();
             EditorUtility.DisplayDialog("错误", $"执行 git 命令失败: {e.Message}", "确定");
             Debug.LogError(e);
         }
         finally
         {
+            EditorUtility.ClearProgressBar();
             isProcessing = false;
             Repaint();
         }

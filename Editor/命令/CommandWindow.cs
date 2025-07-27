@@ -42,7 +42,7 @@ namespace MiGame.CommandSystem.Editor
         }
 
         // --- Unity Methods ---
-        [MenuItem("Tools/命令配置窗口 V2")]
+        [MenuItem("工具/命令配置窗口 V2")]
         public static void ShowWindow()
         {
             GetWindow<CommandWindow>("命令配置 V2");

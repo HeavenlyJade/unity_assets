@@ -53,6 +53,18 @@ public class ConditionalField2Attribute : ConditionalFieldAttribute {
     }
 }
 
+/// <summary>
+/// 根据枚举字段的值，动态改变对象字段类型的特性。
+/// </summary>
+public class ConfigSelectorAttribute : PropertyAttribute
+{
+    public string EnumFieldName { get; }
+    public ConfigSelectorAttribute(string enumFieldName)
+    {
+        EnumFieldName = enumFieldName;
+    }
+}
+
 
 #if UNITY_EDITOR
 

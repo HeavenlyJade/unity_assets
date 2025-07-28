@@ -184,6 +184,11 @@ public class GitStatusViewerWindow : EditorWindow
         return false;
     }
 
+    private string NormalizeLineEndings(string text)
+    {
+        return Regex.Replace(text, @"\r\n|\r|\n", "\n");
+    }
+
     private string ProcessFloatNumbers(string content)
     {
         // 匹配浮点数的正则表达式，包括科学计数法
@@ -402,8 +407,19 @@ public class GitStatusViewerWindow : EditorWindow
                         string currentContent = File.ReadAllText(fullPath);
                         string processedContent = ProcessFloatNumbers(currentContent);
                         
-                        // 归一化行尾符进行比较
-                        if (originalContent.Replace("\r\n", "\n") == processedContent.Replace("\r\n", "\n"))
+                        bool areEqual;
+                        // 只对json文件进行换行符归一化处理
+                        if (Path.GetExtension(filePath).ToLower() == ".json")
+                        {
+                            areEqual = NormalizeLineEndings(originalContent) == NormalizeLineEndings(processedContent);
+                        }
+                        else
+                        {
+                            // 对于其他文件，直接比较，但仍然使用处理了浮点数的当前内容
+                            areEqual = originalContent == processedContent;
+                        }
+                        
+                        if (areEqual)
                         {
                             filesToRevert.Add(filePath);
                         }

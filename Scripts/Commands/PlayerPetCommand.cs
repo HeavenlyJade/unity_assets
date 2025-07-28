@@ -11,7 +11,8 @@ namespace MiGame.Commands
     {
         新增,
         删除,
-        设置
+        设置,
+        栏位设置
     }
 
     /// <summary>
@@ -44,6 +45,14 @@ namespace MiGame.Commands
         [CommandParamDesc("设置宠物的目标星级 (仅设置时有效)")]
         public int 星级 = -1;
         
+        [ConditionalField("操作类型", PetOperationType.栏位设置)]
+        [CommandParamDesc("设置玩家可以同时装备出战的宠物数量")]
+        public int 可携带 = -1;
+
+        [ConditionalField("操作类型", PetOperationType.栏位设置)]
+        [CommandParamDesc("设置玩家宠物背包的总容量")]
+        public int 背包 = -1;
+
         public override void Execute()
         {
             if (string.IsNullOrEmpty(玩家) && string.IsNullOrEmpty(玩家UID))
@@ -94,6 +103,20 @@ namespace MiGame.Commands
                     if (星级 != -1) changes += $"星级提升到 {星级} ";
                     Debug.Log($"设置玩家 '{targetPlayerIdentifier}' 槽位 {槽位} 的宠物属性: {changes.Trim()}。");
                     // TODO: 实现设置宠物属性的逻辑
+                    break;
+                
+                case PetOperationType.栏位设置:
+                    if (可携带 <= 0 && 背包 <= 0)
+                    {
+                        Debug.LogError("栏位设置失败：必须至少提供 '可携带' 或 '背包' 中的一个，并且值必须大于0。");
+                        return;
+                    }
+
+                    string settings = "";
+                    if (可携带 > 0) settings += $"可携带栏位设置为 {可携带} ";
+                    if (背包 > 0) settings += $"背包容量设置为 {背包} ";
+                    Debug.Log($"为玩家 '{targetPlayerIdentifier}' 设置: {settings.Trim()}。");
+                    // TODO: 实现栏位设置的逻辑
                     break;
             }
         }

@@ -137,7 +137,13 @@ namespace MiGame.Editor.Exporter
             finally
             {
                 AssetDatabase.StopAssetEditing();
-                AssetDatabase.Refresh();
+                // 使用延迟调用来避免在资源导入期间刷新
+                EditorApplication.delayCall += () => {
+                    if (!AssetDatabase.IsAssetImportWorkerProcess())
+                    {
+                        AssetDatabase.Refresh();
+                    }
+                };
             }
         }
 
@@ -155,7 +161,13 @@ namespace MiGame.Editor.Exporter
             
             if (refreshDb)
             {
-                AssetDatabase.Refresh();
+                // 使用延迟调用来避免在资源导入期间刷新
+                EditorApplication.delayCall += () => {
+                    if (!AssetDatabase.IsAssetImportWorkerProcess())
+                    {
+                        AssetDatabase.Refresh();
+                    }
+                };
             }
         }
     }

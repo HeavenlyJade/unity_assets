@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using MiGame.Items;
+using MiGame.Data;
 
 namespace MiGame.Achievement
 {
@@ -128,6 +129,9 @@ namespace MiGame.Achievement
         [Tooltip("天赋的最大等级（普通成就不设置此字段）")]
         public int 最大等级 = 1;
         
+        [Tooltip("消耗配置（引用成本计算配置）")]
+        public ActionCostConfig 消耗配置;
+        
         [Tooltip("天赋升级的条件（消耗、前置等）")]
         public List<UpgradeCondition> 升级条件;
         
@@ -141,6 +145,67 @@ namespace MiGame.Achievement
             {
                 名字 = name;
             }
+
+#if UNITY_EDITOR
+            // 校验等级效果中的效果字段名称
+            if (等级效果 != null)
+            {
+                LoadAllVariableNamesFromJson(out var allVariableNames, out var allStatNames);
+                
+                if (allVariableNames != null && allStatNames != null)
+                {
+                    foreach (var effect in 等级效果)
+                    {
+                        if (effect.效果类型 == PlayerVariableType.玩家变量)
+                        {
+                            if (!string.IsNullOrEmpty(effect.效果字段名称) && !allVariableNames.Contains(effect.效果字段名称))
+                            {
+                                Debug.LogError($"配置错误: '等级效果'中的玩家变量 '{effect.效果字段名称}' 在 VariableNames.json 中未定义!", this);
+                            }
+                        }
+                        else if (effect.效果类型 == PlayerVariableType.玩家属性)
+                        {
+                            if (!string.IsNullOrEmpty(effect.效果字段名称) && !allStatNames.Contains(effect.效果字段名称))
+                            {
+                                Debug.LogError($"配置错误: '等级效果'中的玩家属性 '{effect.效果字段名称}' 在 VariableNames.json 中未定义!", this);
+                            }
+                        }
+                    }
+                }
+            }
+#endif
         }
+
+#if UNITY_EDITOR
+        [System.Serializable]
+        private class VariableData
+        {
+            public List<string> VariableNames = new List<string>();
+            public List<string> StatNames = new List<string>();
+        }
+
+        private void LoadAllVariableNamesFromJson(out HashSet<string> variableNames, out HashSet<string> statNames)
+        {
+            variableNames = null;
+            statNames = null;
+            
+            string jsonPath = "Assets/GameConf/玩家变量/VariableNames.json";
+            if (System.IO.File.Exists(jsonPath))
+            {
+                string json = System.IO.File.ReadAllText(jsonPath);
+                VariableData data = JsonUtility.FromJson<VariableData>(json);
+
+                if (data != null)
+                {
+                    variableNames = new HashSet<string>(data.VariableNames ?? new List<string>());
+                    statNames = new HashSet<string>(data.StatNames ?? new List<string>());
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"JSON 文件未找到: {jsonPath}. 变量名校验功能将不会执行。", this);
+            }
+        }
+#endif
     }
 } 

@@ -66,7 +66,13 @@ namespace MiGame.Data
             };
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(JsonPath, json);
-            UnityEditor.AssetDatabase.Refresh();
+            // 使用延迟调用来避免在资源导入期间刷新
+            UnityEditor.EditorApplication.delayCall += () => {
+                if (!UnityEditor.AssetDatabase.IsAssetImportWorkerProcess())
+                {
+                    UnityEditor.AssetDatabase.Refresh();
+                }
+            };
         }
         
         private void ValidateNames(List<string> names, string listName, string pattern)

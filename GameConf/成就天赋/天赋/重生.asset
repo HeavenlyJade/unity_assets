@@ -20,6 +20,7 @@ MonoBehaviour:
   "\u89E3\u9501\u6761\u4EF6": []
   "\u89E3\u9501\u5956\u52B1": []
   "\u6700\u5927\u7B49\u7EA7": 20
+  "\u6D88\u8017\u914D\u7F6E": {fileID: 11400000, guid: c350878910eab2b44803567378779be8, type: 2}
   "\u5347\u7EA7\u6761\u4EF6":
   - "\u6D88\u8017\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
     "\u6D88\u8017\u6570\u91CF": T_LVL*2+10

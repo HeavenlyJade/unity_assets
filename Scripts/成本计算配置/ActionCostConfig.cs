@@ -31,6 +31,12 @@ namespace MiGame.Data
         玩家变量
     }
 
+    public enum 目标类型
+    {
+        玩家变量,
+        玩家属性
+    }
+
     [Serializable]
     public class 消耗项目
     {
@@ -40,6 +46,16 @@ namespace MiGame.Data
         [Tooltip("要消耗的物品或变量的名称。")]
         public string 消耗名称;
         public List<分段> 数量分段;
+    }
+
+    [Serializable]
+    public class 作用目标
+    {
+        public 目标类型 目标类型;
+        [Tooltip("目标变量或属性的名称。")]
+        public string 目标名称;
+        [Tooltip("作用数值。变量格式: [物品], $玩家变量$, {玩家属性}, T_LVL (关联配置的等级)。")]
+        public string 作用数值;
     }
 
     [Serializable]
@@ -69,6 +85,10 @@ namespace MiGame.Data
         [Header("消耗列表")]
         [Tooltip("定义该动作需要消耗的资源列表。")]
         public List<消耗项目> 消耗列表;
+
+        [Header("作用目标")]
+        [Tooltip("定义该动作会影响的目标列表。")]
+        public List<作用目标> 作用目标列表;
 
 #if UNITY_EDITOR
         [System.Serializable]
@@ -118,6 +138,35 @@ namespace MiGame.Data
                 {
                     ValidateFormulaString(segment.条件, "条件", allVariableNames, allStatNames, allItemNames);
                     ValidateFormulaString(segment.公式, "公式", allVariableNames, allStatNames, allItemNames);
+                }
+            }
+
+            // 校验作用目标列表
+            if (作用目标列表 != null)
+            {
+                foreach (var target in 作用目标列表)
+                {
+                    // 校验目标名称是否存在
+                    if (target.目标类型 == 目标类型.玩家变量)
+                    {
+                        if (!string.IsNullOrEmpty(target.目标名称) && !allVariableNames.Contains(target.目标名称))
+                        {
+                            Debug.LogError($"配置错误: '作用目标'中的玩家变量 '{target.目标名称}' 在 VariableNames.json 中未定义!", this);
+                        }
+                    }
+                    else if (target.目标类型 == 目标类型.玩家属性)
+                    {
+                        if (!string.IsNullOrEmpty(target.目标名称) && !allStatNames.Contains(target.目标名称))
+                        {
+                            Debug.LogError($"配置错误: '作用目标'中的玩家属性 '{target.目标名称}' 在 VariableNames.json 中未定义!", this);
+                        }
+                    }
+
+                    // 校验作用数值中的变量引用
+                    if (!string.IsNullOrEmpty(target.作用数值))
+                    {
+                        ValidateFormulaString(target.作用数值, "作用数值", allVariableNames, allStatNames, allItemNames);
+                    }
                 }
             }
         }

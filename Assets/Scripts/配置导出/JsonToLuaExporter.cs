@@ -81,7 +81,13 @@ namespace MiGame.Editor.Exporter
             // 只在路径是项目内时才刷新
             if (outputPath.StartsWith(Application.dataPath))
             {
-                AssetDatabase.Refresh();
+                // 使用延迟调用来避免在资源导入期间刷新
+                EditorApplication.delayCall += () => {
+                    if (!AssetDatabase.IsAssetImportWorkerProcess())
+                    {
+                        AssetDatabase.Refresh();
+                    }
+                };
             }
             
             Debug.Log($"成功将 {jsonPath} 导出到 {outputPath}");

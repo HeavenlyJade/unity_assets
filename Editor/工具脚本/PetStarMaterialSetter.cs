@@ -58,7 +58,13 @@ public class PetStarMaterialSetter
 
         // 保存所有修改过的资源
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        // 使用延迟调用来避免在资源导入期间刷新
+        EditorApplication.delayCall += () => {
+            if (!AssetDatabase.IsAssetImportWorkerProcess())
+            {
+                AssetDatabase.Refresh();
+            }
+        };
 
         Debug.Log("所有宠物的升星材料配置完成！");
     }

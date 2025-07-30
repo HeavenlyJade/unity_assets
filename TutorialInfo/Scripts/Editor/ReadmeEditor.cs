@@ -47,7 +47,13 @@ public class ReadmeEditor : Editor
                 FileUtil.DeleteFileOrDirectory(path);
             }
 
-            AssetDatabase.Refresh();
+            // 使用延迟调用来避免在资源导入期间刷新
+            EditorApplication.delayCall += () => {
+                if (!AssetDatabase.IsAssetImportWorkerProcess())
+                {
+                    AssetDatabase.Refresh();
+                }
+            };
         }
     }
 

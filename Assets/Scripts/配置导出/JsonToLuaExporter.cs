@@ -49,7 +49,7 @@ namespace MiGame.Editor.Exporter
             sb.AppendLine("-- VariableNameConfig.lua");
             sb.AppendLine("-- Generated from VariableNames.json. Any custom code will be overwritten.");
             sb.AppendLine();
-            sb.AppendLine("local VariableNameConfig = {}");
+            sb.AppendLine("local VariableNameConfig = {Data = {}}");
             sb.AppendLine();
 
             // 导出 VariableNames

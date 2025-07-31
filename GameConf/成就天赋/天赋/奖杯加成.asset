@@ -22,9 +22,11 @@ MonoBehaviour:
   "\u6700\u5927\u7B49\u7EA7": 1
   "\u6D88\u8017\u914D\u7F6E": {fileID: 11400000, guid: c350878910eab2b44803567378779be8, type: 2}
   "\u5347\u7EA7\u6761\u4EF6":
-  - "\u6D88\u8017\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+  - "\u6D88\u8017\u7C7B\u578B": 0
+    "\u6D88\u8017\u540D\u79F0": "\u5956\u676F"
     "\u6D88\u8017\u6570\u91CF": T_LVL*2+10
-  - "\u6D88\u8017\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+  - "\u6D88\u8017\u7C7B\u578B": 0
+    "\u6D88\u8017\u540D\u79F0": "\u91D1\u5E01"
     "\u6D88\u8017\u6570\u91CF": T_LVL*2000+10
   "\u7B49\u7EA7\u6548\u679C":
   - "\u6548\u679C\u7C7B\u578B": 0

@@ -12,7 +12,8 @@ namespace MiGame.Scene
         陷阱,
         跳台,
         安全区,
-        飞行比赛
+        飞行比赛,
+        挂机点
     }
 
     /// <summary>
@@ -93,16 +94,17 @@ namespace MiGame.Scene
 
         private void OnValidate()
         {
-            // 自动将资产文件名同步到"名字"字段
-            if (name != 名字)
-            {
-                名字 = name;
-            }
-
+#if UNITY_EDITOR
+            // 当唯一ID为空时，我们认为这是一个新创建的资产。
+            // 此时，我们自动生成ID，并将资产的文件名同步到“名字”字段。
+            // 一旦ID被创建，这个过程就不会再自动发生，允许用户自由修改“名字”字段而不会被文件名覆盖。
             if (string.IsNullOrEmpty(唯一ID))
             {
                 唯一ID = System.Guid.NewGuid().ToString();
+                名字 = name;
+                UnityEditor.EditorUtility.SetDirty(this);
             }
+#endif
         }
     }
-} 
+}

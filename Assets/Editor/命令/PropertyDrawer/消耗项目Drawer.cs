@@ -18,7 +18,6 @@ public class 消耗项目Drawer : PropertyDrawer
 
         // 获取所有序列化属性
         var 消耗类型Prop = property.FindPropertyRelative("消耗类型");
-        var 变量来源Prop = property.FindPropertyRelative("变量来源");
         var 消耗名称Prop = property.FindPropertyRelative("消耗名称");
         var 数量分段Prop = property.FindPropertyRelative("数量分段");
 
@@ -49,19 +48,17 @@ public class 消耗项目Drawer : PropertyDrawer
         }
         else if (type == 消耗类型.玩家变量)
         {
-            // 2a. 绘制变量来源
-            var sourceTypeRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-            EditorGUI.PropertyField(sourceTypeRect, 变量来源Prop, new GUIContent("变量来源"));
-            currentY += singleLineHeight + verticalSpacing;
-
-            // 2b. 根据变量来源选择列表
-            变量来源 source = (变量来源)变量来源Prop.enumValueIndex;
-            List<string> nameList = (source == 变量来源.玩家变量) ? _variableNames : _statNames;
-            
             var valueRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-            DrawStringPopup(valueRect, "消耗名称", 消耗名称Prop, nameList);
+            DrawStringPopup(valueRect, "消耗名称", 消耗名称Prop, _variableNames);
             currentY += singleLineHeight + verticalSpacing;
         }
+        else if (type == 消耗类型.玩家属性)
+        {
+            var valueRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            DrawStringPopup(valueRect, "消耗名称", 消耗名称Prop, _statNames);
+            currentY += singleLineHeight + verticalSpacing;
+        }
+
 
         // 3. 绘制数量分段
         var amountRect = new Rect(position.x, currentY, position.width, EditorGUI.GetPropertyHeight(数量分段Prop, true));
@@ -80,17 +77,12 @@ public class 消耗项目Drawer : PropertyDrawer
         height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
         消耗类型 type = (消耗类型)消耗类型Prop.enumValueIndex;
-        if (type == 消耗类型.物品)
+        if (type == 消耗类型.物品 || type == 消耗类型.玩家变量 || type == 消耗类型.玩家属性)
         {
             // 消耗名称行
             height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         }
-        else if (type == 消耗类型.玩家变量)
-        {
-            // 变量来源行 + 消耗名称行
-            height += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 2;
-        }
-
+        
         // 数量分段列表
         height += EditorGUI.GetPropertyHeight(数量分段Prop, true);
         

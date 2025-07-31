@@ -19,16 +19,11 @@ namespace MiGame.Data
         技能
     }
 
-    public enum 变量来源
-    {
-        玩家变量,
-        玩家属性
-    }
-
     public enum 消耗类型
     {
         物品,
-        玩家变量
+        玩家变量,
+        玩家属性
     }
 
     public enum 目标类型
@@ -41,8 +36,6 @@ namespace MiGame.Data
     public class 消耗项目
     {
         public 消耗类型 消耗类型;
-        [Tooltip("仅当消耗类型为'玩家变量'时有效。")]
-        public 变量来源 变量来源;
         [Tooltip("要消耗的物品或变量的名称。")]
         public string 消耗名称;
         public List<分段> 数量分段;
@@ -125,10 +118,16 @@ namespace MiGame.Data
                 }
                 else if (item.消耗类型 == 消耗类型.玩家变量)
                 {
-                    var nameSet = item.变量来源 == 变量来源.玩家变量 ? allVariableNames : allStatNames;
-                    if (!string.IsNullOrEmpty(item.消耗名称) && !nameSet.Contains(item.消耗名称))
+                    if (!string.IsNullOrEmpty(item.消耗名称) && !allVariableNames.Contains(item.消耗名称))
                     {
-                        Debug.LogError($"配置错误: '消耗名称'中的变量 '{item.消耗名称}' 在 VariableNames.json 中未定义! (检查来源: {item.变量来源})", this);
+                        Debug.LogError($"配置错误: '消耗名称'中的玩家变量 '{item.消耗名称}' 在 VariableNames.json 中未定义!", this);
+                    }
+                }
+                else if (item.消耗类型 == 消耗类型.玩家属性)
+                {
+                    if (!string.IsNullOrEmpty(item.消耗名称) && !allStatNames.Contains(item.消耗名称))
+                    {
+                        Debug.LogError($"配置错误: '消耗名称'中的玩家属性 '{item.消耗名称}' 在 VariableNames.json 中未定义!", this);
                     }
                 }
 

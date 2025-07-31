@@ -326,6 +326,13 @@ namespace MiGame.CommandSystem.Editor
                  }
                  return $"{{ {string.Join(", ", entries)} }}";
             }
+            
+            // For other complex types, try to serialize to JSON
+            if (!type.IsPrimitive && type != typeof(string))
+            {
+                return JsonUtility.ToJson(value);
+            }
+
             return $"\"{value}\"";
         }
 

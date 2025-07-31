@@ -39,7 +39,7 @@ namespace MiGame.Data
             ValidateNames(StatNames, "玩家属性", pattern);
 
             // 保存到JSON
-            // SaveToJson();
+            SaveToJson();
         }
 
         private void LoadFromJson()

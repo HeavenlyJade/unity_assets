@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1bbb91b96db7f746a0ebcc3ffcf758d, type: 3}
-  m_Name: "\u9524\u9524\u55B5\u5320"
+  m_Name: "\u4E38\u5584\u65AF\u57FA"
   m_EditorClassIdentifier: 
-  "\u5BA0\u7269\u540D\u79F0": "\u9524\u9524\u55B5\u5320"
+  "\u5BA0\u7269\u540D\u79F0": "\u4E38\u5584\u65AF\u57FA"
   "\u5BA0\u7269\u63CF\u8FF0": 
-  "\u7A00\u6709\u5EA6": 2
+  "\u7A00\u6709\u5EA6": 4
   "\u521D\u59CB\u7B49\u7EA7": 1
   "\u6700\u5927\u7B49\u7EA7": 100
   "\u5143\u7D20\u7C7B\u578B": 
@@ -25,7 +25,7 @@ MonoBehaviour:
     "\u6D88\u8017\u6750\u6599":
     - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
-      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
+      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000, guid: cde373cb9a002cb4d881b229aa09407f, type: 2}
       "\u9700\u8981\u6570\u91CF": 3
       "\u6D88\u8017\u661F\u7EA7": 1
     "\u6210\u529F\u7387": 100
@@ -33,7 +33,7 @@ MonoBehaviour:
     "\u6D88\u8017\u6750\u6599":
     - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
-      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
+      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000, guid: cde373cb9a002cb4d881b229aa09407f, type: 2}
       "\u9700\u8981\u6570\u91CF": 3
       "\u6D88\u8017\u661F\u7EA7": 2
     "\u6210\u529F\u7387": 100
@@ -41,7 +41,7 @@ MonoBehaviour:
     "\u6D88\u8017\u6750\u6599":
     - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
-      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
+      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000, guid: cde373cb9a002cb4d881b229aa09407f, type: 2}
       "\u9700\u8981\u6570\u91CF": 3
       "\u6D88\u8017\u661F\u7EA7": 3
     "\u6210\u529F\u7387": 100
@@ -49,19 +49,19 @@ MonoBehaviour:
     "\u6D88\u8017\u6750\u6599":
     - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
-      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
+      "\u6D88\u8017\u540D\u79F0": {fileID: 11400000, guid: cde373cb9a002cb4d881b229aa09407f, type: 2}
       "\u9700\u8981\u6570\u91CF": 3
       "\u6D88\u8017\u661F\u7EA7": 4
     "\u6210\u529F\u7387": 100
   "\u643A\u5E26\u6548\u679C":
   - "\u53D8\u91CF\u7C7B\u578B": 1
     "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u91D1\u5E01\u52A0\u6210"
-    "\u6548\u679C\u6570\u503C": S_LVL*0.9
+    "\u6548\u679C\u6570\u503C": S_LVL*5.5
     "\u52A0\u6210\u7C7B\u578B": 0
     "\u7269\u54C1\u76EE\u6807": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
   - "\u53D8\u91CF\u7C7B\u578B": 1
     "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u8BAD\u7EC3\u52A0\u6210"
-    "\u6548\u679C\u6570\u503C": S_LVL*1.0
+    "\u6548\u679C\u6570\u503C": S_LVL*3.6
     "\u52A0\u6210\u7C7B\u578B": 1
     "\u7269\u54C1\u76EE\u6807": {fileID: 0}
   "\u6280\u80FD\u5217\u8868": []
@@ -70,8 +70,8 @@ MonoBehaviour:
     "\u9700\u8981\u6750\u6599": []
   "\u8FDB\u5316\u540E\u5F62\u6001": 
   "\u83B7\u53D6\u65B9\u5F0F": []
-  "\u6A21\u578B\u8D44\u6E90": resId&usev2=1://409896538089578498
-  "\u5934\u50CF\u8D44\u6E90": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u4F19\u4F34\u7ACB\u7ED8/\u9524\u9524\u55B5\u5320.png"
-  "\u52A8\u753B\u8D44\u6E90": resId&usev2=1://409896576102191104
+  "\u6A21\u578B\u8D44\u6E90": resId&usev2=1://410586420969594884
+  "\u5934\u50CF\u8D44\u6E90": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u4F19\u4F34\u7ACB\u7ED8/\u4E38\u5584\u65AF\u57FA.png"
+  "\u52A8\u753B\u8D44\u6E90": resId&usev2=1://410610929772650499
   "\u97F3\u6548\u8D44\u6E90": 
   "\u7279\u6B8A\u6807\u7B7E": []

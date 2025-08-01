@@ -47,14 +47,14 @@ namespace MiGame.Pet
     {
         [Tooltip("N级")]
         N,
-        [Tooltip("NR级")]
-        NR,
         [Tooltip("R级")]
         R,
         [Tooltip("SR级")]
         SR,
         [Tooltip("SSR级")]
-        SSR
+        SSR,
+        [Tooltip("UR级")]
+        UR
     }
     /// <summary>
     /// 属性配置结构
@@ -197,7 +197,9 @@ namespace MiGame.Pet
     /// </summary>
     public enum 加成类型
     {
-        物品
+        物品,
+        玩家变量,
+        玩家属性
     }
 
     /// <summary>

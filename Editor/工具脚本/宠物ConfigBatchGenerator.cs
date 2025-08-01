@@ -115,7 +115,7 @@ public class 宠物ConfigBatchGenerator : EditorWindow
         if (string.IsNullOrEmpty(q)) return 稀有度.N;
         switch (q.ToUpper())
         {
-            case "UR": return 稀有度.SSR; // Assuming UR maps to SSR as per existing logic
+            case "UR": return 稀有度.UR;
             case "SSR": return 稀有度.SSR;
             case "SR": return 稀有度.SR;
             case "R": return 稀有度.R;

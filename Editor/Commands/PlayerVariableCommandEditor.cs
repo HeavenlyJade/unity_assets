@@ -1,45 +1,48 @@
 using UnityEditor;
+using MiGame.Commands;
 using UnityEngine;
 
-namespace MiGame.Commands
+namespace MiGame.CommandSystem.Editor
 {
     [CustomEditor(typeof(PlayerVariableCommand))]
     public class PlayerVariableCommandEditor : UnityEditor.Editor
     {
-        SerializedProperty operationTypeProp;
-        SerializedProperty uidProp;
-        SerializedProperty variableNameProp;
-        SerializedProperty valueProp;
-
-        void OnEnable()
-        {
-            operationTypeProp = serializedObject.FindProperty("操作类型");
-            uidProp = serializedObject.FindProperty("玩家UID");
-            variableNameProp = serializedObject.FindProperty("变量名");
-            valueProp = serializedObject.FindProperty("数值");
-        }
-
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
-            EditorGUILayout.PropertyField(operationTypeProp);
-
-            var opType = (VariableOperationType)operationTypeProp.enumValueIndex;
-
-            EditorGUILayout.PropertyField(uidProp);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("操作类型"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("玩家UID"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("变量名"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("数值"));
             
-            // Only show the variable name field if the operation is not "View"
-            // or if it is "View" and a variable name has been provided.
-            EditorGUILayout.PropertyField(variableNameProp);
+            EditorGUILayout.Space();
 
-            // Only show the value field if the operation is not "View".
-            if (opType != VariableOperationType.查看)
-            {
-                EditorGUILayout.PropertyField(valueProp);
-            }
+            DrawBonusList(serializedObject.FindProperty("玩家属性加成"));
+            DrawBonusList(serializedObject.FindProperty("玩家变量加成"));
 
             serializedObject.ApplyModifiedProperties();
         }
+
+        private void DrawBonusList(SerializedProperty listProperty)
+        {
+            // Draw the list's foldout header.
+            EditorGUILayout.PropertyField(listProperty, false); 
+
+            if (listProperty.isExpanded)
+            {
+                EditorGUI.indentLevel++;
+
+                listProperty.arraySize = EditorGUILayout.IntField("Size", listProperty.arraySize);
+
+                for (int i = 0; i < listProperty.arraySize; i++)
+                {
+                    SerializedProperty element = listProperty.GetArrayElementAtIndex(i);
+                    EditorGUILayout.PropertyField(element, new GUIContent("Element " + i), true);
+                }
+
+                EditorGUI.indentLevel--;
+            }
+        }
     }
-} 
+}

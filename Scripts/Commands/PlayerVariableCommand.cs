@@ -1,4 +1,7 @@
 using UnityEngine;
+using MiGame;
+using System.Collections.Generic;
+using MiGame.Core;
 
 namespace MiGame.Commands
 {
@@ -25,6 +28,15 @@ namespace MiGame.Commands
 
         [Header("数值")]
         public float 数值;
+
+        [Header("玩家加成")]
+        [Tooltip("为玩家提供的属性加成")]
+        [BonusType(VariableNameType.Stat)]
+        public List<PlayerBonus> 玩家属性加成;
+
+        [Tooltip("为玩家提供的变量加成")]
+        [BonusType(VariableNameType.Variable)]
+        public List<PlayerBonus> 玩家变量加成;
 
         public override void Execute()
         {

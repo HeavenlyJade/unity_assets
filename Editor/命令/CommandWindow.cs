@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using MiGame.Commands;
+using MiGame.Core;
 
 namespace MiGame.CommandSystem.Editor
 {
@@ -245,6 +246,10 @@ namespace MiGame.CommandSystem.Editor
                     {
                         continue;
                     }
+                    if(currentValue is IList list && list.Count == 0)
+                    {
+                        continue;
+                    }
                 }
 
                 string valueString;
@@ -325,6 +330,21 @@ namespace MiGame.CommandSystem.Editor
                     entries.Add($"{keyString}: {valueString}");
                  }
                  return $"{{ {string.Join(", ", entries)} }}";
+            }
+            
+            if (value is PlayerBonus bonus)
+            {
+                return $"{{ \"Name\": \"{bonus.Name}\", \"Calculation\": \"{bonus.Calculation}\" }}";
+            }
+
+            if (value is IList iList)
+            {
+                var entries = new List<string>();
+                foreach (var item in iList)
+                {
+                    entries.Add(ConvertValueToString(item, item?.GetType() ?? typeof(object)));
+                }
+                return $"[ {string.Join(", ", entries)} ]";
             }
             
             // For other complex types, try to serialize to JSON

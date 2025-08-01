@@ -23,6 +23,7 @@ namespace MiGame.Scene
     public class TimedCommand
     {
         [Tooltip("要执行的定时指令")]
+        [TextArea(3, 10)] 
         public string 指令;
 
         [Tooltip("距离上一次执行的间隔时间（秒）")]

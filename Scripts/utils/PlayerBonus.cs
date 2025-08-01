@@ -5,8 +5,9 @@ namespace MiGame.Core
     /// </summary>
     public enum BonusCalculationMethod
     {
-        加法, // 将加成值直接累加
-        乘法  // 将加成值（通常是百分比）相乘
+        单独相加, // 将加成值直接累加
+        最终乘法,  // 计算的值在最后的结果向乘
+        最终相加  // 将加成值（通常是百分比）相加
     }
 
     /// <summary>
@@ -23,6 +24,6 @@ namespace MiGame.Core
         /// <summary>
         /// 加成的计算方式
         /// </summary>
-        public BonusCalculationMethod Calculation = BonusCalculationMethod.加法;
+        public BonusCalculationMethod Calculation = BonusCalculationMethod.单独相加;
     }
 }

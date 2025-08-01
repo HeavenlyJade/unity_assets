@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using MiGame.Core;
 using System.Linq;
+using MiGame;
 
 namespace MiGame.EditorExtras
 {

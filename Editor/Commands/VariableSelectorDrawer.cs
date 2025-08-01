@@ -35,7 +35,7 @@ namespace MiGame
                     currentIndex = 0; // Default to "(不选择)"
                 }
 
-                int newIndex = EditorGUI.Popup(position, label, currentIndex, names.ToArray());
+                int newIndex = EditorGUI.Popup(position, label.text, currentIndex, names.ToArray());
 
                 if (newIndex >= 0 && newIndex < names.Count)
                 {

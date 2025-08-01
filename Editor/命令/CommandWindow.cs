@@ -211,61 +211,69 @@ namespace MiGame.CommandSystem.Editor
             var fieldStrings = new List<string>();
             var historyFields = new List<FieldValue>();
 
-            foreach (var field in fields)
+            try
             {
-                object currentValue = field.GetValue(_selectedCommandInstance);
-                
-                // For history, save all values
-                historyFields.Add(new FieldValue { FieldName = field.Name, Value = currentValue });
-                
-                // Conditional serialization logic
-                if (field.Name == "发件人ID")
+                foreach (var field in fields)
                 {
-                    var senderType = (MailCommand.SenderType)commandType.GetField("发件人").GetValue(_selectedCommandInstance);
-                    if (senderType != MailCommand.SenderType.玩家) continue;
-                }
-                if (field.Name == "收件人")
-                {
-                    var deliveryMethod = (MailCommand.DeliveryMethod)commandType.GetField("投递方式").GetValue(_selectedCommandInstance);
-                    if (deliveryMethod != MailCommand.DeliveryMethod.个人) continue;
-                }
+                    object currentValue = field.GetValue(_selectedCommandInstance);
+                    
+                    // For history, save all values
+                    historyFields.Add(new FieldValue { FieldName = field.Name, Value = currentValue });
+                    
+                    // Conditional serialization logic
+                    if (field.Name == "发件人ID")
+                    {
+                        var senderType = (MailCommand.SenderType)commandType.GetField("发件人").GetValue(_selectedCommandInstance);
+                        if (senderType != MailCommand.SenderType.玩家) continue;
+                    }
+                    if (field.Name == "收件人")
+                    {
+                        var deliveryMethod = (MailCommand.DeliveryMethod)commandType.GetField("投递方式").GetValue(_selectedCommandInstance);
+                        if (deliveryMethod != MailCommand.DeliveryMethod.个人) continue;
+                    }
 
-                // For command string, only include non-default values, but always include enums
-                if (!field.FieldType.IsEnum)
-                {
-                    object defaultValue = field.GetValue(defaultInstance);
-                    if (currentValue == null || currentValue.Equals(defaultValue))
+                    // For command string, only include non-default values, but always include enums
+                    if (!field.FieldType.IsEnum)
                     {
-                        continue;
+                        object defaultValue = field.GetValue(defaultInstance);
+                        if (currentValue == null || currentValue.Equals(defaultValue))
+                        {
+                            continue;
+                        }
+                        if (currentValue is string s && string.IsNullOrEmpty(s))
+                        {
+                            continue;
+                        }
+                        if(currentValue is IDictionary dict && dict.Count == 0)
+                        {
+                            continue;
+                        }
+                        if(currentValue is IList list && list.Count == 0)
+                        {
+                            continue;
+                        }
                     }
-                    if (currentValue is string s && string.IsNullOrEmpty(s))
-                    {
-                        continue;
-                    }
-                    if(currentValue is IDictionary dict && dict.Count == 0)
-                    {
-                        continue;
-                    }
-                    if(currentValue is IList list && list.Count == 0)
-                    {
-                        continue;
-                    }
-                }
 
-                string valueString;
-                if(currentValue is UnityEngine.Object obj && obj != null)
-                {
-                    valueString = $"\"{obj.name}\"";
-                }
-                else
-                {
-                    valueString = ConvertValueToString(currentValue, field.FieldType);
-                }
+                    string valueString;
+                    if(currentValue is UnityEngine.Object obj && obj != null)
+                    {
+                        valueString = $"\"{obj.name}\"";
+                    }
+                    else
+                    {
+                        valueString = ConvertValueToString(currentValue, field.FieldType);
+                    }
 
-                fieldStrings.Add($"\"{field.Name}\": {valueString}");
+                    fieldStrings.Add($"\"{field.Name}\": {valueString}");
+                }
             }
-
-            DestroyImmediate(defaultInstance);
+            finally
+            {
+                if (defaultInstance != null)
+                {
+                    DestroyImmediate(defaultInstance);
+                }
+            }
 
             string commandString = $"{commandName} {{ {string.Join(", ", fieldStrings)} }}";
             
@@ -334,7 +342,7 @@ namespace MiGame.CommandSystem.Editor
             
             if (value is PlayerBonus bonus)
             {
-                return $"{{ \"Name\": \"{bonus.Name}\", \"Calculation\": \"{bonus.Calculation}\" }}";
+                return $"{{ \"名称\": \"{bonus.Name}\", \"作用类型\": \"{bonus.Calculation}\" }}";
             }
 
             if (value is IList iList)

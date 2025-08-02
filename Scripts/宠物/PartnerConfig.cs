@@ -1,4 +1,8 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using MiGame.Items;
+using MiGame.Utils;
 
 namespace MiGame.Pet
 {

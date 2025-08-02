@@ -1,0 +1,19 @@
+{
+    "BonusCalculationMethods": [
+        {
+            "id": "单独相加",
+            "name": "单独相加",
+            "description": "将加成值直接累加"
+        },
+        {
+            "id": "最终乘法",
+            "name": "最终乘法", 
+            "description": "计算的值在最后的结果相乘"
+        },
+        {
+            "id": "最终相加",
+            "name": "最终相加",
+            "description": "将加成值（通常是百分比）相加"
+        }
+    ]
+} 

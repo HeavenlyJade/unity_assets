@@ -10,7 +10,7 @@ public class BatchUpdatePartnerConfigEditor : EditorWindow
     private string targetPartnerNamesText = "";
     private Vector2 scrollPosition;
 
-    [MenuItem("Tools/批量更新伙伴配置(高级)")]
+    [MenuItem("Tools/批量更新伙伴升星消耗")]
     public static void ShowWindow()
     {
         GetWindow<BatchUpdatePartnerConfigEditor>("批量更新伙伴配置");

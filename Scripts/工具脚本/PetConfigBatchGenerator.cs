@@ -114,7 +114,7 @@ public class PetConfigBatchGenerator : EditorWindow
     {
         switch (q)
         {
-            case "UR": return 稀有度.SSR; // 如有UR枚举则改为UR
+            case "UR": return 稀有度.UR;
             case "SSR": return 稀有度.SSR;
             case "SR": return 稀有度.SR;
             case "R": return 稀有度.R;

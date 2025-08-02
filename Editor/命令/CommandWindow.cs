@@ -345,6 +345,16 @@ namespace MiGame.CommandSystem.Editor
                 return $"{{ \"名称\": \"{bonus.Name}\", \"作用类型\": \"{bonus.Calculation}\" }}";
             }
 
+            if (value is OtherBonusList otherBonusList)
+            {
+                var entries = new List<string>();
+                foreach (var item in otherBonusList.items)
+                {
+                    entries.Add($"\"{item}\"");
+                }
+                return $"[ {string.Join(", ", entries)} ]";
+            }
+
             if (value is IList iList)
             {
                 var entries = new List<string>();

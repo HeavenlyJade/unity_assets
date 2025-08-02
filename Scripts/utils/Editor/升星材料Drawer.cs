@@ -71,6 +71,18 @@ namespace MiGame.Utils.Editor
                 var 需要数量Rect = new Rect(position.x, position.y + (lineHeight + spacing) * 3, position.width, lineHeight);
                 EditorGUI.PropertyField(需要数量Rect, 需要数量Prop);
             }
+            else if (消耗类型 == 消耗类型.翅膀)
+            {
+                // 显示翅膀相关字段（与伙伴逻辑相同）
+                var 消耗名称Rect = new Rect(position.x, position.y + lineHeight + spacing, position.width, lineHeight);
+                EditorGUI.PropertyField(消耗名称Rect, 消耗名称Prop);
+                
+                var 消耗星级Rect = new Rect(position.x, position.y + (lineHeight + spacing) * 2, position.width, lineHeight);
+                EditorGUI.PropertyField(消耗星级Rect, 消耗星级Prop);
+
+                var 需要数量Rect = new Rect(position.x, position.y + (lineHeight + spacing) * 3, position.width, lineHeight);
+                EditorGUI.PropertyField(需要数量Rect, 需要数量Prop);
+            }
 
             EditorGUI.indentLevel = indent;
             EditorGUI.EndProperty();
@@ -93,7 +105,7 @@ namespace MiGame.Utils.Editor
                 // 材料物品 + 需要数量
                 height += lineHeight * 2 + spacing;
             }
-            else if (消耗类型 == 消耗类型.宠物 || 消耗类型 == 消耗类型.伙伴)
+            else if (消耗类型 == 消耗类型.宠物 || 消耗类型 == 消耗类型.伙伴 || 消耗类型 == 消耗类型.翅膀)
             {
                 // 消耗名称 + 消耗星级 + 需要数量
                 height += lineHeight * 3 + spacing * 2;

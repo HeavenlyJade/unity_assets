@@ -25,13 +25,27 @@ public class OtherBonusListDrawer : PropertyDrawer
             return;
         }
 
-        // 绘制列表标题
-        EditorGUI.LabelField(position, label);
-        position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-        position.height -= EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+        // 使用标准的 Foldout 展开/折叠
+        property.isExpanded = EditorGUI.Foldout(
+            new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), 
+            property.isExpanded, 
+            label, 
+            true
+        );
 
-        // 绘制列表内容
-        DrawList(position, property);
+        if (property.isExpanded)
+        {
+            EditorGUI.indentLevel++; // 标准缩进
+            
+            var itemsProperty = property.FindPropertyRelative("items");
+            if (itemsProperty != null && itemsProperty.isArray)
+            {
+                // 绘制列表内容
+                DrawList(position, itemsProperty);
+            }
+            
+            EditorGUI.indentLevel--;
+        }
 
         EditorGUI.EndProperty();
     }
@@ -43,46 +57,36 @@ public class OtherBonusListDrawer : PropertyDrawer
             LoadOtherBonusTypes();
         }
 
-        float height = EditorGUIUtility.singleLineHeight; // 标题行
-        height += EditorGUIUtility.standardVerticalSpacing;
+        if (!property.isExpanded)
+            return EditorGUIUtility.singleLineHeight;
 
         var itemsProperty = property.FindPropertyRelative("items");
-        if (itemsProperty != null && itemsProperty.isArray)
-        {
-            // 每个元素的高度
-            for (int i = 0; i < itemsProperty.arraySize; i++)
-            {
-                height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-            }
-            
-            // 添加按钮的高度
-            height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-        }
+        if (itemsProperty == null || !itemsProperty.isArray)
+            return EditorGUIUtility.singleLineHeight;
 
-        return height;
+        // 计算展开后的高度：标题 + 每个元素 + 添加按钮
+        return (itemsProperty.arraySize + 2) * (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) + 5;
     }
 
-    private void DrawList(Rect position, SerializedProperty property)
+    private void DrawList(Rect position, SerializedProperty itemsProperty)
     {
-        var itemsProperty = property.FindPropertyRelative("items");
-        if (itemsProperty == null || !itemsProperty.isArray) return;
-
-        float currentY = position.y;
+        float currentY = position.y + EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         float singleLineHeight = EditorGUIUtility.singleLineHeight;
         float verticalSpacing = EditorGUIUtility.standardVerticalSpacing;
+        float indentWidth = EditorGUI.indentLevel * 15f; // 标准缩进宽度
 
         // 绘制现有元素
         for (int i = 0; i < itemsProperty.arraySize; i++)
         {
             var element = itemsProperty.GetArrayElementAtIndex(i);
-            var elementRect = new Rect(position.x, currentY, position.width - 60, singleLineHeight);
+            var elementRect = new Rect(position.x + indentWidth, currentY, position.width - indentWidth - 25, singleLineHeight);
             
             // 绘制下拉框
             DrawOtherBonusPopup(elementRect, element, new GUIContent($"元素 {i + 1}"));
             
-            // 绘制删除按钮
-            var deleteRect = new Rect(position.x + position.width - 50, currentY, 50, singleLineHeight);
-            if (GUI.Button(deleteRect, "删除"))
+            // 绘制删除按钮（使用 "×" 符号）
+            var deleteRect = new Rect(position.x + position.width - 20, currentY, 20, singleLineHeight);
+            if (GUI.Button(deleteRect, "×"))
             {
                 itemsProperty.DeleteArrayElementAtIndex(i);
                 break;
@@ -91,9 +95,9 @@ public class OtherBonusListDrawer : PropertyDrawer
             currentY += singleLineHeight + verticalSpacing;
         }
 
-        // 绘制添加按钮
-        var addRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-        if (GUI.Button(addRect, "添加其他加成"))
+        // 绘制添加按钮（使用 "+" 符号）
+        var addRect = new Rect(position.x + indentWidth, currentY, position.width - indentWidth, singleLineHeight);
+        if (GUI.Button(addRect, "+ 添加其他加成"))
         {
             itemsProperty.arraySize++;
             var newElement = itemsProperty.GetArrayElementAtIndex(itemsProperty.arraySize - 1);
@@ -114,7 +118,7 @@ public class OtherBonusListDrawer : PropertyDrawer
         }
 
         // 绘制下拉框
-        int newSelectedIndex = EditorGUI.Popup(position, label, selectedIndex, _otherBonusTypes.ToArray());
+        int newSelectedIndex = EditorGUI.Popup(position, label.text, selectedIndex, _otherBonusTypes.ToArray());
         property.stringValue = _otherBonusTypes[newSelectedIndex];
     }
 

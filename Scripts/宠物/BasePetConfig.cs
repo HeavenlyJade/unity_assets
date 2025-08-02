@@ -27,7 +27,9 @@ namespace MiGame.Pet
         [Tooltip("宠物材料")]
         宠物,
         [Tooltip("伙伴")]
-        伙伴
+        伙伴,
+        [Tooltip("翅膀")]
+        翅膀
     }
 
     /// <summary>
@@ -235,7 +237,7 @@ namespace MiGame.Pet
         public string 效果数值;
 
         [Tooltip("加成类型")]
-        public 加成类型 加成类型;
+        public 加成类型 加成类型 = 加成类型.玩家属性;
 
         [Tooltip("加成目标")]
         public ItemType 物品目标;

@@ -38,6 +38,10 @@ namespace MiGame.Commands
         [BonusType(VariableNameType.Variable)]
         public List<PlayerBonus> 玩家变量加成;
 
+        [Tooltip("为玩家提供的其他加成（宠物、伙伴、尾迹、翅膀等）")]
+        [SerializeField]
+        public List<string> 其他加成 = new List<string>();
+
         public override void Execute()
         {
             if (string.IsNullOrEmpty(玩家UID))

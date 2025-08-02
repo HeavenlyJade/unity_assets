@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using MiGame.Pet;
+using MiGame.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,6 +66,8 @@ namespace MiGame.Utils.Editor
                 var 效果数值Prop = property.FindPropertyRelative("效果数值");
                 var 加成类型Prop = property.FindPropertyRelative("加成类型");
                 var 物品目标Prop = property.FindPropertyRelative("物品目标");
+                var 目标变量Prop = property.FindPropertyRelative("目标变量");
+                var 作用类型Prop = property.FindPropertyRelative("作用类型");
 
                 // 1. 绘制 变量类型
                 EditorGUI.PropertyField(currentPos, 变量类型Prop);
@@ -100,6 +103,31 @@ namespace MiGame.Utils.Editor
                 if (currentBonusType == 加成类型.物品)
                 {
                     EditorGUI.PropertyField(currentPos, 物品目标Prop, new GUIContent("物品目标"));
+                    currentPos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                }
+
+                // 6. 如果 加成类型 是 玩家变量 或 玩家属性，则显示 目标变量 和 作用类型 字段
+                if (currentBonusType == 加成类型.玩家变量 || currentBonusType == 加成类型.玩家属性)
+                {
+                    // 绘制 目标变量 字段（根据加成类型显示对应的下拉选择）
+                    if (currentBonusType == 加成类型.玩家变量)
+                    {
+                        DrawStringPopup(currentPos, 目标变量Prop, "目标变量", variableNames);
+                    }
+                    else if (currentBonusType == 加成类型.玩家属性)
+                    {
+                        DrawStringPopup(currentPos, 目标变量Prop, "目标属性", statNames);
+                    }
+                    else
+                    {
+                        // 如果未来有其他类型，则显示为普通文本框
+                        EditorGUI.PropertyField(currentPos, 目标变量Prop, new GUIContent("目标变量"));
+                    }
+                    currentPos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+                    // 绘制 作用类型 字段（带下拉选择）
+                    Draw作用类型Dropdown(currentPos, 作用类型Prop);
+                    currentPos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 }
 
                 EditorGUI.indentLevel--;
@@ -127,6 +155,42 @@ namespace MiGame.Utils.Editor
             // If newIndex is -1 (nothing selected), we don't clear the string value to avoid accidental data loss.
         }
 
+        // 绘制作用类型下拉菜单的辅助方法
+        private void Draw作用类型Dropdown(Rect position, SerializedProperty property)
+        {
+            // 获取所有可用的加成计算方式
+            var methods = ConfigReader.GetBonusCalculationMethods();
+            var methodNames = new string[methods.Count];
+            var methodIds = new string[methods.Count];
+            
+            for (int i = 0; i < methods.Count; i++)
+            {
+                methodNames[i] = methods[i].name;
+                methodIds[i] = methods[i].id;
+            }
+
+            // 找到当前选中的索引
+            int currentIndex = 0;
+            string currentValue = property.stringValue;
+            for (int i = 0; i < methodIds.Length; i++)
+            {
+                if (methodIds[i] == currentValue)
+                {
+                    currentIndex = i;
+                    break;
+                }
+            }
+
+            // 创建下拉选择框
+            EditorGUI.BeginChangeCheck();
+            int newIndex = EditorGUI.Popup(position, "作用类型", currentIndex, methodNames);
+
+            if (EditorGUI.EndChangeCheck() && newIndex >= 0 && newIndex < methodIds.Length)
+            {
+                property.stringValue = methodIds[newIndex];
+            }
+        }
+
         // 动态计算属性高度
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -137,12 +201,18 @@ namespace MiGame.Utils.Editor
 
             float lineCount = 5; // 默认显示5行 (Foldout + 4个基本字段)
             var 加成类型Prop = property.FindPropertyRelative("加成类型");
-            if ((加成类型)加成类型Prop.enumValueIndex == 加成类型.物品)
+            var currentBonusType = (加成类型)加成类型Prop.enumValueIndex;
+            
+            if (currentBonusType == 加成类型.物品)
             {
                 lineCount++; // 如果是物品，额外增加一行
             }
+            else if (currentBonusType == 加成类型.玩家变量 || currentBonusType == 加成类型.玩家属性)
+            {
+                lineCount += 2; // 如果是玩家变量或玩家属性，额外增加两行（目标变量和作用类型）
+            }
 
-            return (EditorGUIUtility.singleLineHeight * lineCount) + (EditorGUIUtility.standardVerticalSpacing * (lineCount -1)) ;
+            return (EditorGUIUtility.singleLineHeight * lineCount) + (EditorGUIUtility.standardVerticalSpacing * (lineCount - 1));
         }
     }
 }

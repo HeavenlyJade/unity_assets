@@ -62,6 +62,8 @@ public class BatchUpdatePartnerEffects : EditorWindow
                 变量名称 = "加成_百分比_训练加成",
                 加成类型 = 加成类型.玩家变量,
                 物品目标 = null,
+                目标变量 = "数据_固定值_战力值",
+                作用类型 = "单独相加",
                 // 尝试从原始列表的第二项继承效果数值
                 效果数值 = (originalEffects.Count > 1 && originalEffects[1] != null) ? originalEffects[1].效果数值 : ""
             };

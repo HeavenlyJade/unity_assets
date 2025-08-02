@@ -1,0 +1,24 @@
+{
+    "OtherBonusTypes": [
+        {
+            "id": "宠物",
+            "name": "宠物",
+            "description": "宠物加成"
+        },
+        {
+            "id": "伙伴",
+            "name": "伙伴", 
+            "description": "伙伴加成"
+        },
+        {
+            "id": "尾迹",
+            "name": "尾迹",
+            "description": "尾迹加成"
+        },
+        {
+            "id": "翅膀",
+            "name": "翅膀",
+            "description": "翅膀加成"
+        }
+    ]
+} 

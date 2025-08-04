@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7389a1a3a622148a98e96182547384, type: 3}
+  m_Name: "\u62D6\u5C3E_\u7EA2"
+  m_EditorClassIdentifier: 
+  "\u540D\u79F0": "\u62D6\u5C3E_\u7EA2"
+  "\u63CF\u8FF0": 
+  "\u663E\u793A\u540D": "\u62D6\u5C3E_\u7EA2"
+  "\u7A00\u6709\u5EA6": 4
+  "\u643A\u5E26\u6548\u679C":
+  - "\u53D8\u91CF\u7C7B\u578B": 1
+    "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u901F\u5EA6\u52A0\u6210"
+    "\u6548\u679C\u6570\u503C": 5.84
+    "\u52A0\u6210\u7C7B\u578B": 2
+    "\u7269\u54C1\u76EE\u6807": {fileID: 0}
+    "\u76EE\u6807\u53D8\u91CF": 
+    "\u4F5C\u7528\u7C7B\u578B": "\u5355\u72EC\u76F8\u52A0"
+  - "\u53D8\u91CF\u7C7B\u578B": 1
+    "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u91D1\u5E01\u52A0\u6210"
+    "\u6548\u679C\u6570\u503C": 5.95
+    "\u52A0\u6210\u7C7B\u578B": 2
+    "\u7269\u54C1\u76EE\u6807": {fileID: 0}
+    "\u76EE\u6807\u53D8\u91CF": 
+    "\u4F5C\u7528\u7C7B\u578B": "\u5355\u72EC\u76F8\u52A0"
+  - "\u53D8\u91CF\u7C7B\u578B": 1
+    "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u52A0\u901F\u5EA6"
+    "\u6548\u679C\u6570\u503C": 5.45
+    "\u52A0\u6210\u7C7B\u578B": 2
+    "\u7269\u54C1\u76EE\u6807": {fileID: 0}
+    "\u76EE\u6807\u53D8\u91CF": 
+    "\u4F5C\u7528\u7C7B\u578B": "\u5355\u72EC\u76F8\u52A0"
+  "\u56FE\u7247\u8D44\u6E90": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u8F68\u8FF9\u7ACB\u7ED8/\u62D6\u5C3E_\u7EA2.png"

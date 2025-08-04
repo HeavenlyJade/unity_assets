@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using MiGame.Pet;
+using MiGame.Trail;
 using MiGame.Utils;
 using System;
 using System.Collections.Generic;

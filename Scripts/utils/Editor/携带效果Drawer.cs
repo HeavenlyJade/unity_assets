@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MiGame.Utils.Editor
 {
-    [CustomPropertyDrawer(typeof(携带效果))]
+    [CustomPropertyDrawer(typeof(MiGame.Pet.携带效果))]
     public class 携带效果Drawer : PropertyDrawer
     {
         private static List<string> variableNames;

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 using MiGame.Trail;
+using MiGame.Pet;
 using System;
 
 public class TrailConfigBatchGenerator : EditorWindow
@@ -111,16 +112,16 @@ public class TrailConfigBatchGenerator : EditorWindow
         public float 加成_百分比_加速度;
     }
 
-    private static 稀有度 ParseQuality(string q)
+    private static MiGame.Trail.稀有度 ParseQuality(string q)
     {
         switch (q)
         {
-            case "UR": return 稀有度.UR;
-            case "SSR": return 稀有度.SSR;
-            case "SR": return 稀有度.SR;
-            case "R": return 稀有度.R;
-            case "N": return 稀有度.N;
-            default: return 稀有度.N;
+            case "UR": return MiGame.Trail.稀有度.UR;
+            case "SSR": return MiGame.Trail.稀有度.SSR;
+            case "SR": return MiGame.Trail.稀有度.SR;
+            case "R": return MiGame.Trail.稀有度.R;
+            case "N": return MiGame.Trail.稀有度.N;
+            default: return MiGame.Trail.稀有度.N;
         }
     }
 } 

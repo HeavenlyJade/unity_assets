@@ -3,20 +3,10 @@ using System;
 using System.Collections.Generic;
 using MiGame.Items;
 using MiGame.Utils;
+using MiGame.Pet;
 
 namespace MiGame.Trail
 {
-    /// <summary>
-    /// 变量类型枚举
-    /// </summary>
-    public enum 变量类型
-    {
-        [Tooltip("玩家属性")]
-        玩家属性,
-        [Tooltip("玩家变量")]
-        玩家变量
-    }
-
     /// <summary>
     /// 稀有度枚举
     /// </summary>
@@ -32,51 +22,6 @@ namespace MiGame.Trail
         SSR,
         [Tooltip("UR级")]
         UR
-    }
-
-    /// <summary>
-    /// 加成类型
-    /// </summary>
-    public enum 加成类型
-    {
-        物品,
-        玩家变量,
-        玩家属性
-    }
-
-    /// <summary>
-    /// 携带效果结构
-    /// </summary>
-    [Serializable]
-    public class 携带效果
-    {
-        [Tooltip("变量类型")]
-        [SerializeField]
-        public 变量类型 变量类型 = 变量类型.玩家属性;
-
-        [Tooltip("变量名称")]
-        [SerializeField]
-        public string 变量名称;
-
-        [Tooltip("效果数值或公式")]
-        [SerializeField]
-        public string 效果数值;
-
-        [Tooltip("加成类型")]
-        [SerializeField]
-        public 加成类型 加成类型 = 加成类型.玩家属性;
-
-        [Tooltip("加成目标")]
-        [SerializeField]
-        public ItemType 物品目标;
-
-        [Tooltip("目标变量")]
-        [SerializeField]
-        public string 目标变量;
-
-        [Tooltip("作用类型")]
-        [SerializeField]
-        public string 作用类型 = "单独相加";
     }
 
     /// <summary>
@@ -102,7 +47,7 @@ namespace MiGame.Trail
 
         [Header("携带效果")]
         [Tooltip("携带效果配置")]
-        public List<携带效果> 携带效果;
+        public List<MiGame.Pet.携带效果> 携带效果;
 
         [Header("资源配置")]
         [Tooltip("图片资源路径")]

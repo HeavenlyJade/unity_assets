@@ -14,7 +14,7 @@ namespace MiGame.Editor.Exporter
         }
         public override string GetAssetPath()
         {
-            return null;
+            return "Assets/GameConf/宠物";
         }
         // 使用基类的反射导出方法
     }

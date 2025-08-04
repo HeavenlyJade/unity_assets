@@ -52,6 +52,9 @@ namespace MiGame.Trail
         [Header("资源配置")]
         [Tooltip("图片资源路径")]
         public string 图片资源;
+        
+        [Tooltip("特效节点路径")]
+        public string 特效节点;
 
         protected virtual void OnValidate()
         {

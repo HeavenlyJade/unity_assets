@@ -58,6 +58,7 @@ public class TrailConfigBatchGenerator : EditorWindow
             asset.显示名 = trail.名称;
             asset.稀有度 = ParseQuality(trail.品级);
             asset.图片资源 = trail.图片;
+            asset.特效节点 = trail.节点路径;
             asset.携带效果 = new List<携带效果>
             {
                 new 携带效果

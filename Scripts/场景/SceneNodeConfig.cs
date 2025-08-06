@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 using MiGame.Data;
+using System.ComponentModel;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace MiGame.Scene
 {
@@ -14,6 +18,21 @@ namespace MiGame.Scene
         安全区,
         飞行比赛,
         挂机点
+    }
+
+    /// <summary>
+    /// 教程所属场景类型
+    /// </summary>
+    public enum TutorialSceneType
+    {
+        [Description("init_map")]
+        init_map,
+        [Description("midLevelZone")]
+        midLevelZone,
+        [Description("advancedArea")]
+        advancedArea,
+        [Description("ultimateRealm")]
+        ultimateRealm
     }
 
     /// <summary>
@@ -45,6 +64,9 @@ namespace MiGame.Scene
         [Tooltip("该区域关联的传送门标识")]
         public string 传送节点;
 
+        [Tooltip("该区域关联的导航节点标识")]
+        public string 导航节点;
+
         [Tooltip("该区域关联的比赛场景标识")]
         public string 比赛场景;
     }
@@ -70,6 +92,9 @@ namespace MiGame.Scene
         [Header("节点属性")]
         [Tooltip("节点的类型")]
         public SceneNodeType 场景类型;
+
+        [Tooltip("所属场景")]
+        public TutorialSceneType 所属场景;
 
         [Tooltip("区域节点配置")]
         public 区域节点配置 区域节点配置 = new 区域节点配置();
@@ -97,8 +122,8 @@ namespace MiGame.Scene
         {
 #if UNITY_EDITOR
             // 当唯一ID为空时，我们认为这是一个新创建的资产。
-            // 此时，我们自动生成ID，并将资产的文件名同步到“名字”字段。
-            // 一旦ID被创建，这个过程就不会再自动发生，允许用户自由修改“名字”字段而不会被文件名覆盖。
+            // 此时，我们自动生成ID，并将资产的文件名同步到"名字"字段。
+            // 一旦ID被创建，这个过程就不会再自动发生，允许用户自由修改"名字"字段而不会被文件名覆盖。
             if (string.IsNullOrEmpty(唯一ID))
             {
                 唯一ID = System.Guid.NewGuid().ToString();
@@ -109,3 +134,45 @@ namespace MiGame.Scene
         }
     }
 }
+
+#if UNITY_EDITOR
+namespace MiGame.Scene
+{
+    [CustomPropertyDrawer(typeof(TutorialSceneType))]
+    public class TutorialSceneTypeDrawer : PropertyDrawer
+    {
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            EditorGUI.BeginProperty(position, label, property);
+            
+            // 获取枚举值
+            TutorialSceneType currentValue = (TutorialSceneType)property.enumValueIndex;
+            
+            // 获取所有枚举值
+            string[] enumNames = System.Enum.GetNames(typeof(TutorialSceneType));
+            string[] displayNames = new string[enumNames.Length];
+            
+            // 使用Description特性或原始名称
+            for (int i = 0; i < enumNames.Length; i++)
+            {
+                var field = typeof(TutorialSceneType).GetField(enumNames[i]);
+                var descriptionAttr = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                displayNames[i] = descriptionAttr.Length > 0 
+                    ? ((DescriptionAttribute)descriptionAttr[0]).Description 
+                    : enumNames[i];
+            }
+            
+            // 显示下拉菜单
+            int currentIndex = property.enumValueIndex;
+            int newIndex = EditorGUI.Popup(position, label.text, currentIndex, displayNames);
+            
+            if (newIndex != currentIndex)
+            {
+                property.enumValueIndex = newIndex;
+            }
+            
+            EditorGUI.EndProperty();
+        }
+    }
+}
+#endif

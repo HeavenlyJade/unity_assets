@@ -16,10 +16,12 @@ MonoBehaviour:
   "\u552F\u4E00ID": acd1a360-1a02-4406-b9ed-70f96a5a46a7
   "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": Ground/init_map/terrain/Scene/jump_plat
   "\u573A\u666F\u7C7B\u578B": 3
+  "\u6240\u5C5E\u573A\u666F": 0
   "\u533A\u57DF\u8282\u70B9\u914D\u7F6E":
     "\u5305\u56F4\u76D2\u8282\u70B9": jump1_TriggerBox
     "\u590D\u6D3B\u8282\u70B9": BasicRespawn
     "\u4F20\u9001\u8282\u70B9": TeleportNode
+    "\u5BFC\u822A\u8282\u70B9": navNode
     "\u6BD4\u8D5B\u573A\u666F": Ground/init_map/terrain/Scene/race_track
   "\u5173\u8054\u5173\u5361": {fileID: 11400000, guid: ecfdb514301f40644970a882e0ae7da1, type: 2}
   "\u73A9\u6CD5\u89C4\u5219":

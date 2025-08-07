@@ -18,7 +18,15 @@ namespace MiGame.Lottery
         [Tooltip("限定抽奖")]
         限定抽奖,
         [Tooltip("活动抽奖")]
-        活动抽奖
+        活动抽奖,
+        [Tooltip("初级宠物抽奖")]
+        初级宠物,
+        [Tooltip("初级翅膀抽奖")]
+        初级翅膀,
+        [Tooltip("初级伙伴抽奖")]
+        初级伙伴,
+        [Tooltip("初级尾迹抽奖")]
+        初级尾迹
     }
 
     /// <summary>
@@ -39,6 +47,21 @@ namespace MiGame.Lottery
     }
 
     /// <summary>
+    /// 级别枚举
+    /// </summary>
+    public enum 级别
+    {
+        [Tooltip("初级")]
+        初级,
+        [Tooltip("中级")]
+        中级,
+        [Tooltip("高级")]
+        高级,
+        [Tooltip("终极")]
+        终极
+    }
+
+    /// <summary>
     /// 奖励池配置结构
     /// </summary>
     [Serializable]
@@ -47,8 +70,20 @@ namespace MiGame.Lottery
         [Tooltip("奖励类型")]
         public 奖励类型 奖励类型 = 奖励类型.物品;
         
-        [Tooltip("物品名称（对应奖励类型的名称）")]
-        public string 物品名称;
+        [Tooltip("物品（奖励类型为物品时使用）")]
+        public ItemType 物品;
+        
+        [Tooltip("翅膀配置（奖励类型为翅膀时使用）")]
+        public ScriptableObject 翅膀配置;
+        
+        [Tooltip("宠物配置（奖励类型为宠物时使用）")]
+        public ScriptableObject 宠物配置;
+        
+        [Tooltip("伙伴配置（奖励类型为伙伴时使用）")]
+        public ScriptableObject 伙伴配置;
+        
+        [Tooltip("尾迹配置（奖励类型为尾迹时使用）")]
+        public ScriptableObject 尾迹配置;
         
         [Tooltip("奖励数量")]
         public int 数量 = 1;
@@ -117,6 +152,9 @@ namespace MiGame.Lottery
         
         [Tooltip("抽奖类型")]
         public 抽奖类型 抽奖类型 = 抽奖类型.普通抽奖;
+        
+        [Tooltip("抽奖级别")]
+        public 级别 级别 = 级别.初级;
 
         [Header("奖励池配置")]
         [Tooltip("抽奖奖励池列表")]

@@ -158,7 +158,6 @@ public class GitStatusViewerWindow : EditorWindow
         // 跳过 .git 目录下的所有文件
         if (filePath.StartsWith(".git/") || filePath.StartsWith(".git\\"))
         {
-            Debug.Log($"跳过.git目录下的文件: {filePath}");
             return true;
         }
 
@@ -184,6 +183,110 @@ public class GitStatusViewerWindow : EditorWindow
         return false;
     }
 
+    /// <summary>
+    /// 判断文件是否明显有真实修改，无需详细检查
+    /// </summary>
+    private bool IsObviouslyModified(string filePath, string status)
+    {
+        // 删除的文件
+        if (status == "D") return true;
+        
+        // 新增的文件
+        if (status.Contains("A")) return true;
+        
+        // Lua文件不处理浮点数，直接视为修改
+        if (Path.GetExtension(filePath).ToLower() == ".lua") return true;
+        
+        // 非json文件的大文件直接视为修改（避免不必要处理）
+        var ext = Path.GetExtension(filePath).ToLower();
+        if (ext != ".json")
+        {
+            try
+            {
+                var fullPath = Path.Combine(gitRepoPath, filePath);
+                if (File.Exists(fullPath))
+                {
+                    var fileInfo = new FileInfo(fullPath);
+                    if (fileInfo.Length > 50 * 1024) // 大于50KB
+                        return true;
+                }
+            }
+            catch
+            {
+                return true; // 文件访问异常，直接视为修改
+            }
+        }
+        
+        return false;
+    }
+
+    /// <summary>
+    /// 批量获取文件的Git原始内容
+    /// </summary>
+    private async Task<Dictionary<string, string>> GetBatchOriginalContentsAsync(List<string> filePaths)
+    {
+        var contents = new Dictionary<string, string>();
+        
+        // 分批处理，避免命令行过长
+        int batchSize = 100;
+        for (int i = 0; i < filePaths.Count; i += batchSize)
+        {
+            var batch = filePaths.Skip(i).Take(batchSize).ToList();
+            var batchContents = await GetBatchOriginalContentsInternalAsync(batch);
+            
+            foreach (var kvp in batchContents)
+            {
+                contents[kvp.Key] = kvp.Value;
+            }
+        }
+        
+        return contents;
+    }
+
+    private async Task<Dictionary<string, string>> GetBatchOriginalContentsInternalAsync(List<string> filePaths)
+    {
+        var contents = new Dictionary<string, string>();
+        
+        await Task.Run(() =>
+        {
+            foreach (var filePath in filePaths)
+            {
+                try
+                {
+                    var startInfo = new ProcessStartInfo
+                    {
+                        FileName = "git",
+                        Arguments = $"show HEAD:\"{filePath.Replace("\"", "\\\"")}\"",
+                        WorkingDirectory = gitRepoPath,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true,
+                        StandardOutputEncoding = Encoding.UTF8
+                    };
+
+                    using (var process = Process.Start(startInfo))
+                    {
+                        var output = process.StandardOutput.ReadToEnd();
+                        var error = process.StandardError.ReadToEnd();
+                        process.WaitForExit();
+                        
+                        if (process.ExitCode == 0)
+                        {
+                            contents[filePath] = output;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning($"获取文件 {filePath} 原始内容失败: {e.Message}");
+                }
+            }
+        });
+        
+        return contents;
+    }
+
     private string NormalizeLineEndings(string text)
     {
         return Regex.Replace(text, @"\r\n|\r|\n", "\n");
@@ -193,8 +296,7 @@ public class GitStatusViewerWindow : EditorWindow
     {
         // 匹配浮点数的正则表达式，包括科学计数法
         string pattern = @"-?\d+\.\d+(?:[eE][-+]?\d+)?";
-        var matches = Regex.Matches(content, pattern);
-
+        
         string result = Regex.Replace(content, pattern, match =>
         {
             if (float.TryParse(match.Value, out float number))
@@ -334,134 +436,155 @@ public class GitStatusViewerWindow : EditorWindow
             });
 
             // 2. 解析和过滤文件列表
+            EditorUtility.DisplayProgressBar("检查文件", "正在解析文件列表...", 0.2f);
+            
             string[] lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            var filesToCheck = new List<(string status, string path)>();
+            var allFiles = new List<(string status, string path)>();
+            var obviouslyModified = new List<string>();
+            var needDetailedCheck = new List<string>();
+            
             foreach (var line in lines)
             {
                 if (line.Length <= 3) continue;
 
                 string status = line.Substring(0, 2).Trim();
-                // 原始路径可能包含UTF-8转义和引号，先解码再清理
                 string rawPath = line.Substring(3);
                 string decodedPath = DecodeGitPath(rawPath);
                 string cleanFilePath = decodedPath.Trim('"');
 
                 if (ShouldSkipFile(cleanFilePath))
                 {
-                    Debug.Log($"跳过文件: {cleanFilePath}");
                     continue;
                 }
-                filesToCheck.Add((status, cleanFilePath));
-            }
-
-            var trulyModifiedFiles = new System.Collections.Concurrent.ConcurrentBag<string>();
-            var filesToRevert = new System.Collections.Concurrent.ConcurrentBag<string>();
-            
-            EditorUtility.DisplayProgressBar("检查文件", $"准备并发检查 {filesToCheck.Count} 个文件...", 0.3f);
-
-            // 3. 并行检查文件差异
-            await Task.Run(() =>
-            {
-                var po = new ParallelOptions { MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount / 2) };
-                Parallel.ForEach(filesToCheck, po, fileInfo =>
+                
+                allFiles.Add((status, cleanFilePath));
+                
+                // 智能分类：明显修改 vs 需要详细检查
+                if (IsObviouslyModified(cleanFilePath, status))
                 {
-                    var (status, filePath) = fileInfo;
-                    var fullPath = Path.Combine(gitRepoPath, filePath);
-
-                    // 已删除的文件直接标记为修改
-                    if (status == "D" || !File.Exists(fullPath))
-                    {
-                        trulyModifiedFiles.Add(filePath);
-                        return; // continue
-                    }
-                    
-                    // Lua文件不处理浮点数，直接视为修改
-                    if (Path.GetExtension(filePath).ToLower() == ".lua")
-                    {
-                        trulyModifiedFiles.Add(filePath);
-                        return; // continue
-                    }
-
-                    // 在内存中进行差异比较
-                    try
-                    {
-                        // 使用 git show 获取暂存区或HEAD的文件原始内容
-                        string originalContent;
-                        var showInfo = new ProcessStartInfo
-                        {
-                            FileName = "git",
-                            // 使用 :"" 来处理带空格和特殊字符的路径
-                            Arguments = $"show :\"{filePath.Replace("\"", "\\\"")}\"",
-                            WorkingDirectory = gitRepoPath,
-                            UseShellExecute = false,
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true,
-                            StandardOutputEncoding = Encoding.UTF8
-                        };
-                        using (var p = Process.Start(showInfo))
-                        {
-                            originalContent = p.StandardOutput.ReadToEnd();
-                            p.WaitForExit();
-                        }
-                        
-                        string currentContent = File.ReadAllText(fullPath);
-                        string processedContent = ProcessFloatNumbers(currentContent);
-                        
-                        bool areEqual;
-                        // 只对json文件进行换行符归一化处理
-                        if (Path.GetExtension(filePath).ToLower() == ".json")
-                        {
-                            areEqual = NormalizeLineEndings(originalContent) == NormalizeLineEndings(processedContent);
-                        }
-                        else
-                        {
-                            // 对于其他文件，直接比较，但仍然使用处理了浮点数的当前内容
-                            areEqual = originalContent == processedContent;
-                        }
-                        
-                        if (areEqual)
-                        {
-                            filesToRevert.Add(filePath);
-                        }
-                        else
-                        {
-                            trulyModifiedFiles.Add(filePath);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogError($"处理文件 {filePath} 差异失败，将标记为已修改: {e.Message}");
-                        trulyModifiedFiles.Add(filePath);
-                    }
-                });
-            });
-
-            // 4. 批量恢复仅有浮点数差异的文件
-            if (!filesToRevert.IsEmpty)
-            {
-                EditorUtility.DisplayProgressBar("检查文件", $"正在批量恢复 {filesToRevert.Count} 个文件...", 0.9f);
-                var files = filesToRevert.ToList();
-                int batchSize = 50; // 避免命令行过长
-                for (int i = 0; i < files.Count; i += batchSize)
+                    obviouslyModified.Add(cleanFilePath);
+                }
+                else
                 {
-                    var batch = files.Skip(i).Take(batchSize).Select(f => $"\"{f.Replace("\"", "\\\"")}\"");
-                    var checkoutInfo = new ProcessStartInfo
-                    {
-                        FileName = "git",
-                        Arguments = $"checkout -- {string.Join(" ", batch)}",
-                        WorkingDirectory = gitRepoPath,
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true
-                    };
-                    using (var p = Process.Start(checkoutInfo))
-                    {
-                        p.WaitForExit();
-                    }
+                    needDetailedCheck.Add(cleanFilePath);
                 }
             }
+
+            Debug.Log($"总文件: {allFiles.Count}, 明显修改: {obviouslyModified.Count}, 需详细检查: {needDetailedCheck.Count}");
+
+            // 3. 直接添加明显修改的文件
+            modifiedFiles.AddRange(obviouslyModified);
+
+            // 4. 只对需要详细检查的文件进行内容比较
+            if (needDetailedCheck.Count > 0)
+            {
+                EditorUtility.DisplayProgressBar("检查文件", $"正在批量获取 {needDetailedCheck.Count} 个文件的原始内容...", 0.4f);
+                
+                // 批量获取原始内容
+                var originalContents = await GetBatchOriginalContentsAsync(needDetailedCheck);
+                
+                EditorUtility.DisplayProgressBar("检查文件", $"正在并发检查 {needDetailedCheck.Count} 个文件差异...", 0.6f);
+
+                var trulyModifiedFiles = new ConcurrentBag<string>();
+                var filesToRevert = new ConcurrentBag<string>();
+
+                // 高效并发处理
+                await Task.Run(() =>
+                {
+                    var po = new ParallelOptions 
+                    { 
+                        MaxDegreeOfParallelism = Environment.ProcessorCount // 使用全部CPU核心
+                    };
+                    
+                    Parallel.ForEach(needDetailedCheck, po, filePath =>
+                    {
+                        try
+                        {
+                            var fullPath = Path.Combine(gitRepoPath, filePath);
+                            if (!File.Exists(fullPath))
+                            {
+                                trulyModifiedFiles.Add(filePath);
+                                return;
+                            }
+
+                            if (!originalContents.TryGetValue(filePath, out string originalContent))
+                            {
+                                // 如果获取原始内容失败，标记为修改
+                                trulyModifiedFiles.Add(filePath);
+                                return;
+                            }
+
+                            string currentContent = File.ReadAllText(fullPath);
+                            string processedContent = ProcessFloatNumbers(currentContent);
+
+                            bool areEqual;
+                            // 只对json文件进行换行符归一化处理
+                            if (Path.GetExtension(filePath).ToLower() == ".json")
+                            {
+                                areEqual = NormalizeLineEndings(originalContent) == NormalizeLineEndings(processedContent);
+                            }
+                            else
+                            {
+                                areEqual = originalContent == processedContent;
+                            }
+
+                            if (areEqual)
+                            {
+                                filesToRevert.Add(filePath);
+                            }
+                            else
+                            {
+                                trulyModifiedFiles.Add(filePath);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogWarning($"处理文件 {filePath} 差异检查失败: {e.Message}");
+                            trulyModifiedFiles.Add(filePath);
+                        }
+                    });
+                });
+
+                // 5. 批量恢复仅有浮点数差异的文件
+                if (!filesToRevert.IsEmpty)
+                {
+                    EditorUtility.DisplayProgressBar("检查文件", $"正在批量恢复 {filesToRevert.Count} 个文件...", 0.9f);
+                    var files = filesToRevert.ToList();
+                    
+                    // 分批恢复，避免命令行过长
+                    int batchSize = 50;
+                    for (int i = 0; i < files.Count; i += batchSize)
+                    {
+                        var batch = files.Skip(i).Take(batchSize).Select(f => $"\"{f.Replace("\"", "\\\"")}\"");
+                        
+                        await Task.Run(() =>
+                        {
+                            var checkoutInfo = new ProcessStartInfo
+                            {
+                                FileName = "git",
+                                Arguments = $"checkout -- {string.Join(" ", batch)}",
+                                WorkingDirectory = gitRepoPath,
+                                UseShellExecute = false,
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true,
+                                CreateNoWindow = true
+                            };
+                            
+                            using (var p = Process.Start(checkoutInfo))
+                            {
+                                p.WaitForExit();
+                            }
+                        });
+                    }
+                }
+
+                modifiedFiles.AddRange(trulyModifiedFiles);
+            }
+
+            // 6. 排序最终结果
+            modifiedFiles = modifiedFiles.OrderBy(f => f).ToList();
             
-            modifiedFiles.AddRange(trulyModifiedFiles.OrderBy(f => f));
+            Debug.Log($"处理完成，最终修改文件数: {modifiedFiles.Count}");
         }
         catch (System.Exception e)
         {

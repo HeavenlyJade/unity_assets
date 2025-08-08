@@ -56,6 +56,16 @@ namespace MiGame.Scene
     }
 
     /// <summary>
+    /// 进入条件项目
+    /// </summary>
+    [System.Serializable]
+    public class 进入条件项目
+    {
+        [Tooltip("条件检查的公式，变量格式: [物品], $玩家变量$, {玩家属性}")]
+        public string 条件公式;
+    }
+
+    /// <summary>
     /// 区域节点配置
     /// </summary>
     [System.Serializable]
@@ -114,6 +124,10 @@ namespace MiGame.Scene
         [Tooltip("节点触发时的音效，填写资源的路径")]
         public string 音效资源;
 
+        [Header("进入条件")]
+        [Tooltip("定义进入该节点需要满足的条件列表")]
+        public List<进入条件项目> 进入条件列表;
+
         [Header("指令")]
         [Tooltip("进入节点时触发的指令")]
         public string 进入指令;
@@ -136,8 +150,126 @@ namespace MiGame.Scene
                 名字 = name;
                 UnityEditor.EditorUtility.SetDirty(this);
             }
+
+            // 校验进入条件列表
+            ValidateEnterConditions();
 #endif
         }
+
+#if UNITY_EDITOR
+        [System.Serializable]
+        private class VariableData
+        {
+            public List<string> VariableNames = new List<string>();
+            public List<string> StatNames = new List<string>();
+        }
+
+        [System.Serializable]
+        private class ItemNameListWrapper
+        {
+            public List<string> ItemNames = new List<string>();
+        }
+
+        private void ValidateEnterConditions()
+        {
+            // 加载JSON数据
+            LoadAllVariableNamesFromJson(out var allVariableNames, out var allStatNames);
+            LoadAllItemNamesFromJson(out var allItemNames);
+
+            if (allVariableNames == null || allStatNames == null || allItemNames == null) return;
+
+            if (进入条件列表 == null) return;
+            foreach (var condition in 进入条件列表)
+            {
+                // 校验条件公式中的变量引用
+                if (!string.IsNullOrEmpty(condition.条件公式))
+                {
+                    ValidateFormulaString(condition.条件公式, "条件公式", allVariableNames, allStatNames, allItemNames);
+                }
+            }
+        }
+
+        private void LoadAllItemNamesFromJson(out HashSet<string> itemNames)
+        {
+            itemNames = null;
+            string jsonPath = "Assets/GameConf/物品/ItemNames.json";
+            if (System.IO.File.Exists(jsonPath))
+            {
+                string json = System.IO.File.ReadAllText(jsonPath);
+                var data = JsonUtility.FromJson<ItemNameListWrapper>(json);
+                if (data != null)
+                {
+                    itemNames = new HashSet<string>(data.ItemNames ?? new List<string>());
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"JSON 文件未找到: {jsonPath}. 物品名校验功能将不会执行。", this);
+                itemNames = new HashSet<string>(); // 即使文件不存在，也返回一个空集合以避免null错误
+            }
+        }
+
+        private void LoadAllVariableNamesFromJson(out HashSet<string> variableNames, out HashSet<string> statNames)
+        {
+            variableNames = null;
+            statNames = null;
+            
+            string jsonPath = "Assets/GameConf/玩家变量/VariableNames.json";
+            if (System.IO.File.Exists(jsonPath))
+            {
+                string json = System.IO.File.ReadAllText(jsonPath);
+                VariableData data = JsonUtility.FromJson<VariableData>(json);
+
+                if (data != null)
+                {
+                    variableNames = new HashSet<string>(data.VariableNames ?? new List<string>());
+                    statNames = new HashSet<string>(data.StatNames ?? new List<string>());
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"JSON 文件未找到: {jsonPath}. 变量名校验功能将不会执行。", this);
+            }
+        }
+
+        private void ValidateFormulaString(string formula, string fieldName, HashSet<string> variableNames, HashSet<string> statNames, HashSet<string> itemNames)
+        {
+            if (string.IsNullOrEmpty(formula)) return;
+
+            // 校验玩家变量: $...$
+            var playerVarRegex = new System.Text.RegularExpressions.Regex(@"\$([^\$]+)\$");
+            foreach (System.Text.RegularExpressions.Match match in playerVarRegex.Matches(formula))
+            {
+                var variableName = match.Groups[1].Value;
+                if (!variableNames.Contains(variableName))
+                {
+                    Debug.LogError($"配置错误: 在 '{fieldName}' 字段中, 玩家变量 '${variableName}$' 在 VariableNames.json 中未定义!", this);
+                }
+            }
+
+            // 校验玩家属性: {...}
+            var statRegex = new System.Text.RegularExpressions.Regex(@"\{([^\}]+)\}");
+            foreach (System.Text.RegularExpressions.Match match in statRegex.Matches(formula))
+            {
+                var variableName = match.Groups[1].Value;
+                if (!statNames.Contains(variableName))
+                {
+                    Debug.LogError($"配置错误: 在 '{fieldName}' 字段中, 玩家属性 '{{{variableName}}}' 在 VariableNames.json 中未定义!", this);
+                }
+            }
+
+            // 校验物品: [...]
+            var itemRegex = new System.Text.RegularExpressions.Regex(@"\[([^\]]+)\]");
+            foreach (System.Text.RegularExpressions.Match match in itemRegex.Matches(formula))
+            {
+                var itemName = match.Groups[1].Value;
+                if (!itemNames.Contains(itemName))
+                {
+                    Debug.LogError($"配置错误: 在 '{fieldName}' 字段中, 物品 '[{itemName}]' 在 ItemNames.json 中未定义!", this);
+                }
+            }
+        }
+#endif
     }
 }
 

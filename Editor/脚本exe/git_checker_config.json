@@ -1,0 +1,9 @@
+{
+  "repo_path": "E:\\mini项目\\mini_game_speed",
+  "skip_no_extension": true,
+  "skip_config": true,
+  "skip_unity_project": true,
+  "enable_auto_revert": true,
+  "max_workers": 24,
+  "batch_size": 20
+}

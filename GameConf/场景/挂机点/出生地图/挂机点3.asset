@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 796686dd274237b4eb709fd3e4e3d733, type: 3}
-  m_Name: "\u6302\u673A\u70B91"
+  m_Name: "\u6302\u673A\u70B93"
   m_EditorClassIdentifier: 
-  "\u540D\u5B57": "\u6302\u673A\u70B91"
-  "\u552F\u4E00ID": 6efb0be3-012f-4f82-aea3-03c6f985c1c2
-  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": "Ground/init_map/terrain/AutoSpot/\u5DE6\u4FA7\u6302\u673A\u70B9/\u6302\u673A\u70B91"
+  "\u540D\u5B57": "\u6302\u673A\u70B93"
+  "\u552F\u4E00ID": 
+  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": "Ground/init_map/terrain/AutoSpot/\u5DE6\u4FA7\u6302\u673A\u70B9/\u6302\u673A\u70B93"
   "\u573A\u666F\u7C7B\u578B": 4
   "\u6240\u5C5E\u573A\u666F": 0
   "\u533A\u57DF\u8282\u70B9\u914D\u7F6E":

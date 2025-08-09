@@ -7,7 +7,9 @@ namespace MiGame.Core
     {
         单独相加, // 将加成值直接累加
         最终乘法,  // 计算的值在最后的结果向乘
-        最终相加  // 将加成值（通常是百分比）相加
+        最终相加,  // 将加成值（通常是百分比）相加
+        基础相加, // 基础值阶段相加
+        基础相乘  // 基础值阶段相乘
     }
 
     /// <summary>
@@ -25,5 +27,10 @@ namespace MiGame.Core
         /// 加成的计算方式
         /// </summary>
         public BonusCalculationMethod Calculation = BonusCalculationMethod.单独相加;
+
+        /// <summary>
+        /// 缩放倍率，用于对该加成的最终效果进行缩放（1 为不变）
+        /// </summary>
+        public float 缩放倍率 = 1f;
     }
 }

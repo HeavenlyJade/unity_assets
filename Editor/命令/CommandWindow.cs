@@ -342,7 +342,7 @@ namespace MiGame.CommandSystem.Editor
             
             if (value is PlayerBonus bonus)
             {
-                return $"{{ \"名称\": \"{bonus.Name}\", \"作用类型\": \"{bonus.Calculation}\" }}";
+                return $"{{ \"名称\": \"{bonus.Name}\", \"作用类型\": \"{bonus.Calculation}\", \"缩放倍率\": {bonus.缩放倍率} }}";
             }
 
             if (value is OtherBonusList otherBonusList)

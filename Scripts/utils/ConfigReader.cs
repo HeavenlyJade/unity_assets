@@ -65,7 +65,9 @@ namespace MiGame.Utils
                         {
                             new BonusCalculationMethodConfig { id = "单独相加", name = "单独相加", description = "将加成值直接累加" },
                             new BonusCalculationMethodConfig { id = "最终乘法", name = "最终乘法", description = "计算的值在最后的结果相乘" },
-                            new BonusCalculationMethodConfig { id = "最终相加", name = "最终相加", description = "将加成值（通常是百分比）相加" }
+                            new BonusCalculationMethodConfig { id = "最终相加", name = "最终相加", description = "将加成值（通常是百分比）相加" },
+                            new BonusCalculationMethodConfig { id = "基础相加", name = "基础相加", description = "在基础值阶段进行相加" },
+                            new BonusCalculationMethodConfig { id = "基础相乘", name = "基础相乘", description = "在基础值阶段进行相乘" }
                         }
                     };
                 }

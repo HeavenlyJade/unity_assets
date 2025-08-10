@@ -58,6 +58,15 @@ namespace MiGame.Shop.Editor
         }
 
         /// <summary>
+        /// 强制刷新变量名数据
+        /// </summary>
+        private void ForceRefreshVariableNames()
+        {
+            isDataLoaded = false;
+            LoadVariableNames();
+        }
+
+        /// <summary>
         /// 创建玩家变量和玩家属性的下拉菜单
         /// </summary>
         private void CreateVariableMenu(GenericMenu menu, List<string> options, string currentValue, SerializedProperty property)
@@ -82,8 +91,8 @@ namespace MiGame.Shop.Editor
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            // 加载变量名数据
-            LoadVariableNames();
+            // 强制刷新变量名数据，确保数据同步
+            ForceRefreshVariableNames();
 
             // 计算布局 - 不使用PrefixLabel，直接使用完整位置
             var indent = EditorGUI.indentLevel;
@@ -113,6 +122,10 @@ namespace MiGame.Shop.Editor
                 // 参照BasePetConfig的逻辑，使用变量名称字符串字段
                 var 变量名称Rect = new Rect(position.x, currentY, position.width, lineHeight);
                 string labelText = GetConfigLabel(selectedType);
+                
+                // 先显示标题标签
+                EditorGUI.LabelField(变量名称Rect, new GUIContent(labelText));
+                currentY += lineHeight + spacing;
                 
                 // 创建下拉选择器
                 var dropdownRect = new Rect(position.x, currentY, position.width, lineHeight);
@@ -208,8 +221,20 @@ namespace MiGame.Shop.Editor
             float lineHeight = EditorGUIUtility.singleLineHeight;
             float spacing = EditorGUIUtility.standardVerticalSpacing;
             
-            // 固定高度：商品类型 + 商品名称/变量名称 + 数量 + 四个间距
-            return lineHeight * 3 + spacing * 4;
+            // 获取商品类型来判断高度
+            var 商品类型Prop = property.FindPropertyRelative("商品类型");
+            商品类型 selectedType = (商品类型)商品类型Prop.enumValueIndex;
+            
+            if (selectedType == 商品类型.玩家变量 || selectedType == 商品类型.玩家属性)
+            {
+                // 玩家变量/玩家属性：商品类型 + 标题 + 下拉选择器 + 数量 + 四个间距
+                return lineHeight * 4 + spacing * 4;
+            }
+            else
+            {
+                // 其他类型：商品类型 + 商品名称 + 数量 + 三个间距
+                return lineHeight * 3 + spacing * 3;
+            }
         }
 
         private void SetStringValue(SerializedProperty property, string value)

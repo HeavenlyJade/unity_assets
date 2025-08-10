@@ -24,9 +24,6 @@ namespace MiGame.Shop
         [Tooltip("商品分类标签")]
         public ShopCategory 商品分类 = ShopCategory.道具材料;
         
-        [Tooltip("商品图标路径")]
-        public string 商品图标 = "";
-        
         [Header("价格配置")]
         public PriceConfig 价格 = new PriceConfig();
         
@@ -38,6 +35,7 @@ namespace MiGame.Shop
         public List<商品奖励配置> 获得物品 = new List<商品奖励配置>();
         
         [Tooltip("购买后执行的指令列表")]
+        [TextArea(3, 8)]
         public List<string> 执行指令 = new List<string>();
         
         [Tooltip("随机奖池配置")]
@@ -180,7 +178,7 @@ namespace MiGame.Shop
         每日,
         每周,
         每月,
-        永久
+        永久一次
     }
     
     /// <summary>

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708befc834bdef447ae3f41bab0aa7cc, type: 3}
+  m_Name: "\u65E0\u58F0\u94C3\u9E7F"
+  m_EditorClassIdentifier: 
+  "\u5546\u54C1\u540D": "\u65E0\u58F0\u94C3\u9E7F"
+  "\u5546\u54C1\u63CF\u8FF0": "\u8D2D\u4E70\u83B7\u5F97 \u65E0\u58F0\u94C3\u9E7F
+    \u4F19\u4F34"
+  "\u5546\u54C1\u5206\u7C7B": 1
+  "\u4EF7\u683C":
+    "\u8D27\u5E01\u7C7B\u578B": 1
+    "\u4EF7\u683C\u6570\u91CF": 100000
+    "\u53D8\u91CF\u952E": "\u8D2D\u4E70\u6B21\u6570"
+    "\u5E7F\u544A\u6A21\u5F0F": 0
+    "\u5E7F\u544A\u6B21\u6570": 0
+  "\u9650\u8D2D\u914D\u7F6E":
+    "\u9650\u8D2D\u7C7B\u578B": 4
+    "\u9650\u8D2D\u6B21\u6570": 1
+    "\u91CD\u7F6E\u65F6\u95F4": 04:00
+    "\u8D2D\u4E70\u6761\u4EF6":
+      "\u6761\u4EF6\u7C7B\u578B": 0
+      "\u6761\u4EF6\u503C": 1
+      "\u6BD4\u8F83\u64CD\u4F5C\u7B26": 3
+  "\u83B7\u5F97\u7269\u54C1":
+  - "\u5546\u54C1\u7C7B\u578B": 1
+    "\u5546\u54C1\u540D\u79F0": {fileID: 11400000, guid: ba046ad7ce778574eaa815af1b2d7626, type: 2}
+    "\u53D8\u91CF\u540D\u79F0": 
+    "\u6570\u91CF": 1
+  "\u6267\u884C\u6307\u4EE4": []
+  "\u5956\u6C60": {fileID: 0}
+  "\u754C\u9762\u914D\u7F6E":
+    "\u6392\u5E8F\u6743\u91CD": 10
+    "\u70ED\u5356\u6807\u7B7E": 1
+    "\u9650\u5B9A\u6807\u7B7E": 1
+    "\u63A8\u8350\u6807\u7B7E": 1
+    "\u56FE\u6807\u8DEF\u5F84": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u4F19\u4F34\u7ACB\u7ED8/\u80D6\u5B9D\u5B9D.png"
+    "\u56FE\u6807\u6570\u91CF": 0
+    "\u80CC\u666F\u6837\u5F0F": 4
+  "\u7279\u6B8A\u5C5E\u6027":
+    "\u8FF7\u4F60\u5546\u54C1ID": 0
+    "\u65F6\u6548\u914D\u7F6E":
+      "\u662F\u5426\u9650\u65F6": 0
+      "\u5F00\u59CB\u65F6\u95F4": 
+      "\u7ED3\u675F\u65F6\u95F4": 
+    "VIP\u9700\u6C42":
+      "\u9700\u8981VIP": 0
+      "VIP\u7B49\u7EA7": 1

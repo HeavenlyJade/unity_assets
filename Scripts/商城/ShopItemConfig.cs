@@ -4,6 +4,7 @@ using UnityEngine;
 using MiGame.Items;
 using MiGame.Pet;
 using MiGame.Trail;
+using MiGame.Lottery;
 
 namespace MiGame.Shop
 {
@@ -22,7 +23,7 @@ namespace MiGame.Shop
         public string 商品描述 = "商品描述";
         
         [Tooltip("商品分类标签")]
-        public ShopCategory 商品分类 = ShopCategory.道具材料;
+        public ShopCategory 商品分类 = ShopCategory.宠物;
         
         [Header("价格配置")]
         public PriceConfig 价格 = new PriceConfig();
@@ -39,7 +40,7 @@ namespace MiGame.Shop
         public List<string> 执行指令 = new List<string>();
         
         [Tooltip("随机奖池配置")]
-        public LotteryPoolConfig 奖池;
+        public LotteryConfig 奖池;
         
         [Header("界面显示")]
         public UIDisplayConfig 界面配置 = new UIDisplayConfig();
@@ -60,11 +61,12 @@ namespace MiGame.Shop
     /// </summary>
     public enum ShopCategory
     {
-        新手礼包,
-        角色卡牌,
-        道具材料,
-        货币充值,
-        限时特惠,
+        宠物,
+        伙伴,
+        翅膀,
+        尾迹,
+        特权,
+        金币,
         会员特权
     }
     
@@ -182,35 +184,6 @@ namespace MiGame.Shop
     }
     
     /// <summary>
-    /// 随机奖池配置
-    /// </summary>
-    [Serializable]
-    public class LotteryPoolConfig
-    {
-        [Tooltip("奖池名称")]
-        public string 奖池名称 = "随机奖池";
-        
-        [Tooltip("奖池物品列表")]
-        public List<LotteryItem> 奖池物品 = new List<LotteryItem>();
-        
-        [Tooltip("保底物品")]
-        public 商品奖励配置 保底物品;
-    }
-    
-    /// <summary>
-    /// 奖池物品
-    /// </summary>
-    [Serializable]
-    public class LotteryItem
-    {
-        [Tooltip("物品")]
-        public 商品奖励配置 物品 = new 商品奖励配置();
-        
-        [Tooltip("权重")]
-        public float 权重 = 1.0f;
-    }
-    
-    /// <summary>
     /// 界面显示配置
     /// </summary>
     [Serializable]
@@ -235,7 +208,7 @@ namespace MiGame.Shop
         public int 图标数量 = 0;
         
         [Tooltip("背景样式")]
-        public BackgroundStyle 背景样式 = BackgroundStyle.默认;
+        public BackgroundStyle 背景样式 = BackgroundStyle.N;
     }
     
     /// <summary>
@@ -243,9 +216,11 @@ namespace MiGame.Shop
     /// </summary>
     public enum BackgroundStyle
     {
-        默认,
-        金色,
-        彩虹
+        N,
+        R,
+        SR,
+        SSR,
+        UR
     }
     
     /// <summary>

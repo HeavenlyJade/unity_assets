@@ -67,7 +67,8 @@ namespace MiGame.Shop
         尾迹,
         特权,
         金币,
-        会员特权
+        会员特权,
+        指令执行
     }
     
     /// <summary>
@@ -88,7 +89,9 @@ namespace MiGame.Shop
         [Tooltip("玩家变量")]
         玩家变量,
         [Tooltip("玩家属性")]
-        玩家属性
+        玩家属性,
+        [Tooltip("指令执行")]
+        指令执行
     }
     
     /// <summary>
@@ -97,6 +100,7 @@ namespace MiGame.Shop
     [Serializable]
     public class 商品奖励配置
     {
+ 
         [Tooltip("商品类型")]
         public 商品类型 商品类型 = 商品类型.物品;
         
@@ -107,7 +111,15 @@ namespace MiGame.Shop
         public string 变量名称 = "";
         
         [Tooltip("奖励数量")]
-        public int 数量 = 1;
+        public float 数量 = 1f;
+        [Tooltip("获得商品描述")]
+        public string 获得商品描述 = "";
+        
+        [Tooltip("简单描述")]
+        public string 简单描述 = "";
+        
+        [Tooltip("资源图标")]
+        public string 资源图标 = "";
     }
     
     /// <summary>
@@ -118,9 +130,16 @@ namespace MiGame.Shop
     {
         [Tooltip("货币类型")]
         public CurrencyType 货币类型 = CurrencyType.水晶;
+
         
         [Tooltip("价格数值")]
-        public int 价格数量 = 100;
+        public long 价格数量 = 100;
+        
+        [Tooltip("迷你币类型")]
+        public 迷你币类型 迷你币类型 = 迷你币类型.空;
+        
+        [Tooltip("迷你币数量")]
+        public int 迷你币数量 = -1;
         
         [Tooltip("购买次数记录变量")]
         public string 变量键 = "购买次数";
@@ -137,9 +156,20 @@ namespace MiGame.Shop
     /// </summary>
     public enum CurrencyType
     {
-        水晶,
-        金币,
-        迷你币
+        水晶 = 0,
+        金币 = 1,
+        [Tooltip("空")]
+        空 = 2
+    }
+    
+    /// <summary>
+    /// 迷你币类型枚举
+    /// </summary>
+    public enum 迷你币类型
+    {
+        迷你币 = 0,
+        [Tooltip("空")]
+        空 = 1
     }
     
     /// <summary>

@@ -103,6 +103,9 @@ namespace MiGame.Shop.Editor
             var 商品名称Prop = property.FindPropertyRelative("商品名称");
             var 变量名称Prop = property.FindPropertyRelative("变量名称");
             var 数量Prop = property.FindPropertyRelative("数量");
+            var 获得商品描述Prop = property.FindPropertyRelative("获得商品描述");
+            var 简单描述Prop = property.FindPropertyRelative("简单描述");
+            var 资源图标Prop = property.FindPropertyRelative("资源图标");
 
             // 计算字段高度
             float lineHeight = EditorGUIUtility.singleLineHeight;
@@ -155,6 +158,16 @@ namespace MiGame.Shop.Editor
                 // 清空商品名称字段
                 商品名称Prop.objectReferenceValue = null;
             }
+            else if (selectedType == 商品类型.指令执行)
+            {
+                // 指令执行类型直接显示字符串输入框
+                var 指令配置Rect = new Rect(position.x, currentY, position.width, lineHeight * 3); // 高度设为3行
+                EditorGUI.PropertyField(指令配置Rect, 变量名称Prop, new GUIContent("指令配置"));
+                currentY += lineHeight * 3 + spacing; // 高度设为3行
+                
+                // 清空商品名称字段
+                商品名称Prop.objectReferenceValue = null;
+            }
             else
             {
                 // 商品名称配置选择器
@@ -181,6 +194,21 @@ namespace MiGame.Shop.Editor
             // 数量字段（所有类型都显示）
             var 数量Rect = new Rect(position.x, currentY, position.width, lineHeight);
             EditorGUI.PropertyField(数量Rect, 数量Prop, new GUIContent("数量"));
+            currentY += lineHeight + spacing;
+
+            // 获得商品描述字段（所有类型都显示）
+            var 获得商品描述Rect = new Rect(position.x, currentY, position.width, lineHeight);
+            EditorGUI.PropertyField(获得商品描述Rect, 获得商品描述Prop, new GUIContent("获得商品描述"));
+            currentY += lineHeight + spacing;
+
+            // 简单描述字段（所有类型都显示）
+            var 简单描述Rect = new Rect(position.x, currentY, position.width, lineHeight);
+            EditorGUI.PropertyField(简单描述Rect, 简单描述Prop, new GUIContent("简单描述"));
+            currentY += lineHeight + spacing;
+
+            // 资源图标字段（所有类型都显示）
+            var 资源图标Rect = new Rect(position.x, currentY, position.width, lineHeight);
+            EditorGUI.PropertyField(资源图标Rect, 资源图标Prop, new GUIContent("资源图标"));
 
             EditorGUI.indentLevel = indent;
             EditorGUI.EndProperty();
@@ -197,6 +225,7 @@ namespace MiGame.Shop.Editor
                 case 商品类型.尾迹: return "尾迹配置";
                 case 商品类型.玩家变量: return "玩家变量名称";
                 case 商品类型.玩家属性: return "玩家属性名称";
+                case 商品类型.指令执行: return "指令配置";
                 default: return "商品名称";
             }
         }
@@ -212,6 +241,7 @@ namespace MiGame.Shop.Editor
                 case 商品类型.尾迹: return typeof(BaseTrailConfig);
                 case 商品类型.玩家变量: return null; // 字符串输入
                 case 商品类型.玩家属性: return null; // 字符串输入
+                case 商品类型.指令执行: return typeof(ScriptableObject); // 指令配置
                 default: return null;
             }
         }
@@ -227,13 +257,18 @@ namespace MiGame.Shop.Editor
             
             if (selectedType == 商品类型.玩家变量 || selectedType == 商品类型.玩家属性)
             {
-                // 玩家变量/玩家属性：商品类型 + 标题 + 下拉选择器 + 数量 + 四个间距
-                return lineHeight * 4 + spacing * 4;
+                // 玩家变量/玩家属性：商品类型 + 标题 + 下拉选择器 + 数量 + 获得商品描述 + 简单描述 + 资源图标 + 七个间距
+                return lineHeight * 7 + spacing * 7;
+            }
+            else if (selectedType == 商品类型.指令执行)
+            {
+                // 指令执行：商品类型 + 指令配置(3行) + 数量 + 获得商品描述 + 简单描述 + 资源图标 + 六个间距
+                return lineHeight * 8 + spacing * 6;
             }
             else
             {
-                // 其他类型：商品类型 + 商品名称 + 数量 + 三个间距
-                return lineHeight * 3 + spacing * 3;
+                // 其他类型：商品类型 + 商品名称 + 数量 + 获得商品描述 + 简单描述 + 资源图标 + 六个间距
+                return lineHeight * 6 + spacing * 6;
             }
         }
 

@@ -138,7 +138,18 @@ namespace MiGame.Editor.Exporter
             }
             else if (type.IsEnum)
             {
-                sb.Append($"'{value.ToString()}'");
+                var enumValue = Convert.ToInt32(value);
+                var enumName = value.ToString();
+                
+                // 特殊处理：如果枚举名称为"空"，导出为nil
+                if (enumName == "空")
+                {
+                    sb.Append("nil");
+                }
+                else
+                {
+                    sb.Append($"'{enumName}'");
+                }
             }
             else if (type == typeof(Vector3))
             {
@@ -239,6 +250,10 @@ namespace MiGame.Editor.Exporter
 
             // 移除前后空白字符
             input = input.Trim();
+            
+            // 如果字符串以 + 或 - 开头，不当作纯数字处理
+            if (input.StartsWith("+") || input.StartsWith("-"))
+                return false;
             
             // 检查是否为整数或浮点数
             return double.TryParse(input, out _);

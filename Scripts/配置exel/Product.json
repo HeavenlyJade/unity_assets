@@ -1,0 +1,10 @@
+[
+	{
+		"CurrencyType": 1,
+		"Description": "特权卡",
+		"GoodsName": "特权卡",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1,
+		"Price": 300 
+	} 
+] 

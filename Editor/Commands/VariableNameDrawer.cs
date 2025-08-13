@@ -11,11 +11,12 @@ namespace MiGame.Commands
         private const string JsonPath = "Assets/GameConf/玩家变量/VariableNames.json";
         private const string NoneOption = "(不选择)";
         private List<string> variableNames;
+        private System.DateTime lastFileWriteTime;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            // Always load the names if they haven't been loaded yet.
-            if (variableNames == null)
+            // 检查文件是否已被修改，如果是则重新加载
+            if (ShouldReloadVariableNames())
             {
                 LoadVariableNames();
             }
@@ -44,6 +45,30 @@ namespace MiGame.Commands
             }
         }
 
+        /// <summary>
+        /// 检查是否需要重新加载变量名列表
+        /// </summary>
+        private bool ShouldReloadVariableNames()
+        {
+            // 如果还没有加载过，需要加载
+            if (variableNames == null)
+                return true;
+
+            // 如果文件不存在，不需要重新加载
+            if (!File.Exists(JsonPath))
+                return false;
+
+            // 检查文件修改时间是否发生变化
+            var currentFileWriteTime = File.GetLastWriteTime(JsonPath);
+            if (currentFileWriteTime != lastFileWriteTime)
+            {
+                lastFileWriteTime = currentFileWriteTime;
+                return true;
+            }
+
+            return false;
+        }
+
         private void LoadVariableNames()
         {
             if (File.Exists(JsonPath))
@@ -51,11 +76,15 @@ namespace MiGame.Commands
                 string json = File.ReadAllText(JsonPath);
                 var data = JsonUtility.FromJson<VariableData>(json);
                 variableNames = data?.VariableNames ?? new List<string>();
+                
+                // 更新文件修改时间
+                lastFileWriteTime = File.GetLastWriteTime(JsonPath);
             }
             else
             {
                 variableNames = new List<string>();
                 Debug.LogWarning("未找到变量名配置文件: " + JsonPath);
+                lastFileWriteTime = System.DateTime.MinValue;
             }
 
             // Always add the "(不选择)" option at the top of the list.

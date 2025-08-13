@@ -12,6 +12,7 @@ namespace MiGame
         private const string NoneOption = "(不选择)";
         private static Dictionary<VariableNameType, List<string>> cachedNames = new Dictionary<VariableNameType, List<string>>();
         private static bool cacheInitialized = false;
+        private static System.DateTime lastFileWriteTime;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -21,7 +22,8 @@ namespace MiGame
 
         public static void DrawSelector(Rect position, SerializedProperty property, GUIContent label, VariableNameType nameType)
         {
-            if (!cacheInitialized)
+            // 检查是否需要重新加载数据
+            if (ShouldReloadNames())
             {
                 LoadAllNames();
                 cacheInitialized = true;
@@ -49,6 +51,30 @@ namespace MiGame
             }
         }
 
+        /// <summary>
+        /// 检查是否需要重新加载变量名列表
+        /// </summary>
+        private static bool ShouldReloadNames()
+        {
+            // 如果还没有初始化，需要加载
+            if (!cacheInitialized)
+                return true;
+
+            // 如果文件不存在，不需要重新加载
+            if (!File.Exists(JsonPath))
+                return false;
+
+            // 检查文件修改时间是否发生变化
+            var currentFileWriteTime = File.GetLastWriteTime(JsonPath);
+            if (currentFileWriteTime != lastFileWriteTime)
+            {
+                lastFileWriteTime = currentFileWriteTime;
+                return true;
+            }
+
+            return false;
+        }
+
         private static void LoadAllNames()
         {
             if (File.Exists(JsonPath))
@@ -63,12 +89,16 @@ namespace MiGame
                 var statNames = data?.StatNames ?? new List<string>();
                 statNames.Insert(0, NoneOption);
                 cachedNames[VariableNameType.Stat] = statNames;
+
+                // 更新文件修改时间
+                lastFileWriteTime = File.GetLastWriteTime(JsonPath);
             }
             else
             {
                 Debug.LogWarning("未找到变量名配置文件: " + JsonPath);
                 cachedNames[VariableNameType.Variable] = new List<string> { NoneOption };
                 cachedNames[VariableNameType.Stat] = new List<string> { NoneOption };
+                lastFileWriteTime = System.DateTime.MinValue;
             }
         }
 

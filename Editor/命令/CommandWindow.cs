@@ -220,6 +220,14 @@ namespace MiGame.CommandSystem.Editor
                     // For history, save all values
                     historyFields.Add(new FieldValue { FieldName = field.Name, Value = currentValue });
                     
+                    if (_selectedCommandInstance is OpenUICommand openUiCmd)
+                    {
+                        if (openUiCmd.界面名 != UIType.LotteryGui && field.Name == "抽奖类型")
+                        {
+                            continue;
+                        }
+                    }
+
                     // Conditional serialization logic
                     if (field.Name == "发件人ID")
                     {

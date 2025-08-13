@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 796686dd274237b4eb709fd3e4e3d733, type: 3}
+  m_Name: "\u6A31\u82B1\u5C9B\u6D77\u6D0B\u4F20\u9001\u70B9"
+  m_EditorClassIdentifier: 
+  "\u540D\u5B57": "\u6A31\u82B1\u5C9B\u4F20\u9001\u70B9"
+  "\u552F\u4E00ID": 836083f5-6823-47fb-ab43-e611486cbada
+  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": "Ground/init_map/terrain/Teleport/\u4F20\u9001\u95E8"
+  "\u573A\u666F\u7C7B\u578B": 7
+  "\u6240\u5C5E\u573A\u666F": 0
+  "\u533A\u57DF\u8282\u70B9\u914D\u7F6E":
+    "\u5305\u56F4\u76D2\u8282\u70B9": TriggerBox
+    "\u590D\u6D3B\u8282\u70B9": 
+    "\u4F20\u9001\u8282\u70B9": 
+    "\u5BFC\u822A\u8282\u70B9": 
+    "\u6BD4\u8D5B\u573A\u666F": 
+  "\u5173\u8054\u5173\u5361": {fileID: 0}
+  "\u73A9\u6CD5\u89C4\u5219":
+    "\u6BD4\u8D5B\u65F6\u957F": 300
+    "\u51C6\u5907\u65F6\u95F4": 10
+    "\u80DC\u5229\u6761\u4EF6": 0
+  "\u97F3\u6548\u8D44\u6E90": 
+  "\u8FDB\u5165\u6761\u4EF6\u5217\u8868": []
+  "\u8FDB\u5165\u6307\u4EE4": "openui { \"\u64CD\u4F5C\u7C7B\u578B\": \"\u6253\u5F00\u754C\u9762\",
+    \"\u754C\u9762\u540D\": \"WaypointGui\" }"
+  "\u79BB\u5F00\u6307\u4EE4": "openui { \"\u64CD\u4F5C\u7C7B\u578B\": \"\u5173\u95ED\u754C\u9762\",
+    \"\u754C\u9762\u540D\": \"WaypointGui\" }"
+  "\u5B9A\u65F6\u6307\u4EE4\u5217\u8868": []

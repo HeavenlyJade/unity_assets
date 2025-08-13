@@ -39,7 +39,9 @@ namespace MiGame.Commands
         [Tooltip("好友界面")]
         FriendGui,
         [Tooltip("聊天界面")]
-        ChatGui
+        ChatGui,
+        [Tooltip("传送点界面")]
+        WaypointGui
     }
 
     /// <summary>
@@ -69,15 +71,12 @@ namespace MiGame.Commands
         [CommandParamDesc("界面名称")]
         public UIType 界面名;
 
-        [ConditionalField("界面名", UIType.LotteryGui)]
+        [ConditionalField("界面名", UIType.LotteryGui, UIType.WaypointGui, false)]
         [CommandParamDesc("抽奖类型 (翅膀/宠物/伙伴/尾迹)")]
         public LotteryUIType 抽奖类型;
 
         [CommandParamDesc("界面参数 (可选，用于传递额外参数)")]
         public string 界面参数;
-
-        [CommandParamDesc("是否显示动画效果")]
-        public bool 显示动画 = true;
 
         [CommandParamDesc("是否关闭其他界面")]
         public bool 关闭其他界面 = false;

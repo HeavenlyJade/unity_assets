@@ -23,7 +23,7 @@ public class PetConfigBatchGenerator : EditorWindow
 
     private static void GenerateAllPetConfigs()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/货币宠物.json");
+        string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/伙伴.json");
         if (!File.Exists(jsonPath))
         {
             Debug.LogError($"未找到json文件: {jsonPath}");
@@ -39,7 +39,7 @@ public class PetConfigBatchGenerator : EditorWindow
         string baseDir = "Assets/GameConf/伙伴";
         foreach (var pet in petList)
         {
-            string quality = pet.品级;
+            string quality = pet.抽奖区域;
             string folder = Path.Combine(baseDir, quality);
             if (!AssetDatabase.IsValidFolder(folder))
             {
@@ -54,7 +54,7 @@ public class PetConfigBatchGenerator : EditorWindow
                 asset = ScriptableObject.CreateInstance<PartnerConfig>();
             }
             asset.宠物名称 = pet.名称;
-            asset.稀有度 = ParseQuality(pet.品级);
+            asset.稀有度 = ParseQuality(pet.商店区域);
             asset.头像资源 = pet.图片;
             asset.模型资源 = pet.模型;
             asset.动画资源 = pet.动画;
@@ -97,17 +97,14 @@ public class PetConfigBatchGenerator : EditorWindow
     [Serializable]
     private class PetJsonData
     {
-        public string 伙伴;
         public string 名称;
-        public string 品级;
+        public string 商店区域;
+        public string 抽奖区域;
         public string 图片;
-        public string 获取方式;
-        public string 消耗迷你币;
-        public string 消耗金币;
-        public string 模型;
-        public string 动画;
         public string 加成_百分比_金币获取;
         public string 加成_百分比_训练加成;
+        public string 模型;
+        public string 动画;
     }
 
     private static 稀有度 ParseQuality(string q)

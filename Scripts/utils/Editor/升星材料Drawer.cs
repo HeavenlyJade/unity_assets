@@ -49,9 +49,9 @@ namespace MiGame.Utils.Editor
             }
             else if (消耗类型 == 消耗类型.宠物)
             {
-                // 显示宠物相关字段
+                // 显示宠物相关字段，只显示PetConfig类型
                 var 消耗名称Rect = new Rect(position.x, position.y + lineHeight + spacing, position.width, lineHeight);
-                EditorGUI.PropertyField(消耗名称Rect, 消耗名称Prop);
+                消耗名称Prop.objectReferenceValue = EditorGUI.ObjectField(消耗名称Rect, new GUIContent("消耗名称"), 消耗名称Prop.objectReferenceValue, typeof(PetConfig), false);
                 
                 var 消耗星级Rect = new Rect(position.x, position.y + (lineHeight + spacing) * 2, position.width, lineHeight);
                 EditorGUI.PropertyField(消耗星级Rect, 消耗星级Prop);
@@ -61,9 +61,9 @@ namespace MiGame.Utils.Editor
             }
             else if (消耗类型 == 消耗类型.伙伴)
             {
-                // 显示伙伴相关字段
+                // 显示伙伴相关字段，只显示PartnerConfig类型
                 var 消耗名称Rect = new Rect(position.x, position.y + lineHeight + spacing, position.width, lineHeight);
-                EditorGUI.PropertyField(消耗名称Rect, 消耗名称Prop);
+                消耗名称Prop.objectReferenceValue = EditorGUI.ObjectField(消耗名称Rect, new GUIContent("消耗名称"), 消耗名称Prop.objectReferenceValue, typeof(PartnerConfig), false);
                 
                 var 消耗星级Rect = new Rect(position.x, position.y + (lineHeight + spacing) * 2, position.width, lineHeight);
                 EditorGUI.PropertyField(消耗星级Rect, 消耗星级Prop);
@@ -73,9 +73,9 @@ namespace MiGame.Utils.Editor
             }
             else if (消耗类型 == 消耗类型.翅膀)
             {
-                // 显示翅膀相关字段（与伙伴逻辑相同）
+                // 显示翅膀相关字段，只显示WingConfig类型
                 var 消耗名称Rect = new Rect(position.x, position.y + lineHeight + spacing, position.width, lineHeight);
-                EditorGUI.PropertyField(消耗名称Rect, 消耗名称Prop);
+                消耗名称Prop.objectReferenceValue = EditorGUI.ObjectField(消耗名称Rect, new GUIContent("消耗名称"), 消耗名称Prop.objectReferenceValue, typeof(WingConfig), false);
                 
                 var 消耗星级Rect = new Rect(position.x, position.y + (lineHeight + spacing) * 2, position.width, lineHeight);
                 EditorGUI.PropertyField(消耗星级Rect, 消耗星级Prop);

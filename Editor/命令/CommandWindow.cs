@@ -331,7 +331,17 @@ namespace MiGame.CommandSystem.Editor
         private string ConvertValueToString(object value, Type type)
         {
             if (value == null || value.Equals(null)) return "null";
-            if (type.IsEnum || type == typeof(string)) return $"\"{value}\"";
+            if (type.IsEnum) return $"\"{value}\"";
+            if (type == typeof(string))
+            {
+                string stringValue = value.ToString();
+                // 智能识别数字字符串，去掉不必要的引号
+                if (IsNumericString(stringValue))
+                {
+                    return stringValue;
+                }
+                return $"\"{stringValue}\"";
+            }
             if (type == typeof(bool)) return value.ToString().ToLower();
             if (type.IsPrimitive) return value.ToString();
             
@@ -387,6 +397,27 @@ namespace MiGame.CommandSystem.Editor
             if (obj is UnityEngine.Object unityObj && unityObj != null) return $"\"{unityObj.name}\"";
             if (obj != null) return $"\"{obj}\"";
             return "null";
+        }
+
+        /// <summary>
+        /// 检查字符串是否为纯数字（整数或浮点数）
+        /// </summary>
+        /// <param name="input">要检查的字符串</param>
+        /// <returns>如果是纯数字返回true，否则返回false</returns>
+        private bool IsNumericString(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return false;
+
+            // 移除前后空白字符
+            input = input.Trim();
+            
+            // 如果字符串以 + 或 - 开头，不当作纯数字处理
+            if (input.StartsWith("+") || input.StartsWith("-"))
+                return false;
+            
+            // 检查是否为整数或浮点数
+            return double.TryParse(input, out _);
         }
 
         private void Cleanup()

@@ -46,14 +46,42 @@ public class 宠物ConfigBatchGenerator : EditorWindow
             }
 
             string quality = pet.品级;
-            string folder = Path.Combine(baseDir, quality);
-            if (!AssetDatabase.IsValidFolder(folder))
+            string folder;
+            
+            // 根据抽奖区域生成文件夹结构
+            if (!string.IsNullOrEmpty(pet.抽奖区域))
             {
-                AssetDatabase.CreateFolder(baseDir, quality);
+                // 有抽奖区域：只按抽奖区域生成文件夹
+                folder = Path.Combine(baseDir, pet.抽奖区域);
+                if (!AssetDatabase.IsValidFolder(folder))
+                {
+                    AssetDatabase.CreateFolder(baseDir, pet.抽奖区域);
+                }
+            }
+            else
+            {
+                // 没有抽奖区域：按品级生成文件夹
+                folder = Path.Combine(baseDir, quality);
+                if (!AssetDatabase.IsValidFolder(folder))
+                {
+                    AssetDatabase.CreateFolder(baseDir, quality);
+                }
             }
 
             string assetPath = Path.Combine(folder, pet.宠物名称 + ".asset").Replace("\\", "/");
             PetConfig asset = AssetDatabase.LoadAssetAtPath<PetConfig>(assetPath);
+            
+            // 检查是否已存在相同的配置，避免重复导出
+            if (asset != null)
+            {
+                // 检查配置是否相同，如果相同则跳过
+                if (IsPetConfigSame(asset, pet))
+                {
+                    Debug.Log($"跳过已存在的宠物配置: {pet.宠物名称}");
+                    continue;
+                }
+            }
+            
             if (asset == null)
             {
                 asset = ScriptableObject.CreateInstance<PetConfig>();
@@ -64,7 +92,16 @@ public class 宠物ConfigBatchGenerator : EditorWindow
             asset.头像资源 = pet.图片资源;
             asset.模型资源 = pet.模型;
             asset.动画资源 = pet.动画;
-            asset.获取方式 = !string.IsNullOrEmpty(pet.获取方式) ? pet.获取方式.Split(',').ToList() : new List<string>();
+            
+            // 根据抽奖区域设置获取方式
+            if (!string.IsNullOrEmpty(pet.抽奖区域))
+            {
+                asset.获取方式 = new List<string> { pet.抽奖区域 };
+            }
+            else
+            {
+                asset.获取方式 = new List<string>();
+            }
 
             asset.携带效果 = new List<携带效果>();
             if (!string.IsNullOrEmpty(pet.加成_百分比_训练加成))
@@ -73,6 +110,8 @@ public class 宠物ConfigBatchGenerator : EditorWindow
                 {
                     变量类型 = 变量类型.玩家变量,
                     变量名称 = "加成_百分比_训练加成",
+                    加成类型 = 加成类型.玩家变量,
+                    目标变量 = "数据_固定值_战力值",
                     效果数值 = pet.加成_百分比_训练加成
                 });
             }
@@ -98,15 +137,43 @@ public class 宠物ConfigBatchGenerator : EditorWindow
         Debug.Log("批量生成宠物配置完成");
     }
 
+    private static bool IsPetConfigSame(PetConfig existing, PetJsonData newData)
+    {
+        if (existing.宠物名称 != newData.宠物名称) return false;
+        if (existing.稀有度 != ParseQuality(newData.品级)) return false;
+        if (existing.头像资源 != newData.图片资源) return false;
+        if (existing.模型资源 != newData.模型) return false;
+        if (existing.动画资源 != newData.动画) return false;
+        
+        // 检查获取方式
+        var existingGetWay = existing.获取方式 != null && existing.获取方式.Count > 0 ? existing.获取方式[0] : "";
+        var newGetWay = !string.IsNullOrEmpty(newData.抽奖区域) ? newData.抽奖区域 : "";
+        if (existingGetWay != newGetWay) return false;
+        
+        // 检查携带效果
+        if (existing.携带效果 != null && existing.携带效果.Count > 0)
+        {
+            var existingEffect = existing.携带效果[0];
+            if (existingEffect.效果数值 != newData.加成_百分比_训练加成) return false;
+        }
+        else if (!string.IsNullOrEmpty(newData.加成_百分比_训练加成))
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
     [Serializable]
     private class PetJsonData
     {
         public string 宠物名称;
+        public string 抽奖区域;
         public string 品级;
+        public string 图片;
         public string 图片资源;
         public string 模型;
         public string 动画;
-        public string 获取方式;
         public string 加成_百分比_训练加成;
     }
 

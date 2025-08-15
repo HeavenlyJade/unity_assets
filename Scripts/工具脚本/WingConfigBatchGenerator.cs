@@ -41,22 +41,24 @@ public class WingConfigBatchGenerator : EditorWindow
             return;
         }
         string jsonText = File.ReadAllText(jsonPath);
-        var wingData = JsonUtility.FromJson<WingJsonRoot>(jsonText);
-        if (wingData?.翅膀配置 == null)
+        
+        // 使用JsonUtilityWrapper解析数组格式的JSON
+        var wingList = JsonUtilityWrapper.FromJsonArray<WingJsonData>(jsonText);
+        if (wingList == null)
         {
             Debug.LogError("json解析失败");
             return;
         }
-        var wingList = wingData.翅膀配置;
+        
         string baseDir = "Assets/GameConf/翅膀";
         foreach (var wing in wingList)
         {
-            string quality = wing.品级;
-            string folder = Path.Combine(baseDir, quality);
+            string area = wing.所在区域;
+            string folder = Path.Combine(baseDir, area);
             if (!AssetDatabase.IsValidFolder(folder))
             {
                 string parent = baseDir;
-                string newFolder = quality;
+                string newFolder = area;
                 AssetDatabase.CreateFolder(parent, newFolder);
             }
             string assetPath = Path.Combine(folder, wing.翅膀名称 + ".asset").Replace("\\", "/");
@@ -81,15 +83,15 @@ public class WingConfigBatchGenerator : EditorWindow
                     目标变量 = "数据_固定值_移动速度",
                     作用类型 = "单独相加"
                 },
-                                 new 携带效果
-                 {
-                     变量类型 = 变量类型.玩家变量,
-                     变量名称 = "加成_百分比_金币加成",
-                     效果数值 = wing.加成_百分比_金币加成.ToString(),
-                     加成类型 = 加成类型.物品,
-                     物品目标 = goldItem,
-                     作用类型 = "单独相加"
-                 },
+                new 携带效果
+                {
+                    变量类型 = 变量类型.玩家变量,
+                    变量名称 = "加成_百分比_金币加成",
+                    效果数值 = wing.加成_百分比_金币加成.ToString(),
+                    加成类型 = 加成类型.物品,
+                    物品目标 = goldItem,
+                    作用类型 = "单独相加"
+                },
                 new 携带效果
                 {
                     变量类型 = 变量类型.玩家变量,
@@ -122,23 +124,20 @@ public class WingConfigBatchGenerator : EditorWindow
     }
 
     [Serializable]
-    private class WingJsonRoot
-    {
-        public WingJsonData[] 翅膀配置;
-    }
-
-    [Serializable]
     private class WingJsonData
     {
         public string 翅膀名称;
         public string 品级;
+        public string 所在区域;
         public string 获取方式;
         public string 模型;
         public string 动画;
         public string 头像;
-        public float 加成_百分比_速度加成;
-        public float 加成_百分比_金币加成;
-        public float 加成_百分比_加速度;
+        public string 加成_百分比_速度加成;
+        public string 加成_百分比_金币加成;
+        public string 加成_百分比_加速度;
+        public float? 金币价格;
+        public float? 迷你币价格;
     }
 
     private static 稀有度 ParseQuality(string q)

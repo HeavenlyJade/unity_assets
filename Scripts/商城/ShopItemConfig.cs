@@ -53,6 +53,12 @@ namespace MiGame.Shop
             // 确保列表不为空
             if (获得物品 == null) 获得物品 = new List<商品奖励配置>();
             if (执行指令 == null) 执行指令 = new List<string>();
+            
+            // 验证价格配置
+            if (价格 != null)
+            {
+                价格.验证价格();
+            }
         }
     }
     
@@ -133,7 +139,7 @@ namespace MiGame.Shop
 
         
         [Tooltip("价格数值")]
-        public long 价格数量 = 100;
+        public string 价格数量 = "-1";
         
         [Tooltip("迷你币类型")]
         public 迷你币类型 迷你币类型 = 迷你币类型.空;
@@ -149,6 +155,33 @@ namespace MiGame.Shop
         
         [Tooltip("广告可减免次数")]
         public int 广告次数 = 0;
+        
+        /// <summary>
+        /// 验证价格数值格式
+        /// </summary>
+        public void 验证价格()
+        {
+            // 验证价格数量是否为有效数字
+            if (string.IsNullOrEmpty(价格数量))
+            {
+                Debug.LogWarning("价格数量为空，已重置为-1");
+                价格数量 = "-1";
+                return;
+            }
+            
+            if (!decimal.TryParse(价格数量, out decimal price))
+            {
+                Debug.LogWarning($"价格数量格式无效：{价格数量}，已重置为-1");
+                价格数量 = "-1";
+                return;
+            }
+            
+            if (price < 0 && price != -1)
+            {
+                Debug.LogWarning("价格不能为负数（-1表示未设置），已重置为0");
+                价格数量 = "0";
+            }
+        }
     }
     
     /// <summary>

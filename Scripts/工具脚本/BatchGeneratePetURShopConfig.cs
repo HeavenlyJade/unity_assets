@@ -154,7 +154,7 @@ namespace MiGame.Tools
                 
                 // 设置价格（UR品质使用金币）
                 shopConfig.价格.货币类型 = CurrencyType.金币;
-                shopConfig.价格.价格数量 = GetPriceForURPet();
+                shopConfig.价格.价格数量 = GetPriceForURPet().ToString("F0");
                 
                 // 设置限购配置
                 shopConfig.限购配置.限购类型 = LimitType.永久一次;
@@ -195,7 +195,7 @@ namespace MiGame.Tools
             }
         }
         
-        private int GetPriceForURPet()
+        private decimal GetPriceForURPet()
         {
             // UR品质宠物使用金币，价格较高
             return 80000; // 8万金币

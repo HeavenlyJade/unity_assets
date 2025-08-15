@@ -171,7 +171,7 @@ namespace MiGame.Tools
                 
                 // 设置价格（根据商店区域/品质）
                 shopConfig.价格.货币类型 = CurrencyType.金币;
-                shopConfig.价格.价格数量 = GetPriceByQuality(partnerData.商店区域);
+                shopConfig.价格.价格数量 = GetPriceByQuality(partnerData.商店区域).ToString("F0");
                 
                 // 设置限购配置
                 shopConfig.限购配置.限购类型 = LimitType.永久一次;
@@ -254,7 +254,7 @@ namespace MiGame.Tools
             }
         }
         
-        private int GetPriceByQuality(string quality)
+        private decimal GetPriceByQuality(string quality)
         {
             switch (quality)
             {

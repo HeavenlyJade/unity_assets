@@ -236,14 +236,14 @@ namespace MiGame.Tools
                     }
                     
                     // 设置价格数量（现在支持大型数字）
-                    shopConfig.价格.价格数量 = trailJsonData.货币数量;
+                    shopConfig.价格.价格数量 = trailJsonData.货币数量.ToString("F0");
                 }
                 else
                 {
                     Debug.LogWarning($"未找到拖尾配置: {trailConfig.name}，使用默认价格");
                     // 如果没有找到对应配置，使用默认值
                     shopConfig.价格.货币类型 = CurrencyType.金币;
-                    shopConfig.价格.价格数量 = GetPriceByQuality(trailConfig.稀有度);
+                    shopConfig.价格.价格数量 = GetPriceByQuality(trailConfig.稀有度).ToString("F0");
                 }
                 
                 // 设置限购配置
@@ -287,7 +287,7 @@ namespace MiGame.Tools
             }
         }
         
-        private int GetPriceByQuality(稀有度 quality)
+        private decimal GetPriceByQuality(稀有度 quality)
         {
             switch (quality)
             {

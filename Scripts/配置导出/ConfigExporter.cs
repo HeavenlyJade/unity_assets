@@ -119,9 +119,15 @@ namespace MiGame.Editor.Exporter
                 var stringValue = value.ToString();
                 
                 // 特殊处理：如果字符串内容是纯数字，则导出为数字类型
-                if (IsNumericString(stringValue))
+                // 但对于超大数字（超过JavaScript安全范围），保持为字符串以避免精度丢失
+                if (IsNumericString(stringValue) && !IsVeryLargeNumber(stringValue))
                 {
                     sb.Append(stringValue);
+                }
+                else if (IsNumericString(stringValue))
+                {
+                    // 数字太大，导出为字符串但添加注释说明
+                    sb.Append($"'{stringValue}' --[[ Large Number: {stringValue} ]]");
                 }
                 else
                 {
@@ -257,6 +263,47 @@ namespace MiGame.Editor.Exporter
             
             // 检查是否为整数或浮点数
             return double.TryParse(input, out _);
+        }
+        
+        /// <summary>
+        /// 检查数字字符串是否超过安全范围，需要特殊处理
+        /// </summary>
+        /// <param name="numericString">数字字符串</param>
+        /// <returns>如果数字过大需要特殊处理返回true</returns>
+        private bool IsVeryLargeNumber(string numericString)
+        {
+            if (string.IsNullOrWhiteSpace(numericString))
+                return false;
+                
+            // 移除前后空白字符
+            numericString = numericString.Trim();
+            
+            // 如果包含小数点，按浮点数处理
+            if (numericString.Contains("."))
+            {
+                // 尝试用decimal解析，decimal比double精度更高
+                if (!decimal.TryParse(numericString, out decimal decimalValue))
+                    return true; // 无法解析，太大了
+                    
+                // 检查是否超过JavaScript安全整数范围（Lua中数字最终可能转为JS）
+                return Math.Abs(decimalValue) > 9007199254740991m; // 2^53 - 1
+            }
+            
+            // 整数情况：先尝试long，再尝试decimal
+            if (long.TryParse(numericString, out _))
+            {
+                return false; // long范围内，安全
+            }
+            
+            // 超过long，尝试decimal
+            if (decimal.TryParse(numericString, out decimal bigDecimal))
+            {
+                // 检查是否超过JavaScript安全整数范围
+                return Math.Abs(bigDecimal) > 9007199254740991m; // 2^53 - 1
+            }
+            
+            // 连decimal都无法解析，确实太大了
+            return true;
         }
         
         /// <summary>

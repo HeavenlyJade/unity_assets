@@ -176,15 +176,15 @@ namespace MiGame.Tools
                 if (!string.IsNullOrEmpty(wingData.金币价格) && decimal.TryParse(wingData.金币价格, out decimal goldPrice) && goldPrice > 0)
                 {
                     shopConfig.价格.货币类型 = CurrencyType.金币;
-                    shopConfig.价格.价格数量 = (long)goldPrice;
-                    Debug.Log($"设置金币价格: {goldPrice}");
+                    shopConfig.价格.价格数量 = wingData.金币价格; // 直接使用原始字符串，避免转换问题
+                    Debug.Log($"设置金币价格: {wingData.金币价格}");
                 }
                 else
                 {
                     // 如果JSON中没有金币价格，根据品质设置默认价格
                     decimal defaultPrice = GetPriceByQuality(wingData.品级);
                     shopConfig.价格.货币类型 = CurrencyType.金币;
-                    shopConfig.价格.价格数量 = (long)defaultPrice;
+                    shopConfig.价格.价格数量 = defaultPrice.ToString("F0"); // F0格式去掉小数部分
                     Debug.Log($"使用默认价格: {defaultPrice} (品质: {wingData.品级})");
                 }
                 

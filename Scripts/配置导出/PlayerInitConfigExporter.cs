@@ -1,6 +1,8 @@
 #if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -66,41 +68,20 @@ public static void ExportToPath(string exportPath)
                 string configName = config.name; // 使用文件名作为配置名
                 sb.AppendLine($"    ['{configName}'] = {{");
                 sb.AppendLine($"        ['配置名称'] = '{configName}',");
-                sb.AppendLine($"        ['描述'] = '{config.描述}',");
 
-                // 货币初始化
-                sb.AppendLine("        ['货币初始化'] = {");
-                foreach (var currency in config.货币初始化)
+                // 使用反射获取所有公共字段
+                FieldInfo[] fields = typeof(PlayerInitConfig).GetFields(BindingFlags.Public | BindingFlags.Instance);
+                
+                foreach (var field in fields)
                 {
-                    if (currency.货币名称 != null)
+                    if (field.Name == "name") continue; // 跳过Unity内置的name字段
+                    
+                    var value = field.GetValue(config);
+                    if (value != null)
                     {
-                        sb.AppendLine("            {");
-                        sb.AppendLine($"                ['货币名称'] = '{currency.货币名称.name}',");
-                        sb.AppendLine($"                ['初始数量'] = {currency.初始数量},");
-                        sb.AppendLine("            },");
+                        ExportFieldToLua(sb, field.Name, value, 2);
                     }
                 }
-                sb.AppendLine("        },");
-
-                // 变量初始化
-                sb.AppendLine("        ['变量初始化'] = {");
-                foreach (var variable in config.变量初始化)
-                {
-                    if (!string.IsNullOrEmpty(variable.变量名称))
-                    {
-                        sb.AppendLine("            {");
-                        sb.AppendLine($"                ['变量名称'] = '{variable.变量名称}',");
-                        sb.AppendLine($"                ['初始值'] = {variable.初始值},");
-                        sb.AppendLine("            },");
-                    }
-                }
-                sb.AppendLine("        },");
-
-                // 其他设置
-                sb.AppendLine("        ['其他设置'] = {");
-                sb.AppendLine($"            ['是否新手'] = {config.其他设置.是否新手.ToString().ToLower()},");
-                sb.AppendLine($"            ['初始等级'] = {config.其他设置.初始等级},");
-                sb.AppendLine("        },");
 
                 sb.AppendLine("    },");
             }
@@ -109,6 +90,124 @@ public static void ExportToPath(string exportPath)
             sb.AppendLine("-- --- 自动生成配置结束 ---");
             sb.AppendLine();
             sb.AppendLine("return PlayerInitConfig");
+        }
+
+        /// <summary>
+        /// 将字段值导出为Lua格式
+        /// </summary>
+        /// <param name="sb">StringBuilder</param>
+        /// <param name="fieldName">字段名</param>
+        /// <param name="value">字段值</param>
+        /// <param name="indentLevel">缩进级别</param>
+        private static void ExportFieldToLua(StringBuilder sb, string fieldName, object value, int indentLevel)
+        {
+            string indent = new string(' ', indentLevel * 4);
+            
+            if (value == null)
+                return;
+
+            // 处理不同类型的值
+            if (value is string stringValue)
+            {
+                sb.AppendLine($"{indent}['{fieldName}'] = '{stringValue}',");
+            }
+            else if (value is bool boolValue)
+            {
+                sb.AppendLine($"{indent}['{fieldName}'] = {boolValue.ToString().ToLower()},");
+            }
+            else if (value is int || value is float || value is double)
+            {
+                sb.AppendLine($"{indent}['{fieldName}'] = {value},");
+            }
+            else if (value is IList list)
+            {
+                sb.AppendLine($"{indent}['{fieldName}'] = {{");
+                
+                foreach (var item in list)
+                {
+                    if (item != null)
+                    {
+                        // 如果是基础类型（如字符串），直接导出值
+                        if (item is string stringItem)
+                        {
+                            // 只导出非空字符串
+                            if (!string.IsNullOrEmpty(stringItem))
+                            {
+                                sb.AppendLine($"{indent}    '{stringItem}',");
+                            }
+                        }
+                        else if (item is int || item is float || item is double)
+                        {
+                            sb.AppendLine($"{indent}    {item},");
+                        }
+                        else if (item is bool boolItem)
+                        {
+                            sb.AppendLine($"{indent}    {boolItem.ToString().ToLower()},");
+                        }
+                        else
+                        {
+                            // 复杂对象，使用原来的方法
+                            ExportObjectToLua(sb, item, indentLevel + 1);
+                        }
+                    }
+                }
+                
+                sb.AppendLine($"{indent}}},");
+            }
+            else if (value.GetType().IsClass && !typeof(UnityEngine.Object).IsAssignableFrom(value.GetType()))
+            {
+                // 处理自定义类（如OtherSettings）
+                sb.AppendLine($"{indent}['{fieldName}'] = {{");
+                
+                FieldInfo[] fields = value.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+                foreach (var field in fields)
+                {
+                    var fieldValue = field.GetValue(value);
+                    if (fieldValue != null)
+                    {
+                        ExportFieldToLua(sb, field.Name, fieldValue, indentLevel + 1);
+                    }
+                }
+                
+                sb.AppendLine($"{indent}}},");
+            }
+        }
+
+        /// <summary>
+        /// 将对象导出为Lua表格式
+        /// </summary>
+        /// <param name="sb">StringBuilder</param>
+        /// <param name="obj">对象</param>
+        /// <param name="indentLevel">缩进级别</param>
+        private static void ExportObjectToLua(StringBuilder sb, object obj, int indentLevel)
+        {
+            string indent = new string(' ', indentLevel * 4);
+            
+            sb.AppendLine($"{indent}{{");
+            
+            FieldInfo[] fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(obj);
+                if (value != null)
+                {
+                    // 特殊处理ScriptableObject引用
+                    if (typeof(ScriptableObject).IsAssignableFrom(field.FieldType))
+                    {
+                        var scriptableObj = value as ScriptableObject;
+                        if (scriptableObj != null)
+                        {
+                            sb.AppendLine($"{indent}    ['{field.Name}'] = '{scriptableObj.name}',");
+                        }
+                    }
+                    else
+                    {
+                        ExportFieldToLua(sb, field.Name, value, indentLevel + 1);
+                    }
+                }
+            }
+            
+            sb.AppendLine($"{indent}}},");
         }
     }
 }

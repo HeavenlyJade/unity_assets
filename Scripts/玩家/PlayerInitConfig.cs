@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using MiGame.Items;
 using MiGame.Commands;
+using MiGame.Pet;
+using MiGame.Trail;
 
 namespace MiGame.Data
 {
@@ -32,6 +34,8 @@ namespace MiGame.Data
         public float 初始值 = 0;
     }
 
+
+
     /// <summary>
     /// 其他初始化设置
     /// </summary>
@@ -48,7 +52,7 @@ namespace MiGame.Data
     /// <summary>
     /// 玩家初始化配置的ScriptableObject
     /// </summary>
-    [CreateAssetMenu(fileName = "新玩家初始化", menuName = "配置/玩家初始化配置")]
+    [CreateAssetMenu(fileName = "新玩家初始化", menuName = "工具/玩家初始化配置")]
     public class PlayerInitConfig : ScriptableObject
     {
         [Tooltip("此配置的描述信息")]
@@ -60,6 +64,10 @@ namespace MiGame.Data
         [Header("变量设置")]
         public List<InitialVariable> 变量初始化 = new List<InitialVariable>();
         
+        [Header("指令初始化")]
+        [Tooltip("新玩家初始化时执行的指令列表")]
+        [TextArea(3, 10)]
+        public List<string> 指令初始化 = new List<string>();
         [Header("其他设置")]
         public OtherSettings 其他设置 = new OtherSettings();
     }

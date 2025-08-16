@@ -83,6 +83,12 @@ namespace MiGame.Scene
         [Tooltip("该区域关联的导航节点标识")]
         public string 导航节点;
 
+        [Tooltip("该区域关联的需求描述节点标识")]
+        public string 需求描述节点;
+
+        [Tooltip("该区域关联的作用描述节点标识")]
+        public string 作用描述节点;
+
         [Tooltip("该区域关联的比赛场景标识")]
         public string 比赛场景;
     }
@@ -123,6 +129,15 @@ namespace MiGame.Scene
 
         [Tooltip("节点触发时的音效，填写资源的路径")]
         public string 音效资源;
+
+        [Header("描述信息")]
+        [Tooltip("该节点的需求描述")]
+        [TextArea(3, 5)]
+        public string 需求描述;
+
+        [Tooltip("该节点的作用描述")]
+        [TextArea(3, 5)]
+        public string 作用描述;
 
         [Header("进入条件")]
         [Tooltip("定义进入该节点需要满足的条件列表")]

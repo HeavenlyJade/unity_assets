@@ -15,6 +15,10 @@ namespace MiGame.Commands
         public bool 变量 = true;
         public bool 基础数据 = true;
         public bool 技能 = false;
+        public bool 宠物 = false;
+        public bool 伙伴 = false;
+        public bool 翅膀 = false;
+        public bool 尾迹 = false;
     }
 
     /// <summary>
@@ -77,6 +81,30 @@ namespace MiGame.Commands
             {
                 // TODO: 在这里添加清空玩家技能的逻辑
                 Debug.Log($" - 正在清空技能...");
+            }
+
+            if (清空范围.宠物)
+            {
+                // TODO: 在这里添加清空玩家宠物的逻辑
+                Debug.Log($" - 正在清空宠物...");
+            }
+
+            if (清空范围.伙伴)
+            {
+                // TODO: 在这里添加清空玩家伙伴的逻辑
+                Debug.Log($" - 正在清空伙伴...");
+            }
+
+            if (清空范围.翅膀)
+            {
+                // TODO: 在这里添加清空玩家翅膀的逻辑
+                Debug.Log($" - 正在清空翅膀...");
+            }
+
+            if (清空范围.尾迹)
+            {
+                // TODO: 在这里添加清空玩家尾迹的逻辑
+                Debug.Log($" - 正在清空尾迹...");
             }
 
             Debug.Log($"玩家 {玩家UID} 的数据已根据所选范围清空完毕。");

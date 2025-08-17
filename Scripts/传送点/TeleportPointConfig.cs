@@ -17,8 +17,9 @@ namespace MiGame.Config
         [Tooltip("传送节点标识")]
         public string 传送节点;
         
-        [Tooltip("需求等级")]
-        public int 需求等级;
+        [Tooltip("需求条件")]
+        [TextArea(2, 4)]
+        public string 需求条件;
         
         [Tooltip("权重")]
         public int 权重;
@@ -31,6 +32,10 @@ namespace MiGame.Config
         [Tooltip("传送点描述")]
         [TextArea(3, 5)]
         public string 传送点描述;
+        
+        [Tooltip("变量表达公式")]
+        [TextArea(2, 4)]
+        public string 变量表达公式;
         
         [Tooltip("是否解锁")]
         public bool 是否解锁;

@@ -5,6 +5,8 @@ namespace MiGame
     public enum VariableNameType
     {
         Variable,
-        Stat
+        Stat,
+        PlayerAttribute,
+        仅加成新增
     }
 }

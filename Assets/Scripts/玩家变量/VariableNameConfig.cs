@@ -10,6 +10,8 @@ namespace MiGame.Data
     {
         public List<string> VariableNames = new List<string>();
         public List<string> StatNames = new List<string>();
+        public List<string> PlayerAttributeNames = new List<string>();
+        public List<string> 仅加成新增Names = new List<string>();
     }
 
     [CreateAssetMenu(fileName = "VariableNameConfig", menuName = "配置/变量名配置")]
@@ -20,6 +22,12 @@ namespace MiGame.Data
 
         [Header("属性 (用于 StatSystem)")]
         public List<string> StatNames;
+
+        [Header("玩家的属性配置")]
+        public List<string> PlayerAttributeNames;
+
+        [Header("仅加成新增配置")]
+        public List<string> 仅加成新增Names;
 
 #if UNITY_EDITOR
         private const string JsonPath = "Assets/GameConf/玩家变量/VariableNames.json";
@@ -37,6 +45,8 @@ namespace MiGame.Data
             const string pattern = @"^[\u4e00-\u9fa5a-zA-Z0-9_]+$";
             ValidateNames(VariableNames, "玩家变量", pattern);
             ValidateNames(StatNames, "玩家属性", pattern);
+            ValidateNames(PlayerAttributeNames, "玩家的属性配置", pattern);
+            ValidateNames(仅加成新增Names, "仅加成新增配置", pattern);
 
             // 保存到JSON
             SaveToJson();
@@ -50,6 +60,8 @@ namespace MiGame.Data
                 VariableData data = JsonUtility.FromJson<VariableData>(json);
                 VariableNames = data.VariableNames;
                 StatNames = data.StatNames;
+                PlayerAttributeNames = data.PlayerAttributeNames;
+                仅加成新增Names = data.仅加成新增Names;
             }
             else
             {
@@ -62,7 +74,9 @@ namespace MiGame.Data
             VariableData data = new VariableData
             {
                 VariableNames = this.VariableNames,
-                StatNames = this.StatNames
+                StatNames = this.StatNames,
+                PlayerAttributeNames = this.PlayerAttributeNames,
+                仅加成新增Names = this.仅加成新增Names
             };
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(JsonPath, json);

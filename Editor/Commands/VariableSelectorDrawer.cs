@@ -90,6 +90,14 @@ namespace MiGame
                 statNames.Insert(0, NoneOption);
                 cachedNames[VariableNameType.Stat] = statNames;
 
+                var playerAttributeNames = data?.PlayerAttributeNames ?? new List<string>();
+                playerAttributeNames.Insert(0, NoneOption);
+                cachedNames[VariableNameType.PlayerAttribute] = playerAttributeNames;
+
+                var 仅加成新增Names = data?.仅加成新增Names ?? new List<string>();
+                仅加成新增Names.Insert(0, NoneOption);
+                cachedNames[VariableNameType.仅加成新增] = 仅加成新增Names;
+
                 // 更新文件修改时间
                 lastFileWriteTime = File.GetLastWriteTime(JsonPath);
             }
@@ -98,6 +106,8 @@ namespace MiGame
                 Debug.LogWarning("未找到变量名配置文件: " + JsonPath);
                 cachedNames[VariableNameType.Variable] = new List<string> { NoneOption };
                 cachedNames[VariableNameType.Stat] = new List<string> { NoneOption };
+                cachedNames[VariableNameType.PlayerAttribute] = new List<string> { NoneOption };
+                cachedNames[VariableNameType.仅加成新增] = new List<string> { NoneOption };
                 lastFileWriteTime = System.DateTime.MinValue;
             }
         }
@@ -113,6 +123,8 @@ namespace MiGame
         {
             public List<string> VariableNames = new List<string>();
             public List<string> StatNames = new List<string>();
+            public List<string> PlayerAttributeNames = new List<string>();
+            public List<string> 仅加成新增Names = new List<string>();
         }
     }
 }

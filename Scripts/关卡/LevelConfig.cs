@@ -29,6 +29,13 @@ namespace MiGame.Data
         [Tooltip("该关卡的详细玩法规则")]
         public GameRule 玩法规则 = new GameRule();
         
+        [Header("执行指令")]
+        [Tooltip("游戏开始时执行的指令列表")]
+        public List<string> 游戏开始指令;
+        
+        [Tooltip("游戏结算时执行的指令列表")]
+        public List<string> 游戏结算指令;
+        
         [Header("奖励信息")]
         [Tooltip("所有参与者都能获得的基础奖励")]
         public List<RewardRule> 基础奖励;

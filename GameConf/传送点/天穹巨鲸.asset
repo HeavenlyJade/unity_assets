@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\u4F20\u9001\u70B9\u540D\u79F0": "\u5929\u7A79\u5DE8\u9CB8"
   "\u4F20\u9001\u8282\u70B9": "Ground/map3/terrain/Teleport/\u4F20\u9001\u70B9"
+  "\u573A\u666F\u8282\u70B9": map3
   "\u9700\u6C42\u6761\u4EF6": 600000000000000000000
   "\u6743\u91CD": 3
   "\u56FE\u7247\u8D44\u6E90\u8DEF\u5F84": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u4F20\u9001UI/\u5929\u7A79\u5DE8\u9CB8.png"

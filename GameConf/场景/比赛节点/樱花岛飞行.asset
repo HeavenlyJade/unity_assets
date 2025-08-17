@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 796686dd274237b4eb709fd3e4e3d733, type: 3}
-  m_Name: jump1
+  m_Name: "\u6A31\u82B1\u5C9B\u98DE\u884C"
   m_EditorClassIdentifier: 
   "\u540D\u5B57": jump1
   "\u552F\u4E00ID": acd1a360-1a02-4406-b9ed-70f96a5a46a7
@@ -22,6 +22,9 @@ MonoBehaviour:
     "\u590D\u6D3B\u8282\u70B9": BasicRespawn
     "\u4F20\u9001\u8282\u70B9": TeleportNode
     "\u5BFC\u822A\u8282\u70B9": navNode
+    "\u9700\u6C42\u63CF\u8FF0\u8282\u70B9": 
+    "\u4F5C\u7528\u63CF\u8FF0\u8282\u70B9": 
+    "\u5012\u8BA1\u65F6\u663E\u793A\u8282\u70B9": "Ground/init_map/terrain/Scene/UIRoot3D/\u8BA1\u65F6\u5668"
     "\u6BD4\u8D5B\u573A\u666F": Ground/init_map/terrain/Scene/race_track
   "\u5173\u8054\u5173\u5361": {fileID: 11400000, guid: ecfdb514301f40644970a882e0ae7da1, type: 2}
   "\u73A9\u6CD5\u89C4\u5219":
@@ -29,6 +32,9 @@ MonoBehaviour:
     "\u51C6\u5907\u65F6\u95F4": 10
     "\u80DC\u5229\u6761\u4EF6": 0
   "\u97F3\u6548\u8D44\u6E90": 
+  "\u9700\u6C42\u63CF\u8FF0": 
+  "\u4F5C\u7528\u63CF\u8FF0": 
+  "\u8FDB\u5165\u6761\u4EF6\u5217\u8868": []
   "\u8FDB\u5165\u6307\u4EE4": 
   "\u79BB\u5F00\u6307\u4EE4": 
   "\u5B9A\u65F6\u6307\u4EE4\u5217\u8868": []

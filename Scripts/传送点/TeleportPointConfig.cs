@@ -17,6 +17,9 @@ namespace MiGame.Config
         [Tooltip("传送节点标识")]
         public string 传送节点;
         
+        [Tooltip("场景节点")]
+        public string 场景节点;
+        
         [Tooltip("需求条件")]
         [TextArea(2, 4)]
         public string 需求条件;

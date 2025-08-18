@@ -26,7 +26,19 @@ namespace MiGame.Lottery
         [Tooltip("初级伙伴抽奖")]
         初级伙伴,
         [Tooltip("初级尾迹抽奖")]
-        初级尾迹
+        初级尾迹,
+        [Tooltip("中级伙伴抽奖")]
+        中级伙伴,
+        [Tooltip("中级宠物抽奖")]
+        中级宠物,
+        [Tooltip("中级翅膀抽奖")]
+        中级翅膀,
+        [Tooltip("高级伙伴抽奖")]
+        高级伙伴,
+        [Tooltip("高级宠物抽奖")]
+        高级宠物,
+        [Tooltip("高级翅膀抽奖")]
+        高级翅膀
     }
 
     /// <summary>
@@ -103,7 +115,7 @@ namespace MiGame.Lottery
         public ItemType 消耗物品;
         
         [Tooltip("消耗数量")]
-        public int 消耗数量 = 1;
+        public long 消耗数量 = 1;
     }
 
     /// <summary>
@@ -116,7 +128,7 @@ namespace MiGame.Lottery
         public ItemType 消耗物品;
         
         [Tooltip("消耗数量")]
-        public int 消耗数量 = 5;
+        public long 消耗数量 = 5;
     }
 
     /// <summary>
@@ -129,7 +141,7 @@ namespace MiGame.Lottery
         public ItemType 消耗物品;
         
         [Tooltip("消耗数量")]
-        public int 消耗数量 = 10;
+        public long 消耗数量 = 10;
     }
 
     /// <summary>

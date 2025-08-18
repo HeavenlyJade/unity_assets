@@ -31,9 +31,11 @@ namespace MiGame.Data
         
         [Header("执行指令")]
         [Tooltip("游戏开始时执行的指令列表")]
+        [TextArea(3, 10)]
         public List<string> 游戏开始指令;
         
         [Tooltip("游戏结算时执行的指令列表")]
+        [TextArea(3, 10)]
         public List<string> 游戏结算指令;
         
         [Header("奖励信息")]

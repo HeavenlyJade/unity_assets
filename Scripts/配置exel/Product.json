@@ -4,7 +4,167 @@
 		"Description": "特权卡",
 		"GoodsName": "特权卡",
 		"Icon": "",
-		"LimitPurchaseQuantity": 1,
+		"LimitPurchaseQuantity": 100,
+		"Price": 1 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "伙伴:羽梦璃璃",
+		"GoodsName": "冥焰龙魂",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 10 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "伙伴:星语宵姬",
+		"GoodsName": "星语宵姬",
+		"Icon": "",
+		"LimitPurchaseQuantity": 4000,
+		"Price": 20 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "伙伴:冥狱执裁",
+		"GoodsName": "冥狱执裁",
+		"Icon": "",
+		"LimitPurchaseQuantity": 4000,
+		"Price": 120 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "伙伴:羽梦璃璃",
+		"GoodsName": "羽梦璃璃",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 200 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:炎凰红钻",
+		"GoodsName": "炎凰红钻",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 10 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:炽阳神羽",
+		"GoodsName": "炽阳神羽",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 20 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:冥霜之羽",
+		"GoodsName": "冥霜之羽",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 60 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:玄金霸羽",
+		"GoodsName": "玄金霸羽",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 100 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:霜息之翼",
+		"GoodsName": "霜息之翼",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 150 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:霜息之翼",
+		"GoodsName": "炎冠之王",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 200 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:霜息之翼",
+		"GoodsName": "圣辉晨羽",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 350 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:皓月星羽",
+		"GoodsName": "皓月星羽",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 500 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀:星月之衡",
+		"GoodsName": "星月之衡",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 1000 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "特权:训练双倍获得",
+		"GoodsName": "双倍训练",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 120 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "特权:比赛获得金币双倍",
+		"GoodsName": "双倍金币",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 120 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "特权:比赛获得双倍奖杯",
+		"GoodsName": "双倍奖杯",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 200 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "特权:高级抽蛋运气",
+		"GoodsName": "高级抽蛋运气",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 50 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "特权:超级抽蛋运气",
+		"GoodsName": "超级抽蛋运气",
+		"Icon": "",
+		"LimitPurchaseQuantity": 400,
+		"Price": 200 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "特权:最大重生",
+		"GoodsName": "最大重生",
+		"Icon": "",
+		"LimitPurchaseQuantity": 300,
 		"Price": 300 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "特权:五连抽权限",
+		"GoodsName": "五倍抽蛋",
+		"Icon": "",
+		"LimitPurchaseQuantity": 300,
+		"Price": 100 
 	} 
 ] 

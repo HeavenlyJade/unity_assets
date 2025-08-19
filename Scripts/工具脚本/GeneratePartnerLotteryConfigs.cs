@@ -368,3 +368,4 @@ public class GeneratePartnerLotteryConfigs : EditorWindow
     }
 }
 
+

@@ -38,7 +38,9 @@ namespace MiGame.Data
         public List<string> VariableNames = new List<string>();
         public List<string> StatNames = new List<string>();
         public List<string> PlayerAttributeNames = new List<string>();
-        public Dictionary<string, DependencyRule> DependencyRules = new Dictionary<string, DependencyRule>();
+        
+        // 修复：改为List类型以支持Unity JsonUtility序列化
+        public List<DependencyRule> DependencyRules = new List<DependencyRule>();
     }
 
     [CreateAssetMenu(fileName = "VariableNameConfig", menuName = "配置/变量名配置")]
@@ -53,9 +55,7 @@ namespace MiGame.Data
         [Header("玩家的属性配置")]
         public List<string> PlayerAttributeNames;
 
-
-
-        [Header("量依赖规则配置")]
+        [Header("变量依赖规则配置")]
         public List<DependencyRule> DependencyRules;
 
 #if UNITY_EDITOR
@@ -86,66 +86,77 @@ namespace MiGame.Data
         {
             if (File.Exists(JsonPath))
             {
-                string json = File.ReadAllText(JsonPath);
-                VariableData data = JsonUtility.FromJson<VariableData>(json);
-                VariableNames = data.VariableNames;
-                StatNames = data.StatNames;
-                PlayerAttributeNames = data.PlayerAttributeNames;
-
-                
-                // 加载依赖规则
-                if (data.DependencyRules != null)
+                try
                 {
-                    DependencyRules = new List<DependencyRule>();
-                    foreach (var rule in data.DependencyRules)
-                    {
-                        DependencyRules.Add(rule.Value);
-                    }
+                    string json = File.ReadAllText(JsonPath);
+                    VariableData data = JsonUtility.FromJson<VariableData>(json);
+                    
+                    VariableNames = data.VariableNames ?? new List<string>();
+                    StatNames = data.StatNames ?? new List<string>();
+                    PlayerAttributeNames = data.PlayerAttributeNames ?? new List<string>();
+                    
+                    // 修复：直接使用List类型
+                    DependencyRules = data.DependencyRules ?? new List<DependencyRule>();
+                    
+                    Debug.Log($"成功从JSON加载配置，依赖规则数量：{DependencyRules.Count}");
                 }
-                else
+                catch (System.Exception e)
                 {
-                    DependencyRules = new List<DependencyRule>();
+                    Debug.LogError($"加载JSON文件失败: {e.Message}");
+                    InitializeDefaultValues();
                 }
             }
             else
             {
                 Debug.LogWarning($"JSON 文件未找到: {JsonPath}. 将使用当前或默认值。");
-                DependencyRules = new List<DependencyRule>();
+                InitializeDefaultValues();
             }
+        }
+
+        private void InitializeDefaultValues()
+        {
+            VariableNames = VariableNames ?? new List<string>();
+            StatNames = StatNames ?? new List<string>();
+            PlayerAttributeNames = PlayerAttributeNames ?? new List<string>();
+            DependencyRules = DependencyRules ?? new List<DependencyRule>();
         }
 
         private void SaveToJson()
         {
-            // 转换依赖规则为字典格式
-            var dependencyRulesDict = new Dictionary<string, DependencyRule>();
-            if (DependencyRules != null)
+            try
             {
-                foreach (var rule in DependencyRules)
+                // 确保目录存在
+                string directory = Path.GetDirectoryName(JsonPath);
+                if (!Directory.Exists(directory))
                 {
-                    if (rule != null && !string.IsNullOrEmpty(rule.key))
-                    {
-                        // 使用key作为key，如果没有key则跳过
-                        dependencyRulesDict[rule.key] = rule;
-                    }
+                    Directory.CreateDirectory(directory);
                 }
-            }
 
-            VariableData data = new VariableData
-            {
-                VariableNames = this.VariableNames,
-                StatNames = this.StatNames,
-                PlayerAttributeNames = this.PlayerAttributeNames,
-                DependencyRules = dependencyRulesDict
-            };
-            string json = JsonUtility.ToJson(data, true);
-            File.WriteAllText(JsonPath, json);
-            // 使用延迟调用来避免在资源导入期间刷新
-            UnityEditor.EditorApplication.delayCall += () => {
-                if (!UnityEditor.AssetDatabase.IsAssetImportWorkerProcess())
+                VariableData data = new VariableData
                 {
-                    UnityEditor.AssetDatabase.Refresh();
-                }
-            };
+                    VariableNames = this.VariableNames ?? new List<string>(),
+                    StatNames = this.StatNames ?? new List<string>(),
+                    PlayerAttributeNames = this.PlayerAttributeNames ?? new List<string>(),
+                    DependencyRules = this.DependencyRules ?? new List<DependencyRule>()
+                };
+                
+                string json = JsonUtility.ToJson(data, true);
+                File.WriteAllText(JsonPath, json);
+                
+                Debug.Log($"成功保存配置到JSON，依赖规则数量：{data.DependencyRules.Count}");
+                
+                // 使用延迟调用来避免在资源导入期间刷新
+                UnityEditor.EditorApplication.delayCall += () => {
+                    if (!UnityEditor.AssetDatabase.IsAssetImportWorkerProcess())
+                    {
+                        UnityEditor.AssetDatabase.Refresh();
+                    }
+                };
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"保存JSON文件失败: {e.Message}");
+            }
         }
         
         private void ValidateNames(List<string> names, string listName, string pattern)
@@ -180,19 +191,14 @@ namespace MiGame.Data
                     continue;
                 }
 
+                if (string.IsNullOrEmpty(rule.key))
+                {
+                    Debug.LogWarning($"配置警告: 依赖规则第 {i + 1} 个的key为空，建议填写以便管理。", this);
+                }
+
                 if (string.IsNullOrEmpty(rule.target))
                 {
                     Debug.LogError($"配置错误: 依赖规则第 {i + 1} 个的目标变量不能为空。", this);
-                }
-
-                if (string.IsNullOrEmpty(rule.condition.ToString()))
-                {
-                    Debug.LogError($"配置错误: 依赖规则第 {i + 1} 个的条件不能为空。", this);
-                }
-
-                if (string.IsNullOrEmpty(rule.action.ToString()))
-                {
-                    Debug.LogError($"配置错误: 依赖规则第 {i + 1} 个的动作不能为空。", this);
                 }
 
                 // 根据动作类型验证必要字段
@@ -206,6 +212,25 @@ namespace MiGame.Data
                     Debug.LogWarning($"配置警告: 依赖规则第 {i + 1} 个使用'设置为倍数值'动作，但multiplier字段为0。", this);
                 }
             }
+        }
+        
+        // 工具方法：添加新的依赖规则
+        [ContextMenu("添加测试依赖规则")]
+        private void AddTestDependencyRule()
+        {
+            if (DependencyRules == null)
+                DependencyRules = new List<DependencyRule>();
+                
+            DependencyRules.Add(new DependencyRule
+            {
+                key = "test_rule_" + System.DateTime.Now.Ticks,
+                target = "数据_固定值_战力值",
+                condition = DependencyCondition.大于,
+                action = DependencyAction.设置为倍数值,
+                multiplier = 1.5f
+            });
+            
+            Debug.Log("已添加测试依赖规则");
         }
 #endif
     }

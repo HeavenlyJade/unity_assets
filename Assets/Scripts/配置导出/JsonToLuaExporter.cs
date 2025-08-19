@@ -74,16 +74,18 @@ namespace MiGame.Editor.Exporter
             if (data.DependencyRules != null && data.DependencyRules.Count > 0)
             {
                 sb.AppendLine("VariableNameConfig.DependencyRules = {");
-                foreach (var kvp in data.DependencyRules)
+                foreach (var rule in data.DependencyRules)
                 {
-                    var rule = kvp.Value;
-                    sb.AppendLine($"    ['{kvp.Key}'] = {{");
-                    sb.AppendLine($"        目标变量 = '{rule.target}',");
-                    sb.AppendLine($"        条件 = {GetConditionString(rule.condition)},");
-                    sb.AppendLine($"        动作 = {GetActionString(rule.action)},");
-                    sb.AppendLine($"        固定值 = {rule.value},");
-                    sb.AppendLine($"        倍率 = {rule.multiplier}");
-                    sb.AppendLine("    },");
+                    if (rule != null && !string.IsNullOrEmpty(rule.key))
+                    {
+                        sb.AppendLine($"    ['{rule.key}'] = {{");
+                        sb.AppendLine($"        ['目标变量'] = '{rule.target}',");
+                        sb.AppendLine($"        ['条件'] = {GetConditionString(rule.condition)},");
+                        sb.AppendLine($"        ['动作'] = {GetActionString(rule.action)},");
+                        sb.AppendLine($"        ['固定值'] = {rule.value},");
+                        sb.AppendLine($"        ['倍率'] = {rule.multiplier}");
+                        sb.AppendLine("    },");
+                    }
                 }
                 sb.AppendLine("}");
                 sb.AppendLine();
@@ -127,7 +129,7 @@ namespace MiGame.Editor.Exporter
             public List<string> VariableNames = new List<string>();
             public List<string> StatNames = new List<string>();
             public List<string> PlayerAttributeNames = new List<string>();
-            public Dictionary<string, DependencyRule> DependencyRules = new Dictionary<string, DependencyRule>();
+            public List<DependencyRule> DependencyRules = new List<DependencyRule>();
         }
 
         /// <summary>

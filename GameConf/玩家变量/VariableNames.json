@@ -25,5 +25,15 @@
         "速度",
         "攻击",
         "防御"
+    ],
+    "DependencyRules": [
+        {
+            "key": "数据_固定值_战力值",
+            "target": "数据_固定值_历史最大战力值",
+            "condition": 0,
+            "action": 0,
+            "value": 0.0,
+            "multiplier": 0.0
+        }
     ]
 }

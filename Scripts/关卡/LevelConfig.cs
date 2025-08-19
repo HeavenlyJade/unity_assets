@@ -38,6 +38,10 @@ namespace MiGame.Data
         [TextArea(3, 10)]
         public List<string> 游戏结算指令;
         
+        [Header("发送配置")]
+        [Tooltip("进入或进行该关卡时需要发送的变量名列表")]
+        public List<string> 发送的变量;
+
         [Header("奖励信息")]
         [Tooltip("所有参与者都能获得的基础奖励")]
         public List<RewardRule> 基础奖励;

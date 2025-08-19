@@ -140,6 +140,9 @@ namespace MiGame.Scene
         [TextArea(3, 5)]
         public string 作用描述;
 
+        [Tooltip("该节点的作数值的配置")]
+        public float 作数值的配置 = 0f;
+
         [Header("进入条件")]
         [Tooltip("定义进入该节点需要满足的条件列表")]
         public List<进入条件项目> 进入条件列表;

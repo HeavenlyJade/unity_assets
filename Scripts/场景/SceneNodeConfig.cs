@@ -33,12 +33,10 @@ namespace MiGame.Scene
     {
         [Description("init_map")]
         init_map,
-        [Description("midLevelZone")]
-        midLevelZone,
-        [Description("advancedArea")]
-        advancedArea,
-        [Description("ultimateRealm")]
-        ultimateRealm
+        [Description("map2")]
+        map2,
+        [Description("map3")]
+        map3
     }
 
     /// <summary>

@@ -24,7 +24,7 @@ namespace MiGame.Editor.Exporter
             // 如果用户取消了对话框（返回空字符串），则中止操作
             if (string.IsNullOrEmpty(luaExportDir))
             {
-                Debug.LogError("Lua输出路径未设置，请在“配置导出面板”中指定路径。");
+                Debug.LogError("Lua输出路径未设置，请在\"配置导出面板\"中指定路径。");
                 return;
             }
 
@@ -64,6 +64,31 @@ namespace MiGame.Editor.Exporter
             sb.AppendLine("}");
             sb.AppendLine();
 
+            // 导出 PlayerAttributeNames
+            sb.AppendLine("VariableNameConfig.PlayerAttributeNames = {");
+            AppendStringList(sb, data.PlayerAttributeNames);
+            sb.AppendLine("}");
+            sb.AppendLine();
+
+            // 导出 DependencyRules
+            if (data.DependencyRules != null && data.DependencyRules.Count > 0)
+            {
+                sb.AppendLine("VariableNameConfig.DependencyRules = {");
+                foreach (var kvp in data.DependencyRules)
+                {
+                    var rule = kvp.Value;
+                    sb.AppendLine($"    ['{kvp.Key}'] = {{");
+                    sb.AppendLine($"        目标变量 = '{rule.target}',");
+                    sb.AppendLine($"        条件 = {GetConditionString(rule.condition)},");
+                    sb.AppendLine($"        动作 = {GetActionString(rule.action)},");
+                    sb.AppendLine($"        固定值 = {rule.value},");
+                    sb.AppendLine($"        倍率 = {rule.multiplier}");
+                    sb.AppendLine("    },");
+                }
+                sb.AppendLine("}");
+                sb.AppendLine();
+            }
+
             sb.AppendLine("return VariableNameConfig");
 
             // 确保导出目录存在
@@ -101,6 +126,22 @@ namespace MiGame.Editor.Exporter
         {
             public List<string> VariableNames = new List<string>();
             public List<string> StatNames = new List<string>();
+            public List<string> PlayerAttributeNames = new List<string>();
+            public Dictionary<string, DependencyRule> DependencyRules = new Dictionary<string, DependencyRule>();
+        }
+
+        /// <summary>
+        /// 依赖规则类
+        /// </summary>
+        [System.Serializable]
+        private class DependencyRule
+        {
+            public string key;
+            public string target;
+            public int condition;
+            public int action;
+            public float value;
+            public float multiplier;
         }
 
         /// <summary>
@@ -113,6 +154,34 @@ namespace MiGame.Editor.Exporter
             {
                 // 将字符串转换为安全的Lua字符串字面量
                 sb.AppendLine($"    '{item.Replace("'", "\\'").Replace("\\", "\\\\")}',");
+            }
+        }
+
+        /// <summary>
+        /// 获取条件的中文字符串表示
+        /// </summary>
+        private static string GetConditionString(int condition)
+        {
+            switch (condition)
+            {
+                case 0: return "'大于'";
+                case 1: return "'大于等于'";
+                case 2: return "'变化时'";
+                default: return $"'{condition}'";
+            }
+        }
+
+        /// <summary>
+        /// 获取动作的中文字符串表示
+        /// </summary>
+        private static string GetActionString(int action)
+        {
+            switch (action)
+            {
+                case 0: return "'设置为源值'";
+                case 1: return "'设置为固定值'";
+                case 2: return "'设置为倍数值'";
+                default: return $"'{action}'";
             }
         }
     }

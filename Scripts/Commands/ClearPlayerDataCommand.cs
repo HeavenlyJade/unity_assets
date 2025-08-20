@@ -19,6 +19,7 @@ namespace MiGame.Commands
         public bool 伙伴 = false;
         public bool 翅膀 = false;
         public bool 尾迹 = false;
+        public bool 商城 = false;
     }
 
     /// <summary>

@@ -38,13 +38,13 @@ namespace MiGame.Tools
         {
             try
             {
-                string jsonPath = "Assets/Scripts/配置exel/拖尾配置.json";
+                string jsonPath = "Assets/Scripts/配置exel/拖尾.json";
                 if (File.Exists(jsonPath))
                 {
                     string jsonContent = File.ReadAllText(jsonPath);
                     Debug.Log($"读取拖尾配置JSON内容长度: {jsonContent.Length}");
                     
-                    // 尝试解析JSON
+                    // 使用包装器解析JSON数组
                     var wrapper = JsonUtility.FromJson<JsonWrapper>("{\"items\":" + jsonContent + "}");
                     if (wrapper != null && wrapper.items != null)
                     {
@@ -55,7 +55,7 @@ namespace MiGame.Tools
                         for (int i = 0; i < Math.Min(3, 拖尾配置数据.Count); i++)
                         {
                             var item = 拖尾配置数据[i];
-                            Debug.Log($"配置项 {i}: 名称={item.名称}, 货币类型={item.货币类型}, 货币数量={item.货币数量}");
+                            Debug.Log($"配置项 {i}: 名称={item.名称}, 品级={item.品级}, 货币类型={item.货币类型}, 货币数量={item.货币数量}, 迷你币={item.迷你币}");
                         }
                     }
                     else
@@ -123,7 +123,7 @@ namespace MiGame.Tools
                 "1. 扫描 GameConf/尾迹 目录下的所有尾迹配置\n" +
                 "2. 为每个尾迹生成对应的商城配置\n" +
                 "3. 自动设置商品分类为'尾迹'\n" +
-                "4. 根据拖尾配置.json设置价格和货币类型\n" +
+                "4. 根据拖尾.json设置价格、货币类型和迷你币\n" +
                 "5. 设置尾迹配置的图片到图标路径", 
                 MessageType.Info);
         }
@@ -215,11 +215,11 @@ namespace MiGame.Tools
                 shopConfig.商品描述 = $"购买获得 {trailConfig.name} 尾迹";
                 shopConfig.商品分类 = ShopCategory.尾迹;
                 
-                // 设置价格（根据拖尾配置.json）
+                // 设置价格（根据拖尾.json）
                 if (trailJsonData != null)
                 {
                     // 添加调试日志
-                    Debug.Log($"找到拖尾配置: {trailJsonData.名称}, 货币类型: {trailJsonData.货币类型}, 货币数量: {trailJsonData.货币数量}");
+                    Debug.Log($"找到拖尾配置: {trailJsonData.名称}, 品级: {trailJsonData.品级}, 货币类型: {trailJsonData.货币类型}, 货币数量: {trailJsonData.货币数量}, 迷你币: {trailJsonData.迷你币}");
                     
                     // 设置货币类型
                     if (trailJsonData.货币类型 == "金币")
@@ -235,8 +235,28 @@ namespace MiGame.Tools
                         shopConfig.价格.货币类型 = CurrencyType.金币; // 默认金币
                     }
                     
-                    // 设置价格数量（现在支持大型数字）
-                    shopConfig.价格.价格数量 = trailJsonData.货币数量.ToString("F0");
+                    // 设置价格数量
+                    if (trailJsonData.货币数量 > 0)
+                    {
+                        shopConfig.价格.价格数量 = trailJsonData.货币数量.ToString("F0");
+                    }
+                    else
+                    {
+                        // 如果货币数量为-1，使用默认价格
+                        shopConfig.价格.价格数量 = GetPriceByQuality(GetRarityFromString(trailJsonData.品级)).ToString("F0");
+                    }
+                    
+                    // 设置迷你币配置
+                    if (trailJsonData.迷你币 > 0)
+                    {
+                        shopConfig.价格.迷你币类型 = 迷你币类型.迷你币;
+                        shopConfig.价格.迷你币数量 = (int)trailJsonData.迷你币;
+                    }
+                    else
+                    {
+                        shopConfig.价格.迷你币类型 = 迷你币类型.空;
+                        shopConfig.价格.迷你币数量 = -1;
+                    }
                 }
                 else
                 {
@@ -244,6 +264,8 @@ namespace MiGame.Tools
                     // 如果没有找到对应配置，使用默认值
                     shopConfig.价格.货币类型 = CurrencyType.金币;
                     shopConfig.价格.价格数量 = GetPriceByQuality(trailConfig.稀有度).ToString("F0");
+                    shopConfig.价格.迷你币类型 = 迷你币类型.空;
+                    shopConfig.价格.迷你币数量 = -1;
                 }
                 
                 // 设置限购配置
@@ -258,8 +280,16 @@ namespace MiGame.Tools
                 shopConfig.获得物品.Add(reward);
                 
                 // 设置界面显示
-                shopConfig.界面配置.排序权重 = GetSortWeightByQuality(trailConfig.稀有度);
-                shopConfig.界面配置.背景样式 = GetBackgroundStyleByQuality(trailConfig.稀有度);
+                if (trailJsonData != null)
+                {
+                    shopConfig.界面配置.排序权重 = GetSortWeightByQuality(GetRarityFromString(trailJsonData.品级));
+                    shopConfig.界面配置.背景样式 = GetBackgroundStyleByQuality(GetRarityFromString(trailJsonData.品级));
+                }
+                else
+                {
+                    shopConfig.界面配置.排序权重 = GetSortWeightByQuality(trailConfig.稀有度);
+                    shopConfig.界面配置.背景样式 = GetBackgroundStyleByQuality(trailConfig.稀有度);
+                }
                 
                 // 设置图标路径（使用拖尾配置中的图片路径）
                 if (trailJsonData != null && !string.IsNullOrEmpty(trailJsonData.图片))
@@ -268,7 +298,8 @@ namespace MiGame.Tools
                 }
                 
                 // 设置特殊标签
-                if (trailConfig.稀有度 == 稀有度.SSR || trailConfig.稀有度 == 稀有度.UR)
+                稀有度 rarity = trailJsonData != null ? GetRarityFromString(trailJsonData.品级) : trailConfig.稀有度;
+                if (rarity == 稀有度.SSR || rarity == 稀有度.UR)
                 {
                     shopConfig.界面配置.限定标签 = true;
                     shopConfig.界面配置.推荐标签 = true;
@@ -284,6 +315,19 @@ namespace MiGame.Tools
             {
                 Debug.LogError($"生成 {trailConfig.name} 的商城配置时发生错误: {e.Message}");
                 return false;
+            }
+        }
+        
+        private 稀有度 GetRarityFromString(string rarityString)
+        {
+            switch (rarityString?.ToUpper())
+            {
+                case "N": return 稀有度.N;
+                case "R": return 稀有度.R;
+                case "SR": return 稀有度.SR;
+                case "SSR": return 稀有度.SSR;
+                case "UR": return 稀有度.UR;
+                default: return 稀有度.N;
             }
         }
         
@@ -348,10 +392,11 @@ namespace MiGame.Tools
         public float 加成_百分比_加速度;
         public string 货币类型;
         public long 货币数量;
+        public float 迷你币;
     }
-    
+
     /// <summary>
-    /// JSON包装器
+    /// JSON包装器，用于解析JSON数组
     /// </summary>
     [System.Serializable]
     public class JsonWrapper

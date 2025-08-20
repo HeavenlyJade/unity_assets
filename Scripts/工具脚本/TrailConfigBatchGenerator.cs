@@ -24,7 +24,7 @@ public class TrailConfigBatchGenerator : EditorWindow
 
     private static void GenerateAllTrailConfigs()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/拖尾配置.json");
+        string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/拖尾.json");
         if (!File.Exists(jsonPath))
         {
             Debug.LogError($"未找到json文件: {jsonPath}");

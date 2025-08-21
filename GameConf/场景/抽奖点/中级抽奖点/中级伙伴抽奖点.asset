@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 796686dd274237b4eb709fd3e4e3d733, type: 3}
-  m_Name: "\u62BD\u5956\u5BA0\u7269\u521D\u7EA7"
+  m_Name: "\u4E2D\u7EA7\u4F19\u4F34\u62BD\u5956\u70B9"
   m_EditorClassIdentifier: 
-  "\u540D\u5B57": "\u62BD\u5956\u5BA0\u7269\u521D\u7EA7"
-  "\u552F\u4E00ID": 3d985002-db0b-4088-a4fd-48fd891101ba
-  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": "Ground/init_map/terrain/PrizeDrawArea/\u521D\u7EA7\u5730\u533A\u5BA0\u7269\u62BD\u5956\u86CB"
-  "\u573A\u666F\u7C7B\u578B": 5
-  "\u6240\u5C5E\u573A\u666F": 0
+  "\u540D\u5B57": "\u4E2D\u7EA7\u4F19\u4F34\u62BD\u5956\u70B9"
+  "\u552F\u4E00ID": b4cb2834-0685-41c0-89ba-d474d3db1c10
+  "\u573A\u666F\u8282\u70B9\u8DEF\u5F84": "Ground/map2/terrain/PrizeDrawArea/\u521D\u7EA7\u5730\u533A\u4F19\u4F34\u62BD\u5956\u86CB"
+  "\u573A\u666F\u7C7B\u578B": 4
+  "\u6240\u5C5E\u573A\u666F": 1
   "\u533A\u57DF\u8282\u70B9\u914D\u7F6E":
     "\u5305\u56F4\u76D2\u8282\u70B9": LotteryBoundingBox
     "\u590D\u6D3B\u8282\u70B9": 
@@ -37,7 +37,7 @@ MonoBehaviour:
   "\u4F5C\u6570\u503C\u7684\u914D\u7F6E": 0
   "\u8FDB\u5165\u6761\u4EF6\u5217\u8868": []
   "\u8FDB\u5165\u6307\u4EE4": "openui { \"\u64CD\u4F5C\u7C7B\u578B\": \"\u6253\u5F00\u754C\u9762\",
-    \"\u754C\u9762\u540D\": \"LotteryGui\", \"\u62BD\u5956\u7C7B\u578B\": \"\u521D\u7EA7\u5BA0\u7269\"
+    \"\u754C\u9762\u540D\": \"LotteryGui\", \"\u62BD\u5956\u7C7B\u578B\": \"\u4E2D\u7EA7\u4F19\u4F34\"
     }"
   "\u79BB\u5F00\u6307\u4EE4": 
   "\u5B9A\u65F6\u6307\u4EE4\u5217\u8868": []

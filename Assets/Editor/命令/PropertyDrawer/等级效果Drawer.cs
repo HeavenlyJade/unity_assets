@@ -20,6 +20,7 @@ public class 等级效果Drawer : PropertyDrawer
         var 效果字段名称Prop = property.FindPropertyRelative("效果字段名称");
         var 基础数值Prop = property.FindPropertyRelative("基础数值");
         var 效果数值Prop = property.FindPropertyRelative("效果数值");
+        var 效果等级配置Prop = property.FindPropertyRelative("效果等级配置");
         var 效果描述Prop = property.FindPropertyRelative("效果描述");
 
         // 计算基础行高和间距
@@ -56,7 +57,12 @@ public class 等级效果Drawer : PropertyDrawer
         EditorGUI.PropertyField(effectValueRect, 效果数值Prop, new GUIContent("效果数值"));
         currentY += singleLineHeight + verticalSpacing;
 
-        // 5. 绘制效果描述
+        // 5. 绘制效果等级配置
+        var effectLevelConfigRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+        EditorGUI.PropertyField(effectLevelConfigRect, 效果等级配置Prop, new GUIContent("效果等级配置"));
+        currentY += singleLineHeight + verticalSpacing;
+
+        // 6. 绘制效果描述
         var descriptionRect = new Rect(position.x, currentY, position.width, singleLineHeight);
         EditorGUI.PropertyField(descriptionRect, 效果描述Prop, new GUIContent("效果描述"));
 
@@ -65,8 +71,8 @@ public class 等级效果Drawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        // 效果类型行 + 效果字段名称行 + 基础数值行 + 效果数值行 + 效果描述行
-        return (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 5;
+        // 效果类型行 + 效果字段名称行 + 基础数值行 + 效果数值行 + 效果等级配置行 + 效果描述行
+        return (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 6;
     }
 
     private void DrawStringPopup(Rect rect, string label, SerializedProperty property, List<string> options)

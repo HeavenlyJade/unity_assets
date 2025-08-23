@@ -1,0 +1,66 @@
+using UnityEngine;
+using System;
+using System.Collections.Generic;
+
+namespace MiGame.Achievement
+{
+    /// <summary>
+    /// 效果等级配置类
+    /// 用于配置天赋或技能在不同等级下的效果数值
+    /// </summary>
+    [CreateAssetMenu(fileName = "NewEffectLevelConfig", menuName = "配置/效果等级配置")]
+    public class EffectLevelConfig : ScriptableObject
+    {
+        [Header("基础信息")]
+        [Tooltip("配置的唯一ID (根据文件名自动生成)")]
+        [ReadOnly]
+        public string 配置名称;
+
+        [Tooltip("配置描述")]
+        [TextArea(2, 4)]
+        public string 配置描述;
+
+        [Header("等级效果配置")]
+        [Tooltip("各等级的效果数值配置")]
+        public List<LevelEffectData> 等级效果列表 = new List<LevelEffectData>();
+
+        [Header("特殊宠物效果")]
+        [Tooltip("特定宠物的额外效果配置")]
+        public List<SpecialPetEffect> 特殊宠物效果列表 = new List<SpecialPetEffect>();
+
+        private void OnValidate()
+        {
+            // 自动将资产文件名同步到"配置名称"字段
+            if (name != 配置名称)
+            {
+                配置名称 = name;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 等级效果数据结构
+    /// </summary>
+    [Serializable]
+    public class LevelEffectData
+    {
+        [Tooltip("等级")]
+        public int 等级 = 1;
+
+        [Tooltip("该等级的效果数值")]
+        public double 效果数值 = 0.0;
+    }
+
+    /// <summary>
+    /// 特殊宠物效果结构
+    /// </summary>
+    [Serializable]
+    public class SpecialPetEffect
+    {
+        [Tooltip("宠物ID或名称")]
+        public string 宠物ID = "";
+
+        [Tooltip("特殊效果数值")]
+        public double 特殊效果数值 = 0.0;
+    }
+}

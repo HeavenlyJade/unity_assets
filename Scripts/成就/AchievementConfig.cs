@@ -103,6 +103,9 @@ namespace MiGame.Achievement
         [Tooltip("效果数值（公式，随天赋等级变化）")]
         public string 效果数值;
 
+        [Tooltip("效果等级配置（引用EffectLevelConfig，用于配置等级效果数值）")]
+        public EffectLevelConfig 效果等级配置;
+
         [Tooltip("效果描述")]
         public string 效果描述;
     }

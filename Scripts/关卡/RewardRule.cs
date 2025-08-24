@@ -30,26 +30,17 @@ namespace MiGame.Data
     }
 
     /// <summary>
-    /// 触发条件类
-    /// </summary>
-    [System.Serializable]
-    public class TriggerCondition
-    {
-        [Tooltip("触发条件变量名称，例如：击杀数、完成时间、连击数等")]
-        public string 触发条件变量;
-
-        [Tooltip("达到该数值时触发奖励")]
-        public float 触发条件数量;
-    }
-
-    /// <summary>
     /// 实时奖励触发规则
     /// </summary>
     [System.Serializable]
     public class RealtimeRewardRule
     {
-        [Tooltip("触发条件")]
-        public TriggerCondition 触发条件;
+        [Tooltip("触发条件，例如：击杀数 >= 10、连击数 >= 5、完成时间 <= 60等")]
+        [TextArea(2, 4)]
+        public string 触发条件;
+
+        [Tooltip("规则ID，用于唯一标识此奖励规则")]
+        public string 规则ID;
 
         [Tooltip("触发该条件时给予的奖励物品")]
         public ItemType 奖励物品;

@@ -100,9 +100,8 @@ namespace MiGame.Lottery
         [Tooltip("奖励数量")]
         public int 数量 = 1;
         
-        [Tooltip("权重（0-100，相当于概率0-100%）")]
-        [Range(0, 100)]
-        public int 权重 = 40;
+        [Tooltip("权重（支持小数点，数值越大概率越高）")]
+        public float 权重 = 40f;
     }
 
     /// <summary>

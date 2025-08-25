@@ -372,3 +372,5 @@ public class GeneratePartnerLotteryConfigs : EditorWindow
 
 
 
+
+

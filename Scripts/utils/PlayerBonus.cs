@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace MiGame.Core
 {
     /// <summary>
@@ -32,5 +34,11 @@ namespace MiGame.Core
         /// 缩放倍率，用于对该加成的最终效果进行缩放（1 为不变）
         /// </summary>
         public float 缩放倍率 = 1f;
+
+        /// <summary>
+        /// 玩家效果字段，用于配置对应的等级效果cs的assets配置
+        /// </summary>
+        [Tooltip("等级效果配置，引用EffectLevelConfig资产")]
+        public MiGame.Achievement.EffectLevelConfig 玩家效果字段;
     }
 }

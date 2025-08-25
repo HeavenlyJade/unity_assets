@@ -45,7 +45,7 @@ MonoBehaviour:
       "\u7269\u54C1": {fileID: 0}
       "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
-      "\u4F19\u4F34\u914D\u7F6E": {fileID: 11400000, guid: 953fabf561a12a04ab11daea98fbfebb, type: 2}
+      "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "partner { \"\u64CD\u4F5C\u7C7B\u578B\":
       \"\u65B0\u589E\", \"\u4F19\u4F34\": \"\u9EC4\u91D1\u8239\" }"
@@ -87,7 +87,7 @@ MonoBehaviour:
       "\u5956\u52B1\u7C7B\u578B": 2
       "\u7269\u54C1": {fileID: 0}
       "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
-      "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: 3e66525038b4d904ab41d6f42eb085d9, type: 2}
+      "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "pet { \"\u64CD\u4F5C\u7C7B\u578B\":
@@ -119,7 +119,7 @@ MonoBehaviour:
       "\u5956\u52B1\u7C7B\u578B": 2
       "\u7269\u54C1": {fileID: 0}
       "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
-      "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: 9f4f70bafe7f9c1458e5d83fce34c7ed, type: 2}
+      "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "pet { \"\u64CD\u4F5C\u7C7B\u578B\":
@@ -141,7 +141,7 @@ MonoBehaviour:
       "\u7269\u54C1": {fileID: 0}
       "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
-      "\u4F19\u4F34\u914D\u7F6E": {fileID: 11400000, guid: 7998616f4f5dcb84994040f29fb40134, type: 2}
+      "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "partner { \"\u64CD\u4F5C\u7C7B\u578B\":
       \"\u65B0\u589E\", \"\u4F19\u4F34\": \"\u66FC\u6CE2\" }"

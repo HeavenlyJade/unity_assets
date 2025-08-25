@@ -238,7 +238,7 @@ namespace MiGame.Lottery.Editor
                 伙伴配置 = null,
                 尾迹配置 = null,
                 数量 = 1,
-                权重 = 45
+                权重 = 45f
             };
             config.奖励池.Add(rewardPoolR1);
             
@@ -251,7 +251,7 @@ namespace MiGame.Lottery.Editor
                 伙伴配置 = null,
                 尾迹配置 = null,
                 数量 = 1,
-                权重 = 45
+                权重 = 45f
             };
             config.奖励池.Add(rewardPoolR2);
             
@@ -264,7 +264,7 @@ namespace MiGame.Lottery.Editor
                 伙伴配置 = null,
                 尾迹配置 = null,
                 数量 = 1,
-                权重 = 8
+                权重 = 8f
             };
             config.奖励池.Add(rewardPoolSR);
             
@@ -277,7 +277,7 @@ namespace MiGame.Lottery.Editor
                 伙伴配置 = null,
                 尾迹配置 = null,
                 数量 = 1,
-                权重 = 2
+                权重 = 2f
             };
             config.奖励池.Add(rewardPoolSSR);
             

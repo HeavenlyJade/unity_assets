@@ -360,7 +360,8 @@ namespace MiGame.CommandSystem.Editor
             
             if (value is PlayerBonus bonus)
             {
-                return $"{{ \"名称\": \"{bonus.Name}\", \"作用类型\": \"{bonus.Calculation}\", \"缩放倍率\": {bonus.缩放倍率} }}";
+                string effectFieldString = bonus.玩家效果字段 != null ? $"\"{bonus.玩家效果字段.name}\"" : "\"\"";
+                return $"{{ \"名称\": \"{bonus.Name}\", \"作用类型\": \"{bonus.Calculation}\", \"缩放倍率\": {bonus.缩放倍率}, \"玩家效果字段\": {effectFieldString} }}";
             }
 
             if (value is OtherBonusList otherBonusList)

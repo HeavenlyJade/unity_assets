@@ -16,40 +16,57 @@ namespace MiGame.EditorExtras
             var nameProp = property.FindPropertyRelative("Name");
             var calculationProp = property.FindPropertyRelative("Calculation");
             var scaleProp = property.FindPropertyRelative("缩放倍率");
+            var effectFieldProp = property.FindPropertyRelative("玩家效果字段");
 
-            // 将一行拆分为三列：名称 55% | 计算方式 25% | 缩放倍率 20%
-            float nameWidth = position.width * 0.55f - 5f;
-            float calcWidth = position.width * 0.25f - 5f;
-            float scaleWidth = position.width * 0.20f;
-            var nameRect = new Rect(position.x, position.y, nameWidth, position.height);
-            var calculationRect = new Rect(position.x + nameWidth + 5f, position.y, calcWidth, position.height);
-            var scaleRect = new Rect(position.x + nameWidth + 5f + calcWidth + 5f, position.y, scaleWidth, position.height);
-            
+            // 计算行高和间距
+            float singleLineHeight = EditorGUIUtility.singleLineHeight;
+            float verticalSpacing = EditorGUIUtility.standardVerticalSpacing;
+            float currentY = position.y;
+
             // 设置紧凑的标签宽度
             float oldLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 40f;
+            EditorGUIUtility.labelWidth = 80f;
 
-            // Look for our new [BonusType] attribute on the list field
+            // 1. 名称字段
+            var nameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
             var bonusTypeAttributes = fieldInfo.GetCustomAttributes(typeof(BonusTypeAttribute), true);
             if (bonusTypeAttributes.Any())
             {
                 var bonusTypeAttr = bonusTypeAttributes[0] as BonusTypeAttribute;
-                // Use the static method from VariableSelectorDrawer to draw the dropdown
                 VariableSelectorDrawer.DrawSelector(nameRect, nameProp, new GUIContent("名称"), bonusTypeAttr.NameType);
             }
             else
             {
-                // Fallback to a normal text field if the attribute is missing
                 EditorGUI.PropertyField(nameRect, nameProp, new GUIContent("名称"));
             }
+            currentY += singleLineHeight + verticalSpacing;
 
+            // 2. 计算方式字段
+            var calculationRect = new Rect(position.x, currentY, position.width, singleLineHeight);
             EditorGUI.PropertyField(calculationRect, calculationProp, new GUIContent("计算"));
+            currentY += singleLineHeight + verticalSpacing;
+
+            // 3. 缩放倍率字段
+            var scaleRect = new Rect(position.x, currentY, position.width, singleLineHeight);
             EditorGUI.PropertyField(scaleRect, scaleProp, new GUIContent("倍率"));
+            currentY += singleLineHeight + verticalSpacing;
+
+            // 4. 玩家效果字段
+            var effectFieldRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            EditorGUI.PropertyField(effectFieldRect, effectFieldProp, new GUIContent("效果配置"));
             
             // 还原标签宽度
             EditorGUIUtility.labelWidth = oldLabelWidth;
             
             EditorGUI.EndProperty();
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            // 计算总高度：4行 + 3个间距
+            float singleLineHeight = EditorGUIUtility.singleLineHeight;
+            float verticalSpacing = EditorGUIUtility.standardVerticalSpacing;
+            return singleLineHeight * 4 + verticalSpacing * 3;
         }
     }
 }

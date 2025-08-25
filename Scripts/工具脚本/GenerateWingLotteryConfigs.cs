@@ -269,16 +269,16 @@ public class GenerateWingLotteryConfigs : EditorWindow
     /// </summary>
     /// <param name="quality">品质</param>
     /// <returns>权重值</returns>
-    private static int GetWeightByQuality(string quality)
+    private static float GetWeightByQuality(string quality)
     {
         switch (quality)
         {
-            case "UR": return 3;
-            case "SSR": return 8;
-            case "SR": return 20;
-            case "R": return 35;
-            case "N": return 34;
-            default: return 25;
+            case "UR": return 3f;
+            case "SSR": return 8f;
+            case "SR": return 20f;
+            case "R": return 35f;
+            case "N": return 34f;
+            default: return 25f;
         }
     }
 

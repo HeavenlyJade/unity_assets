@@ -5,6 +5,28 @@ using System.Collections.Generic;
 namespace MiGame.Achievement
 {
     /// <summary>
+    /// 条件类型枚举
+    /// </summary>
+    public enum ConditionType
+    {
+        [Tooltip("公式计算")]
+        公式,
+        [Tooltip("固定数值")]
+        固定
+    }
+
+    /// <summary>
+    /// 目标类型枚举
+    /// </summary>
+    public enum TargetType
+    {
+        [Tooltip("玩家属性")]
+        玩家属性,
+        [Tooltip("玩家变量")]
+        玩家变量
+    }
+
+    /// <summary>
     /// 效果等级配置类
     /// 用于配置天赋或技能在不同等级下的效果数值
     /// </summary>
@@ -19,6 +41,13 @@ namespace MiGame.Achievement
         [Tooltip("配置描述")]
         [TextArea(2, 4)]
         public string 配置描述;
+
+        [Header("作用目标配置")]
+        [Tooltip("目标类型")]
+        public TargetType 目标类型 = TargetType.玩家属性;
+
+        [Tooltip("作用目标变量")]
+        public string 作用目标变量 = "";
 
         [Header("等级效果配置")]
         [Tooltip("各等级的效果数值配置")]
@@ -46,6 +75,17 @@ namespace MiGame.Achievement
     {
         [Tooltip("等级")]
         public int 等级 = 1;
+
+        [Tooltip("条件类型")]
+        public ConditionType 条件类型 = ConditionType.固定;
+
+        [Tooltip("条件公式")]
+        [TextArea(2, 3)]
+        public string 条件公式 = "";
+
+        [Tooltip("效果公式")]
+        [TextArea(2, 3)]
+        public string 效果公式 = "";
 
         [Tooltip("该等级的效果数值")]
         public double 效果数值 = 0.0;

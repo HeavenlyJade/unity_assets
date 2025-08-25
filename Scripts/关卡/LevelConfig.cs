@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using MiGame.Items;
+using MiGame.Level;
 
 namespace MiGame.Data
 {
@@ -41,6 +42,10 @@ namespace MiGame.Data
         [Header("发送配置")]
         [Tooltip("进入或进行该关卡时需要发送的变量名列表")]
         public List<string> 发送的变量;
+
+        [Header("场景配置")]
+        [Tooltip("该关卡对应的场景节点奖励配置")]
+        public LevelNodeRewardConfig 场景配置;
 
         [Header("奖励信息")]
         [Tooltip("所有参与者都能获得的基础奖励")]

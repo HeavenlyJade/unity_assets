@@ -83,11 +83,36 @@ public class 等级效果Drawer : PropertyDrawer
             return;
         }
 
-        _selectedIndex = options.IndexOf(property.stringValue);
-        if (_selectedIndex < 0) _selectedIndex = 0;
-
-        _selectedIndex = EditorGUI.Popup(rect, label, _selectedIndex, options.ToArray());
-        property.stringValue = options[_selectedIndex];
+        // 找到当前值的索引，如果不在列表中则显示为"请选择"
+        int currentIndex = options.IndexOf(property.stringValue);
+        string displayValue = currentIndex >= 0 ? property.stringValue : "请选择";
+        
+        // 创建下拉菜单
+        if (EditorGUI.DropdownButton(rect, new GUIContent(displayValue), FocusType.Keyboard))
+        {
+            var menu = new GenericMenu();
+            
+            // 添加"请选择"选项
+            menu.AddItem(new GUIContent("请选择"), currentIndex < 0, () => {
+                property.stringValue = "";
+            });
+            
+            // 添加分隔线
+            menu.AddSeparator("");
+            
+            // 添加所有选项
+            for (int i = 0; i < options.Count; i++)
+            {
+                string option = options[i];
+                bool isSelected = option == property.stringValue;
+                menu.AddItem(new GUIContent(option), isSelected, () => {
+                    property.stringValue = option;
+                    property.serializedObject.ApplyModifiedProperties();
+                });
+            }
+            
+            menu.ShowAsContext();
+        }
     }
 
     private void LoadAllLists()

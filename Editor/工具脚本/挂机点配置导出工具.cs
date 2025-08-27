@@ -200,24 +200,5 @@ namespace MiGame.Editor
         }
     }
 
-    /// <summary>
-    /// 挂机点配置数据结构 - 简化版本，只保留必要字段
-    /// </summary>
-    [System.Serializable]
-    public class 挂机点配置数据
-    {
-        public string fileName;           // 文件名作为唯一key
-        public int numericalValue;        // 作数值的配置（整数）
-    }
 
-    /// <summary>
-    /// 导出数据结构 - 修复序列化问题
-    /// </summary>
-    [System.Serializable]
-    public class 导出数据结构
-    {
-        public string exportTime;                    // 导出时间
-        public int totalCount;                       // 挂机点总数
-        public List<挂机点配置数据> configs;          // 挂机点配置列表
-    }
 }

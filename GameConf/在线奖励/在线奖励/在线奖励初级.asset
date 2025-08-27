@@ -119,11 +119,11 @@ MonoBehaviour:
       "\u5956\u52B1\u7C7B\u578B": 2
       "\u7269\u54C1": {fileID: 0}
       "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
-      "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: 97ac43e1953887e4d80796257ceafa00, type: 2}
+      "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: 08ff8a1c02d65074dba751916406c9a7, type: 2}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "pet { \"\u64CD\u4F5C\u7C7B\u578B\":
-      \"\u65B0\u589E\", \"\u5BA0\u7269\": \"\u5357\u74DC\u5494\u5494\" }"
+      \"\u65B0\u589E\", \"\u5BA0\u7269\": \"\u5E7D\u7D2B\u706F\u706F\" }"
   - "\u65F6\u95F4\u8282\u70B9": 3600
     "\u5956\u52B1\u7269\u54C1":
       "\u5956\u52B1\u7C7B\u578B": 0

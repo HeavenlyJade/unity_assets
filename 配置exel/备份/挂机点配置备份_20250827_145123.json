@@ -1,0 +1,154 @@
+{
+    "exportTime": "2025-08-27 14:51:23",
+    "totalCount": 37,
+    "configs": [
+        {
+            "fileName": "中级伙伴抽奖点",
+            "numericalValue": 0
+        },
+        {
+            "fileName": "巨鲸岛挂机点1",
+            "numericalValue": 740
+        },
+        {
+            "fileName": "巨鲸岛挂机点2",
+            "numericalValue": 780
+        },
+        {
+            "fileName": "巨鲸岛挂机点3",
+            "numericalValue": 820
+        },
+        {
+            "fileName": "巨鲸岛挂机点4",
+            "numericalValue": 860
+        },
+        {
+            "fileName": "巨鲸岛挂机点5",
+            "numericalValue": 900
+        },
+        {
+            "fileName": "巨鲸岛挂机点6",
+            "numericalValue": 940
+        },
+        {
+            "fileName": "巨鲸岛挂机点7",
+            "numericalValue": 980
+        },
+        {
+            "fileName": "巨鲸岛挂机点8",
+            "numericalValue": 1020
+        },
+        {
+            "fileName": "巨鲸岛挂机点9",
+            "numericalValue": 110
+        },
+        {
+            "fileName": "巨鲸岛挂机点10",
+            "numericalValue": 1140
+        },
+        {
+            "fileName": "巨鲸岛挂机点11",
+            "numericalValue": 1200
+        },
+        {
+            "fileName": "巨鲸岛挂机点12",
+            "numericalValue": 1300
+        },
+        {
+            "fileName": "挂机点1",
+            "numericalValue": 1
+        },
+        {
+            "fileName": "挂机点2",
+            "numericalValue": 5
+        },
+        {
+            "fileName": "挂机点3",
+            "numericalValue": 10
+        },
+        {
+            "fileName": "挂机点4",
+            "numericalValue": 20
+        },
+        {
+            "fileName": "挂机点5",
+            "numericalValue": 30
+        },
+        {
+            "fileName": "挂机点6",
+            "numericalValue": 40
+        },
+        {
+            "fileName": "挂机点7",
+            "numericalValue": 70
+        },
+        {
+            "fileName": "挂机点8",
+            "numericalValue": 100
+        },
+        {
+            "fileName": "挂机点9",
+            "numericalValue": 130
+        },
+        {
+            "fileName": "挂机点10",
+            "numericalValue": 170
+        },
+        {
+            "fileName": "挂机点11",
+            "numericalValue": 210
+        },
+        {
+            "fileName": "挂机点12",
+            "numericalValue": 260
+        },
+        {
+            "fileName": "科技岛挂机点1",
+            "numericalValue": 290
+        },
+        {
+            "fileName": "科技岛挂机点2",
+            "numericalValue": 330
+        },
+        {
+            "fileName": "科技岛挂机点3",
+            "numericalValue": 370
+        },
+        {
+            "fileName": "科技岛挂机点4",
+            "numericalValue": 410
+        },
+        {
+            "fileName": "科技岛挂机点5",
+            "numericalValue": 450
+        },
+        {
+            "fileName": "科技岛挂机点6",
+            "numericalValue": 490
+        },
+        {
+            "fileName": "科技岛挂机点7",
+            "numericalValue": 530
+        },
+        {
+            "fileName": "科技岛挂机点8",
+            "numericalValue": 570
+        },
+        {
+            "fileName": "科技岛挂机点9",
+            "numericalValue": 610
+        },
+        {
+            "fileName": "科技岛挂机点10",
+            "numericalValue": 650
+        },
+        {
+            "fileName": "科技岛挂机点11",
+            "numericalValue": 690
+        },
+        {
+            "fileName": "科技岛挂机点12",
+            "numericalValue": 730
+        }
+    ]
+}

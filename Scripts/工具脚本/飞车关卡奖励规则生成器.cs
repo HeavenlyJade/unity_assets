@@ -19,23 +19,23 @@ namespace MiGame.Tools
         public LevelConfig 目标关卡配置;
         
         [Tooltip("关卡配置文件路径（相对于Assets文件夹）")]
-        public string 关卡配置路径 = "Assets/GameConf/关卡/飞车关卡初级.asset";
+        public string 关卡配置路径 = "Assets/GameConf/关卡/飞行比赛初级.asset";
         
         [Header("生成配置")]
         [Tooltip("最短距离（米）")]
-        public int 最短距离 = 300000; // 30万米
+        public int 最短距离 = 100000; // 10万米
         
         [Tooltip("最大距离（米）")]
         public int 最大距离 = 5000000; // 500万米
         
+        [Tooltip("10万阶段的奖杯数量")]
+        public int 十万奖杯 = 30;
+        
         [Tooltip("30万阶段的奖杯数量")]
-        public int 三十万奖杯 = 30;
+        public int 三十万奖杯 = 50;
         
-        [Tooltip("50万阶段的奖杯数量")]
-        public int 五十万奖杯 = 50;
-        
-        [Tooltip("100万阶段的奖杯数量")]
-        public int 一百万奖杯 = 80;
+        [Tooltip("60万阶段的奖杯数量")]
+        public int 六十万奖杯 = 80;
         
         [Tooltip("奖杯物品类型")]
         public ItemType 奖杯物品类型;
@@ -60,38 +60,48 @@ namespace MiGame.Tools
         }
         
         /// <summary>
-        /// Unity编辑器菜单项 - 快速生成飞车关卡奖励规则
+        /// Unity编辑器菜单项 - 快速生成飞车关卡    奖励规则
         /// </summary>
-        [MenuItem("Tools/关卡配置/快速生成飞车关卡奖励规则")]
+        [MenuItem("Tools/关卡配置/快速生成飞行比赛初级奖杯奖励规则")]
         public static void 快速生成飞车关卡奖励规则()
         {
-            // 查找飞车关卡配置
-            var 飞车关卡配置s = Resources.FindObjectsOfTypeAll<LevelConfig>();
+            // 查找飞行关卡配置
+            var 飞行关卡配置s = Resources.FindObjectsOfTypeAll<LevelConfig>();
+            Debug.Log($"找到 {飞行关卡配置s.Length} 个关卡配置");
+            
+            // 输出所有关卡配置名称用于调试
+            foreach (var 配置 in 飞行关卡配置s)
+            {
+                Debug.Log($"关卡配置: {配置.关卡名称}");
+            }
+            
             LevelConfig 目标配置 = null;
             
-            foreach (var 配置 in 飞车关卡配置s)
+            foreach (var 配置 in 飞行关卡配置s)
             {
-                if (配置.关卡名称.Contains("飞车"))
+                // 查找包含"飞行比赛初级"的配置
+                if (配置.关卡名称.Contains("飞行比赛初级"))
                 {
                     目标配置 = 配置;
+                    Debug.Log($"找到飞行比赛初级配置: {配置.关卡名称}");
                     break;
                 }
             }
             
             if (目标配置 == null)
             {
-                EditorUtility.DisplayDialog("错误", "未找到飞车关卡配置！", "确定");
+                EditorUtility.DisplayDialog("错误", "未找到飞行比赛初级配置！", "确定");
                 return;
             }
             
             // 生成默认奖励规则
             var 生成器 = new 飞车关卡奖励规则生成器();
             生成器.目标关卡配置 = 目标配置;
-            生成器.最短距离 = 300000; // 30万米
+            生成器.最短距离 = 100000; // 10万米
             生成器.最大距离 = 5000000; // 500万米
-            生成器.三十万奖杯 = 30;
-            生成器.五十万奖杯 = 50;
-            生成器.一百万奖杯 = 80;
+            生成器.十万奖杯 = 30;
+            生成器.三十万奖杯 = 50;
+            生成器.六十万奖杯 = 80;
             
             // 自动查找奖杯物品类型
             生成器.自动查找奖杯物品();
@@ -105,7 +115,6 @@ namespace MiGame.Tools
         /// <summary>
         /// Unity编辑器菜单项 - 批量生成所有关卡奖励规则
         /// </summary>
-        [MenuItem("Tools/关卡配置/批量生成所有关卡奖励规则")]
         public static void 批量生成所有关卡奖励规则()
         {
             var 所有关卡配置 = Resources.FindObjectsOfTypeAll<LevelConfig>();
@@ -120,25 +129,29 @@ namespace MiGame.Tools
             
             foreach (var 关卡配置 in 所有关卡配置)
             {
-                try
+                // 只处理飞行比赛初级配置
+                if (关卡配置.关卡名称.Contains("飞行比赛初级"))
                 {
-                    生成器.目标关卡配置 = 关卡配置;
-                    生成器.最短距离 = 300000; // 30万米
-                    生成器.最大距离 = 5000000; // 500万米
-                    生成器.三十万奖杯 = 30;
-                    生成器.五十万奖杯 = 50;
-                    生成器.一百万奖杯 = 80;
-                    
-                    // 自动查找奖杯物品类型
-                    生成器.自动查找奖杯物品();
-                    
-                    生成器.生成奖励规则();
-                    生成器.应用规则到选中关卡();
-                    成功数量++;
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError($"为关卡 '{关卡配置.关卡名称}' 生成奖励规则时出错: {e.Message}");
+                    try
+                    {
+                        生成器.目标关卡配置 = 关卡配置;
+                        生成器.最短距离 = 100000; // 10万米
+                        生成器.最大距离 = 5000000; // 500万米
+                        生成器.十万奖杯 = 30;
+                        生成器.三十万奖杯 = 50;
+                        生成器.六十万奖杯 = 80;
+                        
+                        // 自动查找奖杯物品类型
+                        生成器.自动查找奖杯物品();
+                        
+                        生成器.生成奖励规则();
+                        生成器.应用规则到选中关卡();
+                        成功数量++;
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"为关卡 '{关卡配置.关卡名称}' 生成奖励规则时出错: {e.Message}");
+                    }
                 }
             }
             
@@ -213,10 +226,27 @@ namespace MiGame.Tools
             
             int 规则计数器 = 1;
             
-            // 生成30万等差数列的规则：30万、130万、230万、330万...
-            for (int i = 0; i <= (最大距离 - 300000) / 1000000; i++)
+            // 生成10万等差数列的规则：10万、70万、130万、190万...
+            for (int i = 0; i <= (最大距离 - 100000) / 600000; i++)
             {
-                int 距离 = 300000 + i * 1000000; // 30万 + i×100万
+                int 距离 = 100000 + i * 600000; // 10万 + i×60万
+                if (距离 >= 最短距离 && 距离 <= 最大距离)
+                {
+                    var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 十万奖杯);
+                    生成的奖励规则.Add(规则);
+                    规则计数器++;
+                    
+                    if (输出调试信息)
+                    {
+                        Debug.Log($"生成10万等差数列规则: 距离>={距离}, 奖杯={十万奖杯}");
+                    }
+                }
+            }
+            
+            // 生成30万等差数列的规则：30万、90万、150万、210万...
+            for (int i = 0; i <= (最大距离 - 300000) / 600000; i++)
+            {
+                int 距离 = 300000 + i * 600000; // 30万 + i×60万
                 if (距离 >= 最短距离 && 距离 <= 最大距离)
                 {
                     var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 三十万奖杯);
@@ -230,36 +260,19 @@ namespace MiGame.Tools
                 }
             }
             
-            // 生成50万等差数列的规则：50万、150万、250万、350万...
-            for (int i = 0; i <= (最大距离 - 500000) / 1000000; i++)
+            // 生成60万等差数列的规则：60万、120万、180万、240万...
+            for (int i = 0; i <= (最大距离 - 600000) / 600000; i++)
             {
-                int 距离 = 500000 + i * 1000000; // 50万 + i×100万
+                int 距离 = 600000 + i * 600000; // 60万 + i×60万
                 if (距离 >= 最短距离 && 距离 <= 最大距离)
                 {
-                    var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 五十万奖杯);
+                    var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 六十万奖杯);
                     生成的奖励规则.Add(规则);
                     规则计数器++;
                     
                     if (输出调试信息)
                     {
-                        Debug.Log($"生成50万等差数列规则: 距离>={距离}, 奖杯={五十万奖杯}");
-                    }
-                }
-            }
-            
-            // 生成100万等差数列的规则：100万、200万、300万、400万...
-            for (int i = 1; i <= 最大距离 / 1000000; i++)
-            {
-                int 距离 = i * 1000000; // i×100万
-                if (距离 >= 最短距离 && 距离 <= 最大距离)
-                {
-                    var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 一百万奖杯);
-                    生成的奖励规则.Add(规则);
-                    规则计数器++;
-                    
-                    if (输出调试信息)
-                    {
-                        Debug.Log($"生成100万等差数列规则: 距离>={距离}, 奖杯={一百万奖杯}");
+                        Debug.Log($"生成60万等差数列规则: 距离>={距离}, 奖杯={六十万奖杯}");
                     }
                 }
             }
@@ -519,9 +532,9 @@ namespace MiGame.Tools
             EditorGUILayout.LabelField("生成配置", EditorStyles.boldLabel);
             生成器.最短距离 = EditorGUILayout.IntField("最短距离（米）", 生成器.最短距离);
             生成器.最大距离 = EditorGUILayout.IntField("最大距离（米）", 生成器.最大距离);
+            生成器.十万奖杯 = EditorGUILayout.IntField("10万阶段奖杯", 生成器.十万奖杯);
             生成器.三十万奖杯 = EditorGUILayout.IntField("30万阶段奖杯", 生成器.三十万奖杯);
-            生成器.五十万奖杯 = EditorGUILayout.IntField("50万阶段奖杯", 生成器.五十万奖杯);
-            生成器.一百万奖杯 = EditorGUILayout.IntField("100万阶段奖杯", 生成器.一百万奖杯);
+            生成器.六十万奖杯 = EditorGUILayout.IntField("60万阶段奖杯", 生成器.六十万奖杯);
             生成器.奖杯物品类型 = (ItemType)EditorGUILayout.ObjectField("奖杯物品类型", 生成器.奖杯物品类型, typeof(ItemType), false);
             
             EditorGUILayout.Space();

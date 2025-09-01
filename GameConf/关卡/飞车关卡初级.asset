@@ -36,7 +36,7 @@ MonoBehaviour:
   - "attribute { \"\u64CD\u4F5C\u7C7B\u578B\": \"\u6062\u590D\", \"\u5C5E\u6027\u540D\":
     \"\u901F\u5EA6\" }"
   "\u53D1\u9001\u7684\u53D8\u91CF": []
-  "\u573A\u666F\u914D\u7F6E": {fileID: 11400000, guid: c8701084d13a24d408c913f89bd4dc7f, type: 2}
+  "\u573A\u666F\u914D\u7F6E": {fileID: 11400000, guid: dede6b7134b4b1649902f9495749646b, type: 2}
   "\u57FA\u7840\u5956\u52B1":
   - "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
     "\u8BA1\u7B97\u65B9\u5F0F": 0

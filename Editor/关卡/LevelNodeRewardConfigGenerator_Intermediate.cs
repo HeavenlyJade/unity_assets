@@ -7,35 +7,34 @@ using MiGame.Items;
 namespace MiGame.Level.Editor
 {
     /// <summary>
-    /// 关卡节点奖励配置批量生成器
-    /// 用于根据预设规则批量生成奖励节点配置
+    /// 中级关卡节点奖励配置批量生成器
+    /// 用于根据预设规则批量生成中级奖励节点配置
     /// </summary>
-    public class LevelNodeRewardConfigGenerator : EditorWindow
+    public class LevelNodeRewardConfigGenerator_Intermediate : EditorWindow
     {
-        private string 配置名称 = "批量生成的关卡奖励配置";
-        private string 配置描述 = "通过批量生成器自动创建的关卡节点奖励配置";
+        private string 配置名称 = "批量生成的中级关卡奖励配置";
+        private string 配置描述 = "通过中级批量生成器自动创建的中级关卡节点奖励配置";
         private string 保存路径 = "Assets/GameConf/游戏场景节点触发器/";
         private bool 覆盖现有文件 = false;
         private int 要生成的组数 = 1;
 
-        // 预设的距离配置
-        private readonly long[] 距离配置列表 = new long[]
+        // 中级距离配置
+        private readonly long[] 中级距离配置列表 = new long[]
         {
-            3000, 10000, 30000, 40000, 60000, 80000, 110000, 140000, 170000, 220000, 300000, 330000, 380000, 
-            440000, 500000, 640000, 700000, 
-            800000, 1000000
+            9000, 30000, 90000, 120000, 180000, 240000, 330000, 420000, 510000, 660000, 
+            900000, 990000, 1140000, 1320000, 1500000, 1920000, 2100000, 2400000, 3000000
         };
 
-        [MenuItem("Tools/关卡配置/初级关卡触发节点奖励配置")]
+        [MenuItem("Tools/关卡配置/批量生成中级关卡节点触发奖励配置")]
         public static void ShowWindow()
         {
-            GetWindow<LevelNodeRewardConfigGenerator>("初级关卡奖励配置生成器");
+            GetWindow<LevelNodeRewardConfigGenerator_Intermediate>("中级关卡奖励配置生成器");
         }
 
         private void OnGUI()
         {
             EditorGUILayout.Space(10);
-            EditorGUILayout.LabelField("关卡节点奖励配置批量生成器", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("中级关卡节点奖励配置批量生成器", EditorStyles.boldLabel);
             EditorGUILayout.Space(5);
 
             // 基础配置
@@ -51,22 +50,22 @@ namespace MiGame.Level.Editor
             // 规则说明
             EditorGUILayout.LabelField("生成规则", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox(
-                "距离配置: 19个预设距离值\n" +
-                "数量规则: 前1-5个数量为10, 5-10个数量为20, 10-15个数量为100, 15-19个数量为1000\n" +
-                "距离循环: 每组距离增加1000000，例如第2组从1003000开始，第3组从2003000开始", 
+                "中级距离配置: 19个预设距离值\n" +
+                "数量规则: 前1-3个数量为20, 3-10个数量为40, 10-15个数量为100, 15-19个数量为200\n" +
+                "距离循环: 每组距离增加3000000，例如第2组从3009000开始，第3组从6009000开始", 
                 MessageType.Info);
 
             EditorGUILayout.Space(10);
 
             // 预览信息
             EditorGUILayout.LabelField("预览信息", EditorStyles.boldLabel);
-            EditorGUILayout.LabelField($"将生成 {距离配置列表.Length} 个奖励节点");
-            EditorGUILayout.LabelField("总距离范围: " + 距离配置列表[0] + " - " + 距离配置列表[距离配置列表.Length - 1]);
+            EditorGUILayout.LabelField($"将生成 {中级距离配置列表.Length} 个奖励节点");
+            EditorGUILayout.LabelField("总距离范围: " + 中级距离配置列表[0] + " - " + 中级距离配置列表[中级距离配置列表.Length - 1]);
 
             EditorGUILayout.Space(20);
 
             // 生成按钮
-            if (GUILayout.Button("生成关卡节点奖励配置", GUILayout.Height(40)))
+            if (GUILayout.Button("生成中级关卡节点奖励配置", GUILayout.Height(40)))
             {
                 GenerateLevelNodeRewardConfig();
             }
@@ -81,7 +80,7 @@ namespace MiGame.Level.Editor
         }
 
         /// <summary>
-        /// 生成单个关卡节点奖励配置
+        /// 生成单个中级关卡节点奖励配置
         /// </summary>
         private void GenerateLevelNodeRewardConfig()
         {
@@ -123,15 +122,15 @@ namespace MiGame.Level.Editor
                 EditorGUIUtility.PingObject(config);
 
                 EditorUtility.DisplayDialog("生成完成", 
-                    $"关卡节点奖励配置已成功生成！\n保存路径: {fullPath}\n生成节点数量: {config.节点列表.Count}", 
+                    $"中级关卡节点奖励配置已成功生成！\n保存路径: {fullPath}\n生成节点数量: {config.节点列表.Count}", 
                     "确定");
 
-                Debug.Log($"关卡节点奖励配置生成完成: {fullPath}");
+                Debug.Log($"中级关卡节点奖励配置生成完成: {fullPath}");
             }
             catch (System.Exception e)
             {
                 EditorUtility.DisplayDialog("生成失败", $"生成配置时发生错误:\n{e.Message}", "确定");
-                Debug.LogError($"生成关卡节点奖励配置失败: {e}");
+                Debug.LogError($"生成中级关卡节点奖励配置失败: {e}");
             }
         }
 
@@ -157,8 +156,8 @@ namespace MiGame.Level.Editor
                 // 生成所有组的节点列表
                 for (int i = 0; i < 要生成的组数; i++)
                 {
-                    // 生成当前组的节点列表，距离增加1000000 * i
-                    long distanceOffset = 1000000L * i;
+                    // 生成当前组的节点列表，距离增加3000000 * i
+                    long distanceOffset = 3000000L * i;
                     var groupNodes = GenerateNodeListWithOffset(distanceOffset);
                     
                     // 将当前组的所有节点添加到总列表中
@@ -196,12 +195,12 @@ namespace MiGame.Level.Editor
                     $"成功生成包含{要生成的组数}组的配置文件！\n保存路径: {fullPath}\n总节点数量: {config.节点列表.Count}", 
                     "确定");
 
-                Debug.Log($"批量生成关卡节点奖励配置完成，共生成{要生成的组数}组，总节点数: {config.节点列表.Count}");
+                Debug.Log($"批量生成中级关卡节点奖励配置完成，共生成{要生成的组数}组，总节点数: {config.节点列表.Count}");
             }
             catch (System.Exception e)
             {
                 EditorUtility.DisplayDialog("批量生成失败", $"批量生成配置时发生错误:\n{e.Message}", "确定");
-                Debug.LogError($"批量生成关卡节点奖励配置失败: {e}");
+                Debug.LogError($"批量生成中级关卡节点奖励配置失败: {e}");
             }
         }
 
@@ -228,7 +227,7 @@ namespace MiGame.Level.Editor
         /// </summary>
         private List<LevelNodeReward> GenerateNodeList()
         {
-            return GenerateNodeList(距离配置列表, 0);
+            return GenerateNodeList(中级距离配置列表, 0);
         }
 
         /// <summary>
@@ -265,11 +264,11 @@ namespace MiGame.Level.Editor
         {
             var nodeList = new List<LevelNodeReward>();
 
-            for (int i = 0; i < 距离配置列表.Length; i++)
+            for (int i = 0; i < 中级距离配置列表.Length; i++)
             {
                 var node = new LevelNodeReward();
                 // 距离 = 基础距离 + 偏移距离
-                node.生成的距离配置 = 距离配置列表[i] + distanceOffset;
+                node.生成的距离配置 = 中级距离配置列表[i] + distanceOffset;
                 node.物品数量 = GetItemCountByIndex(i);
                 node.奖励条件 = $"距离达到 {node.生成的距离配置} 时获得奖励";
                 
@@ -287,17 +286,17 @@ namespace MiGame.Level.Editor
         }
 
         /// <summary>
-        /// 根据索引获取物品数量
+        /// 根据索引获取物品数量（中级版本）
         /// </summary>
         private int GetItemCountByIndex(int index)
         {
             // 每20个为一个循环
             int cycleIndex = index % 20;
             
-            if (cycleIndex < 5) return 10;      // 前1-5个数量为10
-            if (cycleIndex < 10) return 20;     // 5-10个数量为20
-            if (cycleIndex < 15) return 100;    // 10-15个数量为100
-            return 150;                          // 15-20个数量为150
+            if (cycleIndex < 3) return 30;      // 前1-3个数量为20
+            if (cycleIndex < 10) return 50;     // 3-10个数量为40
+            if (cycleIndex < 15) return 150;    // 10-15个数量为100
+            return 200;                          // 15-20个数量为200
         }
     }
 }

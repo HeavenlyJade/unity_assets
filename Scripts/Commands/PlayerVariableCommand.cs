@@ -10,7 +10,9 @@ namespace MiGame.Commands
         新增,
         设置,
         减少,
-        查看
+        查看,
+        清空来源,
+        仅加成
     }
 
     [Command("variable", "用于操作玩家变量的指令")]
@@ -104,6 +106,10 @@ namespace MiGame.Commands
                         Debug.Log($"查看玩家 {玩家UID} 的变量: {变量名}");
                         // TODO: 调用游戏逻辑
                     }
+                    break;
+                case VariableOperationType.清空来源:
+                    Debug.Log($"清空玩家 {玩家UID} 变量 {变量名} 的来源数据");
+                    // TODO: 调用游戏逻辑，清空该变量的来源信息
                     break;
             }
         }

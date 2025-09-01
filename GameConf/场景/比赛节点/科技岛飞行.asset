@@ -26,7 +26,7 @@ MonoBehaviour:
     "\u4F5C\u7528\u63CF\u8FF0\u8282\u70B9": 
     "\u5012\u8BA1\u65F6\u663E\u793A\u8282\u70B9": "Ground/map2/terrain/Scene/UIRoot3D/\u8BA1\u65F6\u5668"
     "\u6BD4\u8D5B\u573A\u666F": Ground/map2/terrain/Scene/race_track
-  "\u5173\u8054\u5173\u5361": {fileID: 11400000, guid: ecfdb514301f40644970a882e0ae7da1, type: 2}
+  "\u5173\u8054\u5173\u5361": {fileID: 11400000, guid: b76df5c99214b7e49b24eafaf448e70f, type: 2}
   "\u73A9\u6CD5\u89C4\u5219":
     "\u6BD4\u8D5B\u65F6\u957F": 60
     "\u51C6\u5907\u65F6\u95F4": 10

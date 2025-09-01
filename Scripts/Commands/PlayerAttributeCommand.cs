@@ -52,6 +52,9 @@ namespace MiGame.Commands
         [Tooltip("数值（支持整数、小数、长整型）")]
         public string 数值;
 
+        [Tooltip("最终倍率")]
+        public float 最终倍率 = 1.0f;
+
         [Tooltip("属性来源")]
         public AttributeSource 来源 = AttributeSource.COMMAND;
 

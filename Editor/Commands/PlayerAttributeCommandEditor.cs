@@ -15,6 +15,7 @@ namespace MiGame.CommandSystem.Editor
         private SerializedProperty 玩家UIDProp;
         private SerializedProperty 属性名Prop;
         private SerializedProperty 数值Prop;
+        private SerializedProperty 最终倍率Prop;
         private SerializedProperty 来源Prop;
         private SerializedProperty 玩家属性加成Prop;
         private SerializedProperty 玩家变量加成Prop;
@@ -26,6 +27,7 @@ namespace MiGame.CommandSystem.Editor
             玩家UIDProp = serializedObject.FindProperty("玩家UID");
             属性名Prop = serializedObject.FindProperty("属性名");
             数值Prop = serializedObject.FindProperty("数值");
+            最终倍率Prop = serializedObject.FindProperty("最终倍率");
             来源Prop = serializedObject.FindProperty("来源");
             玩家属性加成Prop = serializedObject.FindProperty("玩家属性加成");
             玩家变量加成Prop = serializedObject.FindProperty("玩家变量加成");
@@ -111,6 +113,9 @@ namespace MiGame.CommandSystem.Editor
                 EditorGUILayout.PropertyField(数值Prop);
                 GUI.enabled = true;
             }
+
+            // 最终倍率
+            EditorGUILayout.PropertyField(最终倍率Prop, new GUIContent("最终倍率", "属性操作的最终倍率，影响最终计算结果的倍数"));
 
             // 来源
             EditorGUILayout.PropertyField(来源Prop, new GUIContent("来源", "属性操作的来源类型"));

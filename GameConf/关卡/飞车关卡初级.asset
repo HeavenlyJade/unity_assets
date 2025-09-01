@@ -163,7 +163,3 @@ MonoBehaviour:
     "\u89C4\u5219ID": rule_0026
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
     "\u5956\u52B1\u516C\u5F0F": 50
-  - "\u89E6\u53D1\u6761\u4EF6": distance>=5000000
-    "\u89C4\u5219ID": rule_0031
-    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80

@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e96ccc52c465ae4183b7d0f71560ca2, type: 3}
+  m_Name: "\u98DE\u884C\u5173\u5361\u9AD8\u7EA7"
+  m_EditorClassIdentifier: 
+  "\u540D\u5B57": "\u98DE\u884C\u5173\u5361\u9AD8\u7EA7"
+  "\u5173\u5361\u540D\u79F0": "\u98DE\u884C\u6BD4\u8D5B\u9AD8\u7EA7"
+  "\u9ED8\u8BA4\u73A9\u6CD5": {fileID: 11400000, guid: 52b31ce8fc96af0439b82b6794de08ad, type: 2}
+  "\u6700\u5C11\u4EBA\u6570": 1
+  "\u6700\u591A\u4EBA\u6570": 20
+  "\u73A9\u6CD5\u89C4\u5219":
+    "\u6BD4\u8D5B\u65F6\u957F": 60
+    "\u51C6\u5907\u65F6\u95F4": 10
+    "\u80DC\u5229\u6761\u4EF6": 0
+  "\u6E38\u620F\u5F00\u59CB\u6307\u4EE4":
+  - "attribute { \"\u64CD\u4F5C\u7C7B\u578B\": \"\u8BBE\u7F6E\", \"\u5C5E\u6027\u540D\":
+    \"\u901F\u5EA6\", \"\u6570\u503C\": 0,\"\u6700\u7EC8\u500D\u7387\": 0.5, \"\u6765\u6E90\":
+    \"COMMAND\", \"\u73A9\u5BB6\u5C5E\u6027\u52A0\u6210\": [ { \"\u540D\u79F0\":
+    \"\u6570\u636E_\u56FA\u5B9A\u503C_\u79FB\u52A8\u901F\u5EA6\", \"\u4F5C\u7528\u7C7B\u578B\":
+    \"\u5355\u72EC\u76F8\u52A0\", \"\u7F29\u653E\u500D\u7387\": 0, \"\u73A9\u5BB6\u6548\u679C\u5B57\u6BB5\":
+    \"\" } ], \"\u73A9\u5BB6\u53D8\u91CF\u52A0\u6210\": [ { \"\u540D\u79F0\": \"\u6570\u636E_\u56FA\u5B9A\u503C_\u6218\u529B\u503C\",
+    \"\u4F5C\u7528\u7C7B\u578B\": \"\u5355\u72EC\u76F8\u52A0\", \"\u7F29\u653E\u500D\u7387\":
+    0, \"\u73A9\u5BB6\u6548\u679C\u5B57\u6BB5\": \"\u6218\u529B\u7F6E\u6362\u901F\u5EA6\"
+    } ], \"\u5176\u4ED6\u52A0\u6210\": [ \"\u5BA0\u7269\", \"\u4F19\u4F34\", \"\u5C3E\u8FF9\",
+    \"\u7FC5\u8180\" ] }"
+  "\u6E38\u620F\u7ED3\u7B97\u6307\u4EE4":
+  - "attribute { \"\u64CD\u4F5C\u7C7B\u578B\": \"\u6062\u590D\", \"\u5C5E\u6027\u540D\":
+    \"\u901F\u5EA6\" }"
+  "\u53D1\u9001\u7684\u53D8\u91CF": []
+  "\u573A\u666F\u914D\u7F6E": {fileID: 0}
+  "\u57FA\u7840\u5956\u52B1": []
+  "\u6392\u540D\u5956\u52B1": []
+  "\u5B9E\u65F6\u5956\u52B1\u89C4\u5219":
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=1500000
+    "\u89C4\u5219ID": rule_0001
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 80
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=2500000
+    "\u89C4\u5219ID": rule_0002
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 150
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=4000000
+    "\u89C4\u5219ID": rule_0003
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 260
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=5500000
+    "\u89C4\u5219ID": rule_0004
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 80
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=6500000
+    "\u89C4\u5219ID": rule_0005
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 150
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=8000000
+    "\u89C4\u5219ID": rule_0006
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 260
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=9500000
+    "\u89C4\u5219ID": rule_0007
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 80
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=10500000
+    "\u89C4\u5219ID": rule_0008
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 150
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=12000000
+    "\u89C4\u5219ID": rule_0009
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 260
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=13500000
+    "\u89C4\u5219ID": rule_0010
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 80
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=14500000
+    "\u89C4\u5219ID": rule_0011
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 150
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=16000000
+    "\u89C4\u5219ID": rule_0012
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 260
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=17500000
+    "\u89C4\u5219ID": rule_0013
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 80
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=18500000
+    "\u89C4\u5219ID": rule_0014
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 150
+  - "\u89E6\u53D1\u6761\u4EF6": distance>=20000000
+    "\u89C4\u5219ID": rule_0015
+    "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
+    "\u5956\u52B1\u516C\u5F0F": 260

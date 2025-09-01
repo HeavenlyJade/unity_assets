@@ -62,7 +62,6 @@ namespace MiGame.Tools
         /// <summary>
         /// Unity编辑器菜单项 - 快速生成飞车关卡    奖励规则
         /// </summary>
-        [MenuItem("Tools/关卡配置/快速生成飞行比赛初级奖杯奖励规则")]
         public static void 快速生成飞车关卡奖励规则()
         {
             // 查找飞行关卡配置

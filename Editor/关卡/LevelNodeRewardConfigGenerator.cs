@@ -54,7 +54,7 @@ namespace MiGame.Level.Editor
             EditorGUILayout.HelpBox(
                 "距离配置: 19个预设距离值\n" +
                 "数量规则: 每16个为一个循环，依次为: 10,20,30,40,50,60,70,80,90,100,150,200,300,400,500,1000\n" +
-                "距离循环: 每组距离增加600000，例如第2组从605000开始，第3组从1205000开始", 
+                "距离循环: 每组距离增加1000000，例如第2组从1003000开始，第3组从2003000开始", 
                 MessageType.Info);
 
             EditorGUILayout.Space(10);
@@ -158,8 +158,8 @@ namespace MiGame.Level.Editor
                 // 生成所有组的节点列表
                 for (int i = 0; i < 要生成的组数; i++)
                 {
-                    // 生成当前组的节点列表，距离增加600000 * i
-                    long distanceOffset = 600000L * i;
+                    // 生成当前组的节点列表，距离增加1000000 * i
+                    long distanceOffset = 1000000L * i;
                     var groupNodes = GenerateNodeListWithOffset(distanceOffset);
                     
                     // 将当前组的所有节点添加到总列表中

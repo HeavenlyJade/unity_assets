@@ -21,8 +21,9 @@ namespace MiGame.Level.Editor
         // 高级距离配置
         private readonly long[] 高级距离配置列表 = new long[]
         {
-            12000, 40000, 120000, 160000, 240000, 320000, 440000, 560000, 680000, 880000, 
-            1200000, 1320000, 1520000, 1760000, 2000000, 2560000, 2800000, 3200000, 4000000
+           25000, 50000, 75000, 100000, 125000, 150000, 175000, 200000, 225000, 250000, 
+           275000, 300000, 325000, 375000, 500000, 
+           750000, 1000000
         };
 
         [MenuItem("Tools/关卡配置/批量生成高级关卡节点触发奖励配置")]
@@ -50,9 +51,9 @@ namespace MiGame.Level.Editor
             // 规则说明
             EditorGUILayout.LabelField("生成规则", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox(
-                "高级距离配置: 19个预设距离值\n" +
-                "数量规则: 前1-3个数量为100, 3-10个数量为200, 10-15个数量为500, 15-19个数量为1000\n" +
-                "距离循环: 每组距离增加4000000，例如第2组从40012000开始，第3组从80012000开始", 
+                "高级距离配置: 17个预设距离值\n" +
+                "数量规则: 每16个为一个循环，依次为: 1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,15000,20000,30000,40000\n" +
+                "距离循环: 每组距离增加1000000，例如第2组从10012000开始，第3组从20012000开始", 
                 MessageType.Info);
 
             EditorGUILayout.Space(10);
@@ -156,8 +157,8 @@ namespace MiGame.Level.Editor
                 // 生成所有组的节点列表
                 for (int i = 0; i < 要生成的组数; i++)
                 {
-                    // 生成当前组的节点列表，距离增加4000000 * i
-                    long distanceOffset = 4000000L * i;
+                                    // 生成当前组的节点列表，距离增加1000000 * i
+                long distanceOffset = 1000000L * i;
                     var groupNodes = GenerateNodeListWithOffset(distanceOffset);
                     
                     // 将当前组的所有节点添加到总列表中
@@ -290,13 +291,27 @@ namespace MiGame.Level.Editor
         /// </summary>
         private int GetItemCountByIndex(int index)
         {
-            // 每20个为一个循环
-            int cycleIndex = index % 20;
+            // 每17个为一个循环
+            int cycleIndex = index % 17;
             
-            if (cycleIndex < 3) return 50;     // 前1-3个数量为100
-            if (cycleIndex < 10) return 20;    // 3-10个数量为200
-            if (cycleIndex < 15) return 300;    // 10-15个数量为500
-            return 500;                         // 15-20个数量为1000
+            // 前10个：1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000
+            if (cycleIndex < 10) 
+            {
+                return (cycleIndex + 1) * 1000;
+            }
+            
+            // 后7个：11000, 12000, 13000, 15000, 20000, 30000, 40000
+            switch (cycleIndex)
+            {
+                case 10: return 11000;
+                case 11: return 12000;
+                case 12: return 13000;
+                case 13: return 15000;
+                case 14: return 20000;
+                case 15: return 30000;
+                case 16: return 40000;
+                default: return 1000;
+            }
         }
     }
 }

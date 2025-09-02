@@ -296,17 +296,17 @@ namespace MiGame.Level.Editor
             int cycleIndex = index % 16;
             
             // 前10个：10, 20, 30, 40, 50, 60, 70, 80, 90, 100
-            if (cycleIndex < 10) return (cycleIndex + 1) * 10;
+            if (cycleIndex < 10) return (cycleIndex + 1) * 200;
             
             // 后6个：150, 200, 300, 400, 500, 1000
             switch (cycleIndex)
             {
-                case 10: return 150;
-                case 11: return 200;
-                case 12: return 300;
-                case 13: return 400;
-                case 14: return 500;
-                case 15: return 1000;
+                case 10: return 15000;
+                case 11: return 20000;
+                case 12: return 30000;
+                case 13: return 40000;
+                case 14: return 50000;
+                case 15: return 100000;
                 default: return 10;
             }
         }

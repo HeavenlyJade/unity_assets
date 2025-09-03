@@ -76,6 +76,10 @@ namespace MiGame.Reward
     [Serializable]
     public class 奖励列表项
     {
+        [Tooltip("描述（对该奖励条件的简短说明）")]
+        [TextArea(2, 3)]
+        public string 描述;
+        
         [Tooltip("条件公式（用于判断是否满足领取条件，如：充值金额 >= 100）")]
         [TextArea(2, 4)]
         public string 条件公式;

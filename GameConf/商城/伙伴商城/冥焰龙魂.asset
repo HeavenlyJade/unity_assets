@@ -33,7 +33,7 @@ MonoBehaviour:
       "\u6BD4\u8F83\u64CD\u4F5C\u7B26": 3
   "\u83B7\u5F97\u7269\u54C1":
   - "\u5546\u54C1\u7C7B\u578B": 1
-    "\u5546\u54C1\u540D\u79F0": {fileID: 0}
+    "\u5546\u54C1\u540D\u79F0": {fileID: 11400000, guid: af1e45d2c9bdfd04697816ad2e4daf81, type: 2}
     "\u53D8\u91CF\u540D\u79F0": 
     "\u6570\u91CF": 1
     "\u83B7\u5F97\u5546\u54C1\u63CF\u8FF0": 

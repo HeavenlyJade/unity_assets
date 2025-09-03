@@ -26,12 +26,8 @@ namespace MiGame.Reward
     /// </summary>
     public enum 奖励类型枚举
     {
-        [Tooltip("在线奖励")]
-        在线奖励,
         [Tooltip("活动奖励")]
-        活动奖励,
-        [Tooltip("七日登陆")]
-        七日登陆
+        活动奖励
     }
 
     /// <summary>
@@ -106,7 +102,7 @@ namespace MiGame.Reward
         public string 描述;
         
         [Tooltip("奖励类型")]
-        public 奖励类型枚举 奖励类型 = 奖励类型枚举.在线奖励;
+        public 奖励类型枚举 奖励类型 = 奖励类型枚举.活动奖励;
         
         [Header("重置设置")]
         [Tooltip("重置周期")]

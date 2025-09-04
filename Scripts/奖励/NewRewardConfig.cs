@@ -80,6 +80,9 @@ namespace MiGame.Reward
         [TextArea(2, 3)]
         public string 描述;
         
+        [Tooltip("唯一ID（标注这个奖励是不可重复的）")]
+        public string 唯一ID = "";
+        
         [Tooltip("条件公式（用于判断是否满足领取条件，如：充值金额 >= 100）")]
         [TextArea(2, 4)]
         public string 条件公式;

@@ -14,6 +14,8 @@ namespace MiGame.Shop
     [CreateAssetMenu(fileName = "ShopItemConfig", menuName = "配置/商品配置")]
     public class ShopItemConfig : ScriptableObject
     {
+        [SerializeField, HideInInspector]
+        private string 上次资源名 = ""; // 记录上次资源名称，用于判断是否需要同步商品名
         [Header("基础信息")]
         [Tooltip("商品显示名称")]
         public string 商品名 = "新商品";
@@ -54,6 +56,13 @@ namespace MiGame.Shop
             if (获得物品 == null) 获得物品 = new List<商品奖励配置>();
             if (执行指令 == null) 执行指令 = new List<string>();
             
+            // 当资源名变化时，始终覆盖商品名为资源名
+            if (上次资源名 != name)
+            {
+                商品名 = name;
+                上次资源名 = name;
+            }
+
             // 验证价格配置
             if (价格 != null)
             {
@@ -74,7 +83,8 @@ namespace MiGame.Shop
         特权,
         金币,
         会员特权,
-        指令执行
+        指令执行,
+        礼包
     }
     
     /// <summary>

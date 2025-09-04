@@ -38,7 +38,9 @@ namespace MiGame.Lottery
         [Tooltip("高级宠物抽奖")]
         高级宠物,
         [Tooltip("高级翅膀抽奖")]
-        高级翅膀
+        高级翅膀,
+        [Tooltip("礼包抽奖")]
+        礼包抽奖
     }
 
     /// <summary>

@@ -145,6 +145,7 @@ namespace MiGame.Reward.Editor
 
             // 获取子属性
             var 描述Prop = property.FindPropertyRelative("描述");
+            var 唯一IDProp = property.FindPropertyRelative("唯一ID");
             var 条件公式Prop = property.FindPropertyRelative("条件公式");
             var 消耗迷你币Prop = property.FindPropertyRelative("消耗迷你币");
             var 权重Prop = property.FindPropertyRelative("权重");
@@ -181,6 +182,12 @@ namespace MiGame.Reward.Editor
             float 奖励物品列表Height = EditorGUI.GetPropertyHeight(奖励物品列表Prop, true);
             var 奖励物品列表Rect = new Rect(position.x, currentY, position.width, 奖励物品列表Height);
             EditorGUI.PropertyField(奖励物品列表Rect, 奖励物品列表Prop, new GUIContent("奖励物品列表"), true);
+            currentY += 奖励物品列表Height + spacing;
+
+            // 唯一ID - 使用实际高度，放在最下方
+            float 唯一IDHeight = EditorGUI.GetPropertyHeight(唯一IDProp, true);
+            var 唯一IDRect = new Rect(position.x, currentY, position.width, 唯一IDHeight);
+            EditorGUI.PropertyField(唯一IDRect, 唯一IDProp, new GUIContent("唯一ID"), true);
 
             EditorGUI.indentLevel = indent;
             EditorGUI.EndProperty();
@@ -191,11 +198,13 @@ namespace MiGame.Reward.Editor
             float lineHeight = EditorGUIUtility.singleLineHeight;
             float spacing = EditorGUIUtility.standardVerticalSpacing;
             
-            // 获取描述/条件公式属性并计算其实际高度
+            // 获取描述/条件公式/唯一ID属性并计算其实际高度
             var 描述Prop = property.FindPropertyRelative("描述");
             float 描述Height = EditorGUI.GetPropertyHeight(描述Prop, true);
             var 条件公式Prop = property.FindPropertyRelative("条件公式");
             float 条件公式Height = EditorGUI.GetPropertyHeight(条件公式Prop, true);
+            var 唯一IDProp = property.FindPropertyRelative("唯一ID");
+            float 唯一IDHeight = EditorGUI.GetPropertyHeight(唯一IDProp, true);
             
             // 获取奖励物品列表属性并计算其实际高度
             var 奖励物品列表Prop = property.FindPropertyRelative("奖励物品列表");
@@ -210,9 +219,13 @@ namespace MiGame.Reward.Editor
             {
                 条件公式Height = lineHeight * 2;
             }
+            if (唯一IDHeight < lineHeight)
+            {
+                唯一IDHeight = lineHeight;
+            }
             
-            // 总高度 = 描述 + 条件公式 + 消耗迷你币 + 权重 + 奖励物品列表 + 间距
-            return 描述Height + spacing + 条件公式Height + spacing + lineHeight + spacing + lineHeight + spacing + 奖励物品列表Height;
+            // 总高度 = 描述 + 条件公式 + 消耗迷你币 + 权重 + 奖励物品列表 + 唯一ID + 间距
+            return 描述Height + spacing + 条件公式Height + spacing + lineHeight + spacing + lineHeight + spacing + 奖励物品列表Height + spacing + 唯一IDHeight;
         }
     }
 

@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12345678901234567890123456789012, type: 3}
+  m_Name: "\u5546\u57CE\u5BA0\u7269\u793C\u5305\u62BD\u5956"
+  m_EditorClassIdentifier: 
+  "\u540D\u5B57": "\u5546\u57CE\u5BA0\u7269\u793C\u5305\u62BD\u5956"
+  "\u914D\u7F6E\u540D\u79F0": "\u5546\u57CE\u5BA0\u7269\u793C\u5305\u62BD\u5956"
+  "\u63CF\u8FF0": 
+  "\u62BD\u5956\u7C7B\u578B": 14
+  "\u7EA7\u522B": 0
+  "\u5956\u52B1\u6C60":
+  - "\u5956\u52B1\u7C7B\u578B": 2
+    "\u7269\u54C1": {fileID: 0}
+    "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
+    "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: bb41dc42b10e3514f80d5ba55b6398ab, type: 2}
+    "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
+    "\u5C3E\u8FF9\u914D\u7F6E": {fileID: 0}
+    "\u6570\u91CF": 1
+    "\u6743\u91CD": 1
+  - "\u5956\u52B1\u7C7B\u578B": 2
+    "\u7269\u54C1": {fileID: 0}
+    "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
+    "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: e3b36a295271f2c4c9f9a5d130ea5dcd, type: 2}
+    "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
+    "\u5C3E\u8FF9\u914D\u7F6E": {fileID: 0}
+    "\u6570\u91CF": 1
+    "\u6743\u91CD": 50
+  - "\u5956\u52B1\u7C7B\u578B": 2
+    "\u7269\u54C1": {fileID: 0}
+    "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
+    "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: da7e097454a579f4b94a04e42122b56c, type: 2}
+    "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
+    "\u5C3E\u8FF9\u914D\u7F6E": {fileID: 0}
+    "\u6570\u91CF": 1
+    "\u6743\u91CD": 20
+  - "\u5956\u52B1\u7C7B\u578B": 2
+    "\u7269\u54C1": {fileID: 0}
+    "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
+    "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: e118206373b39db4586fd38d71c429df, type: 2}
+    "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
+    "\u5C3E\u8FF9\u914D\u7F6E": {fileID: 0}
+    "\u6570\u91CF": 1
+    "\u6743\u91CD": 10
+  "\u5355\u6B21\u6D88\u8017":
+    "\u6D88\u8017\u7269\u54C1": {fileID: 0}
+    "\u6D88\u8017\u6570\u91CF": 1
+  "\u4E94\u8FDE\u6D88\u8017":
+    "\u6D88\u8017\u7269\u54C1": {fileID: 0}
+    "\u6D88\u8017\u6570\u91CF": 5
+  "\u5341\u8FDE\u6D88\u8017":
+    "\u6D88\u8017\u7269\u54C1": {fileID: 0}
+    "\u6D88\u8017\u6570\u91CF": 10
+  "\u662F\u5426\u542F\u7528": 1
+  "\u51B7\u5374\u65F6\u95F4": 0
+  "\u6BCF\u65E5\u6B21\u6570\u9650\u5236": -1

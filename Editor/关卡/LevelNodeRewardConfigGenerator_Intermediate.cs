@@ -300,16 +300,16 @@ namespace MiGame.Level.Editor
             {
                 switch (cycleIndex)
                 {
-                    case 0: return 30;
-                    case 1: return 40;
-                    case 2: return 50;
-                    case 3: return 60;
-                    case 4: return 70;
-                    case 5: return 80;
-                    case 6: return 90;
-                    case 7: return 100;
-                    case 8: return 120;
-                    case 9: return 150;
+                    case 0: return 1000;
+                    case 1: return 2000;
+                    case 2: return 3000;
+                    case 3: return 4000;
+                    case 4: return 5000;
+                    case 5: return 6000;
+                    case 6: return 7000;
+                    case 7: return 8000;
+                    case 8: return 8000;
+                    case 9: return 10000;
                     default: return 30;
                 }
             }
@@ -317,12 +317,12 @@ namespace MiGame.Level.Editor
             // 后6个：200, 300, 400, 500, 1000, 2000
             switch (cycleIndex)
             {
-                case 10: return 200;
-                case 11: return 300;
-                case 12: return 400;
-                case 13: return 500;
-                case 14: return 1000;
-                case 15: return 2000;
+                case 10: return 20000;
+                case 11: return 30000;
+                case 12: return 50000;
+                case 13: return 100000;
+                case 14: return 150000;
+                case 15: return 300000;
                 default: return 30;
             }
         }

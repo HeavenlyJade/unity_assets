@@ -5,6 +5,7 @@ using MiGame.Items;
 using MiGame.Pet;
 using MiGame.Trail;
 using MiGame.Lottery;
+using MiGame.Achievement;
 
 namespace MiGame.Shop
 {
@@ -82,6 +83,7 @@ namespace MiGame.Shop
         尾迹,
         特权,
         金币,
+        金币专区,
         会员特权,
         指令执行,
         礼包
@@ -150,6 +152,12 @@ namespace MiGame.Shop
         
         [Tooltip("价格数值")]
         public string 价格数量 = "-1";
+        
+        [Tooltip("效果配置器，用于根据玩家变量等级动态计算价格")]
+        public EffectLevelConfig 效果配置器;
+        
+        [Tooltip("玩家变量名称，用于获取对应等级效果配置来动态设定金币价格")]
+        public string 玩家变量 = "";
         
         [Tooltip("迷你币类型")]
         public 迷你币类型 迷你币类型 = 迷你币类型.空;

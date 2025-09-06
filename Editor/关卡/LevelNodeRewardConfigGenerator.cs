@@ -304,7 +304,7 @@ namespace MiGame.Level.Editor
                 case 10: return 10000;
                 case 11: return 11000;
                 case 12: return 12000;
-                case 13: return 20000;
+                case 13: return 15000;
                 case 14: return 50000;
                 case 15: return 100000;
                 default: return 10;

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using MiGame.Achievement;
 using System.Collections.Generic;
+using MiGame.Pet;
+using MiGame.Items;
 
 [CustomPropertyDrawer(typeof(LevelEffect))]
 public class 等级效果Drawer : PropertyDrawer
@@ -22,6 +24,8 @@ public class 等级效果Drawer : PropertyDrawer
         var 效果数值Prop = property.FindPropertyRelative("效果数值");
         var 效果等级配置Prop = property.FindPropertyRelative("效果等级配置");
         var 效果描述Prop = property.FindPropertyRelative("效果描述");
+        var 加成类型Prop = property.FindPropertyRelative("加成类型");
+        var 物品目标Prop = property.FindPropertyRelative("物品目标");
 
         // 计算基础行高和间距
         float singleLineHeight = EditorGUIUtility.singleLineHeight;
@@ -62,7 +66,21 @@ public class 等级效果Drawer : PropertyDrawer
         EditorGUI.PropertyField(effectLevelConfigRect, 效果等级配置Prop, new GUIContent("效果等级配置"));
         currentY += singleLineHeight + verticalSpacing;
 
-        // 6. 绘制效果描述
+        // 6. 绘制加成类型
+        var bonusTypeRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+        EditorGUI.PropertyField(bonusTypeRect, 加成类型Prop, new GUIContent("加成类型"));
+        currentY += singleLineHeight + verticalSpacing;
+
+        // 7. 当加成类型为 物品 时，绘制物品目标
+        var currentBonusType = (加成类型)加成类型Prop.enumValueIndex;
+        if (currentBonusType == 加成类型.物品)
+        {
+            var itemTargetRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            EditorGUI.PropertyField(itemTargetRect, 物品目标Prop, new GUIContent("物品目标"));
+            currentY += singleLineHeight + verticalSpacing;
+        }
+
+        // 8. 绘制效果描述
         var descriptionRect = new Rect(position.x, currentY, position.width, singleLineHeight);
         EditorGUI.PropertyField(descriptionRect, 效果描述Prop, new GUIContent("效果描述"));
 
@@ -71,8 +89,21 @@ public class 等级效果Drawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        // 效果类型行 + 效果字段名称行 + 基础数值行 + 效果数值行 + 效果等级配置行 + 效果描述行
-        return (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 6;
+        // 基础：效果类型 + 效果字段名称 + 基础数值 + 效果数值 + 效果等级配置 + 加成类型 + 效果描述 = 7 行
+        // 若加成类型为 物品，再加 1 行（物品目标）
+        float baseLines = 7f;
+
+        var 加成类型Prop = property.FindPropertyRelative("加成类型");
+        if (加成类型Prop != null && 加成类型Prop.propertyType == SerializedPropertyType.Enum)
+        {
+            var currentBonusType = (加成类型)加成类型Prop.enumValueIndex;
+            if (currentBonusType == 加成类型.物品)
+            {
+                baseLines += 1f;
+            }
+        }
+
+        return (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * baseLines;
     }
 
     private void DrawStringPopup(Rect rect, string label, SerializedProperty property, List<string> options)

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using MiGame.Items;
 using MiGame.Data;
+using MiGame.Pet;
 
 namespace MiGame.Achievement
 {
@@ -108,6 +109,13 @@ namespace MiGame.Achievement
 
         [Tooltip("效果描述")]
         public string 效果描述;
+
+        // 以下为新增：与伙伴/宠物的“携带效果”对齐的配置
+        [Tooltip("伙伴加成类型（与伙伴携带效果的加成类型一致）")]
+        public 加成类型 加成类型;
+
+        [Tooltip("物品目标（当加成类型为物品时有效）")]
+        public ItemType 物品目标;
     }
 
     /// <summary>

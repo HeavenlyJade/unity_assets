@@ -216,6 +216,7 @@ namespace MiGame.Pet
     /// </summary>
     public enum 加成类型
     {
+        空,
         物品,
         玩家变量,
         玩家属性

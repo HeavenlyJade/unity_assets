@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using System.Numerics;
+using UnityEngine;
+using System.Collections;
 
 namespace MiGame.Editor.Exporter
 {
@@ -102,7 +105,7 @@ namespace MiGame.Editor.Exporter
                 string displayName = FieldNameMapping.ContainsKey(field.Name) ? FieldNameMapping[field.Name] : field.Name;
                 
                 sb.Append($"{indent}['{displayName}'] = ");
-                ValueToLua(field.GetValue(obj), sb, indentLevel, field.Name);
+                ScientificValueToLua(field.GetValue(obj), sb, indentLevel, field.Name);
                 sb.AppendLine(",");
             }
         }
@@ -115,6 +118,192 @@ namespace MiGame.Editor.Exporter
                 .Select(assetPath => AssetDatabase.LoadAssetAtPath<TeleportPointConfig>(assetPath))
                 .Where(asset => asset != null)
                 .ToList();
+        }
+
+        // 自定义导出：当字符串是超大数字时，以科学计数法输出（不加引号）
+        private void ScientificValueToLua(object value, StringBuilder sb, int indentLevel, string fieldName = null)
+        {
+            if (value == null)
+            {
+                sb.Append("nil");
+                return;
+            }
+
+            var type = value.GetType();
+            var indent = new string(' ', indentLevel * 2);
+
+            if (type == typeof(string))
+            {
+                var stringValue = value.ToString();
+                if (IsNumericStringLocal(stringValue))
+                {
+                    if (IsVeryLargeNumberLocal(stringValue))
+                    {
+                        // 超出限制，转为科学计数法并作为数字写入
+                        string sci = ToScientificLocal(stringValue);
+                        sb.Append(sci);
+                    }
+                    else
+                    {
+                        sb.Append(stringValue);
+                    }
+                }
+                else
+                {
+                    sb.Append($"'{EscapeStringLocal(stringValue)}'");
+                }
+            }
+            else if (type == typeof(bool))
+            {
+                sb.Append(value.ToString().ToLower());
+            }
+            else if (type.IsPrimitive)
+            {
+                sb.Append(value);
+            }
+            else if (type.IsEnum)
+            {
+                var enumName = value.ToString();
+                if (enumName == "空")
+                {
+                    sb.Append("nil");
+                }
+                else
+                {
+                    sb.Append($"'{enumName}'");
+                }
+            }
+            else if (value is UnityEngine.Vector3 v3)
+            {
+                sb.Append($"{{ {v3.x}, {v3.y}, {v3.z} }}");
+            }
+            else if (value is ScriptableObject so)
+            {
+                sb.Append(so != null ? $"'{so.name}'" : "nil");
+            }
+            else if (value is UnityEngine.GameObject go)
+            {
+                sb.Append(go != null ? $"'{go.name}'" : "nil");
+            }
+            else if (value is RuntimeAnimatorController rac)
+            {
+                sb.Append(rac != null ? $"'{rac.name}'" : "nil");
+            }
+            else if (value is IDictionary dictionary)
+            {
+                sb.AppendLine("{");
+                foreach (DictionaryEntry entry in dictionary)
+                {
+                    sb.Append(new string(' ', (indentLevel + 1) * 2));
+                    sb.Append($"[{ValueToLuaStringLocal(entry.Key)}] = ");
+                    ScientificValueToLua(entry.Value, sb, indentLevel + 1, null);
+                    sb.AppendLine(",");
+                }
+                sb.Append(indent + "}");
+            }
+            else if (value is IEnumerable enumerable and not string)
+            {
+                sb.AppendLine("{");
+                foreach (var item in enumerable)
+                {
+                    sb.Append(new string(' ', (indentLevel + 1) * 2));
+                    ScientificValueToLua(item, sb, indentLevel + 1, null);
+                    sb.AppendLine(",");
+                }
+                sb.Append(indent + "}");
+            }
+            else if (type.IsValueType && !type.IsPrimitive || type.IsClass)
+            {
+                sb.AppendLine("{");
+                ObjectToLuaWithChineseNames(value, sb, indentLevel + 1);
+                sb.Append(indent + "}");
+            }
+            else
+            {
+                sb.Append("nil");
+            }
+        }
+
+        private string EscapeStringLocal(string s)
+        {
+            return s.Replace("'", "\\'{}").Replace("\\", "\\\\").Replace("\n", "\\n").Replace("\r", "");
+        }
+
+        private bool IsNumericStringLocal(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return false;
+            input = input.Trim();
+            if (input.StartsWith("+") || input.StartsWith("-")) return false;
+            return double.TryParse(input, out _);
+        }
+
+        private bool IsVeryLargeNumberLocal(string numericString)
+        {
+            if (string.IsNullOrWhiteSpace(numericString)) return false;
+            numericString = numericString.Trim();
+
+            // 判断是否超过 JS 安全整数范围 2^53-1 或浮点数绝对值过大
+            const double JS_SAFE = 9007199254740991d; // 2^53 - 1
+
+            // 小数情况
+            if (numericString.Contains("."))
+            {
+                if (decimal.TryParse(numericString, out decimal dec))
+                {
+                    return Math.Abs(dec) > (decimal)JS_SAFE;
+                }
+                if (double.TryParse(numericString, out double dbl))
+                {
+                    return Math.Abs(dbl) > JS_SAFE;
+                }
+                return true;
+            }
+
+            // 整数情况
+            if (long.TryParse(numericString, out _))
+            {
+                return false;
+            }
+            if (BigInteger.TryParse(numericString, out BigInteger big))
+            {
+                return BigInteger.Abs(big) > new BigInteger(JS_SAFE);
+            }
+            return true;
+        }
+
+        private string ToScientificLocal(string numericString)
+        {
+            // 尝试用 decimal，失败则用 double
+            if (decimal.TryParse(numericString, out decimal dec))
+            {
+                // 使用通用科学计数法格式
+                return dec.ToString("0.################E+0");
+            }
+            if (double.TryParse(numericString, out double dbl))
+            {
+                return dbl.ToString("0.################E+0");
+            }
+            // 最后兜底：原样输出（虽然不应到达这里）
+            return numericString;
+        }
+
+        private string ValueToLuaStringLocal(object value)
+        {
+            if (value == null) return "nil";
+            var type = value.GetType();
+            if (type == typeof(string))
+            {
+                return $"'{EscapeStringLocal(value.ToString())}'";
+            }
+            if (type == typeof(bool))
+            {
+                return value.ToString().ToLower();
+            }
+            if (type.IsPrimitive || type.IsEnum)
+            {
+                return value.ToString();
+            }
+            return $"'{EscapeStringLocal(value.ToString())}'";
         }
     }
 }

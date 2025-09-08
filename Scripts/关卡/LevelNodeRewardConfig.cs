@@ -36,6 +36,10 @@ namespace MiGame.Level
         [Tooltip("所属场景")]
         public string 所属场景;
 
+        
+        [Tooltip("音效节点字段")]
+        public string 音效节点字段;
+
         [Header("节点奖励配置")]
         [Tooltip("关卡节点的奖励列表")]
         public List<LevelNodeReward> 节点列表 = new List<LevelNodeReward>();

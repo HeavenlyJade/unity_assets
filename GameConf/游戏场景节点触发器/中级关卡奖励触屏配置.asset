@@ -17,6 +17,7 @@ MonoBehaviour:
     - \u5305\u542B5\u7EC4\u914D\u7F6E"
   "\u514B\u9686\u7684\u573A\u666F\u8282\u70B9\u8DEF\u5F84": "Ground/map2/terrain/Scene/RewardTigger/\u5956\u52B1\u5899"
   "\u6240\u5C5E\u573A\u666F": map2
+  "\u97F3\u6548\u8282\u70B9\u5B57\u6BB5": "sandboxId://\u97F3\u6548\u8D44\u6E90/\u83B7\u5F97\u91D1\u5E01\u97F3\u6548.ogg"
   "\u8282\u70B9\u5217\u8868":
   - "\u5956\u52B1\u7C7B\u578B": 0
     "\u7269\u54C1\u7C7B\u578B": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}

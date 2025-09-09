@@ -22,17 +22,8 @@ namespace MiGame.Achievement
     [Serializable]
     public class UnlockCondition
     {
-        [Tooltip("条件类型")]
-        public string 条件类型;
-
-        [Tooltip("条件参数")]
-        public string 条件参数;
-
-        [Tooltip("目标数值")]
-        public int 目标数值;
-
-        [Tooltip("是否已完成")]
-        public bool 已完成;
+        [Tooltip("条件公式（示例：）")]
+        public string 条件公式;
     }
 
     /// <summary>
@@ -142,7 +133,9 @@ namespace MiGame.Achievement
         [Tooltip("成就图标路径")]
         public string 图标;
 
-        [Header("解锁相关")]
+        [Tooltip("当解锁条件不满足时执行的指令列表（字符串）")]
+        public List<string> 不满足条件执行指令;
+
         [Tooltip("成就解锁的条件列表")]
         public List<UnlockCondition> 解锁条件;
 

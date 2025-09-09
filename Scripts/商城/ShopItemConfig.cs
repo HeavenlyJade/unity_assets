@@ -17,7 +17,7 @@ namespace MiGame.Shop
     {
         [SerializeField, HideInInspector]
         private string 上次资源名 = ""; // 记录上次资源名称，用于判断是否需要同步商品名
-        [Header("基础信息")]
+        // [Header("基础信息")]
         [Tooltip("商品显示名称")]
         public string 商品名 = "新商品";
         
@@ -28,13 +28,14 @@ namespace MiGame.Shop
         [Tooltip("商品分类标签")]
         public ShopCategory 商品分类 = ShopCategory.宠物;
         
-        [Header("价格配置")]
+        // [Header("价格配置")]
         public PriceConfig 价格 = new PriceConfig();
         
-        [Header("购买限制")]
+        // [Header("购买限制")]
+        [TextArea(3, 12)]
+
         public PurchaseLimitConfig 限购配置 = new PurchaseLimitConfig();
         
-        [Header("奖励内容")]
         [Tooltip("获得物品列表")]
         public List<商品奖励配置> 获得物品 = new List<商品奖励配置>();
         

@@ -65,7 +65,7 @@ namespace MiGame.Shop.Editor
                 if (string.IsNullOrEmpty(玩家变量Prop.stringValue))
                 {
                     var helpBoxRect = new Rect(position.x, currentY, position.width, lineHeight * 1.5f);
-                    EditorGUI.HelpBox(helpBoxRect, "💡 玩家变量名称，用于获取对应等级效果配置来动态设定金币价格", MessageType.Info);
+                    // EditorGUI.HelpBox(helpBoxRect, "💡 玩家变量名称，用于获取对应等级效果配置来动态设定金币价格", MessageType.Info);
                     currentY += lineHeight * 1.5f + spacing;
                 }
                 
@@ -76,7 +76,7 @@ namespace MiGame.Shop.Editor
                     GUI.backgroundColor = new Color(1f, 1f, 0.8f, 1f); // 淡黄色背景提示
                 }
                 
-                EditorGUI.PropertyField(玩家变量Rect, 玩家变量Prop, new GUIContent("🎯 玩家变量", "输入玩家变量名称，配合效果配置器使用"));
+                // EditorGUI.PropertyField(玩家变量Rect, 玩家变量Prop, new GUIContent("🎯 玩家变量", "输入玩家变量名称，配合效果配置器使用"));
                 GUI.backgroundColor = originalColor;
                 currentY += lineHeight + spacing;
 

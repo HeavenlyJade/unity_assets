@@ -15,9 +15,10 @@ MonoBehaviour:
   "\u540D\u5B57": "\u91CD\u751F"
   "\u6392\u5E8F": 1
   "\u7C7B\u578B": 1
-  "\u63CF\u8FF0": "\u91CD\u751F\u680F\u4F4D"
+  "\u63CF\u8FF0": "\u6BCF\u7EA7\u589E\u52A0\u6700\u5927\u53EF\u91CD\u751F\u6B21\u6570"
   "\u56FE\u6807": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u7269\u54C1\u56FE\u6807/\u91CD\u751F\u6863\u4F4D.png"
-  "\u89E3\u9501\u6761\u4EF6": []
+  "\u89E3\u9501\u6761\u4EF6":
+  - "\u6761\u4EF6\u516C\u5F0F": 
   "\u89E3\u9501\u5956\u52B1": []
   "\u6700\u5927\u7B49\u7EA7": 20
   "\u6D88\u8017\u914D\u7F6E": {fileID: 11400000, guid: c350878910eab2b44803567378779be8, type: 2}
@@ -32,3 +33,5 @@ MonoBehaviour:
     "\u6548\u679C\u6570\u503C": 
     "\u6548\u679C\u7B49\u7EA7\u914D\u7F6E": {fileID: 11400000, guid: 31896793e913caa448ad30cecfa23e6f, type: 2}
     "\u6548\u679C\u63CF\u8FF0": "\u91CD\u751F\u680F\u4F4D\u589E\u52A0\uFF0CT_LVL\u662F\u5929\u8D4B\u7B49\u7EA7"
+    "\u52A0\u6210\u7C7B\u578B": 0
+    "\u7269\u54C1\u76EE\u6807": {fileID: 0}

@@ -13,7 +13,9 @@ namespace MiGame.Achievement
     public enum AchievementType
     {
         普通成就,
-        天赋成就
+        天赋成就,
+        好友加成
+        
     }
 
     /// <summary>

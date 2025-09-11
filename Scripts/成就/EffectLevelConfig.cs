@@ -12,7 +12,9 @@ namespace MiGame.Achievement
         [Tooltip("公式计算")]
         公式,
         [Tooltip("固定数值")]
-        固定
+        固定,
+        [Tooltip("按百分比计算（0-100 或 0-1 需在公式中自定义约定）")]
+        百分比
     }
 
     /// <summary>
@@ -84,6 +86,10 @@ namespace MiGame.Achievement
         [Tooltip("效果公式")]
         [TextArea(2, 3)]
         public string 效果公式 = "";
+
+        [Tooltip("效果描述")]
+        [TextArea(2, 3)]
+        public string 效果描述 = "";
 
         [Tooltip("该等级的效果数值")]
         public double 效果数值 = 0.0;

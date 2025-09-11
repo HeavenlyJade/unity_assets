@@ -26,6 +26,7 @@ public class 等级效果Drawer : PropertyDrawer
         var 效果描述Prop = property.FindPropertyRelative("效果描述");
         var 加成类型Prop = property.FindPropertyRelative("加成类型");
         var 物品目标Prop = property.FindPropertyRelative("物品目标");
+        var 物品类型Prop = property.FindPropertyRelative("物品类型");
 
         // 计算基础行高和间距
         float singleLineHeight = EditorGUIUtility.singleLineHeight;
@@ -45,11 +46,22 @@ public class 等级效果Drawer : PropertyDrawer
             LoadAllLists();
         }
 
-        // 2. 根据效果类型绘制效果字段名称
-        List<string> nameList = (type == PlayerVariableType.玩家变量) ? _variableNames : _statNames;
-        var fieldNameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-        DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, nameList);
-        currentY += singleLineHeight + verticalSpacing;
+        // 2. 根据效果类型绘制效果字段名称或物品类型
+        if (type == PlayerVariableType.物品)
+        {
+            // 当效果类型为物品时，显示ItemType选择器
+            var itemTypeRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            EditorGUI.PropertyField(itemTypeRect, 物品类型Prop, new GUIContent("物品类型"));
+            currentY += singleLineHeight + verticalSpacing;
+        }
+        else
+        {
+            // 当效果类型为玩家变量或玩家属性时，显示字符串下拉菜单
+            List<string> nameList = (type == PlayerVariableType.玩家变量) ? _variableNames : _statNames;
+            var fieldNameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, nameList);
+            currentY += singleLineHeight + verticalSpacing;
+        }
 
         // 3. 绘制基础数值
         var baseValueRect = new Rect(position.x, currentY, position.width, singleLineHeight);

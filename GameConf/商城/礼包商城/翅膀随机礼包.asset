@@ -40,7 +40,7 @@ MonoBehaviour:
       "\u6BD4\u8F83\u64CD\u4F5C\u7B26": 3
   "\u83B7\u5F97\u7269\u54C1": []
   "\u6267\u884C\u6307\u4EE4": []
-  "\u5956\u6C60": {fileID: 0}
+  "\u5956\u6C60": {fileID: 11400000, guid: 29a70a021b06cd947bc325b45ba5da54, type: 2}
   "\u754C\u9762\u914D\u7F6E":
     "\u6392\u5E8F\u6743\u91CD": 6
     "\u70ED\u5356\u6807\u7B7E": 0

@@ -208,7 +208,6 @@ namespace MiGame.Editor.Tools
 
                 // 确保列表已初始化并清空
                 config.等级效果列表 = new List<LevelEffectData>();
-                config.特殊宠物效果列表 = new List<SpecialPetEffect>();
 
                 Debug.Log($"创建新配置 {configName}: 准备添加 {levelEffects.Count} 个等级效果");
 

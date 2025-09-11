@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using MiGame.Items;
 using MiGame.Utils;
+using MiGame.Achievement;
 
 namespace MiGame.Pet
 {
@@ -253,6 +254,15 @@ namespace MiGame.Pet
     }
 
     /// <summary>
+    /// 特殊加成类型
+    /// </summary>
+    public enum 特殊加成
+    {
+        空,
+        最强加成
+    }
+
+    /// <summary>
     /// 宠物和伙伴通用的基础配置。
     /// 这个类不应该被直接创建实例。
     /// </summary>
@@ -291,9 +301,17 @@ namespace MiGame.Pet
         [Tooltip("升星消耗配置")]
         public List<升星消耗> 升星消耗列表;
 
+        [Header("特殊设定")]
+        [Tooltip("特殊加成开关/模式（为空时导出为nil）")]
+        public 特殊加成 特殊加成 = 特殊加成.空;
+        
         [Header("携带效果")]
         [Tooltip("携带效果配置")]
         public List<携带效果> 携带效果;
+
+        [Header("宠物特殊效果配置")]
+        [Tooltip("选择一个效果等级配置（为空则不应用效果等级加成）")]
+        public EffectLevelConfig 效果等级配置;
 
         [Header("技能与进化")]
         [Tooltip("技能列表")]

@@ -53,9 +53,7 @@ namespace MiGame.Achievement
         [Tooltip("各等级的效果数值配置")]
         public List<LevelEffectData> 等级效果列表 = new List<LevelEffectData>();
 
-        [Header("特殊宠物效果")]
-        [Tooltip("特定宠物的额外效果配置")]
-        public List<SpecialPetEffect> 特殊宠物效果列表 = new List<SpecialPetEffect>();
+        
 
         private void OnValidate()
         {
@@ -91,16 +89,5 @@ namespace MiGame.Achievement
         public double 效果数值 = 0.0;
     }
 
-    /// <summary>
-    /// 特殊宠物效果结构
-    /// </summary>
-    [Serializable]
-    public class SpecialPetEffect
-    {
-        [Tooltip("宠物ID或名称")]
-        public string 宠物ID = "";
-
-        [Tooltip("特殊效果数值")]
-        public double 特殊效果数值 = 0.0;
-    }
+    
 }

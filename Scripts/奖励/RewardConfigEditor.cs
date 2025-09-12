@@ -53,6 +53,7 @@ namespace MiGame.Reward.Editor
             {
                 needsRepaint = true;
             }
+            currentY += 临取执行指令Height + spacing;
 
             EditorGUI.indentLevel = indent;
             EditorGUI.EndProperty();
@@ -79,9 +80,9 @@ namespace MiGame.Reward.Editor
             float 临取执行指令Height = EditorGUI.GetPropertyHeight(临取执行指令Prop, true);
             
             // 确保TextArea有足够的最小高度
-            if (临取执行指令Height < lineHeight * 3)
+            if (临取执行指令Height < lineHeight * 5)
             {
-                临取执行指令Height = lineHeight * 3;
+                临取执行指令Height = lineHeight * 5;
             }
             
             // 总高度 = 时间节点 + 奖励物品实际高度 + 临取执行指令实际高度 + 间距
@@ -110,6 +111,8 @@ namespace MiGame.Reward.Editor
             var 宠物配置Prop = property.FindPropertyRelative("宠物配置");
             var 伙伴配置Prop = property.FindPropertyRelative("伙伴配置");
             var 数量Prop = property.FindPropertyRelative("数量");
+            var 显示UIProp = property.FindPropertyRelative("显示UI");
+            var 奖励描述Prop = property.FindPropertyRelative("奖励描述");
 
             // 计算字段高度
             float lineHeight = EditorGUIUtility.singleLineHeight;
@@ -172,6 +175,17 @@ namespace MiGame.Reward.Editor
             // 数量字段（所有类型都显示）
             var 数量Rect = new Rect(position.x, currentY, position.width, lineHeight);
             EditorGUI.PropertyField(数量Rect, 数量Prop, new GUIContent("数量"));
+            currentY += lineHeight + spacing;
+
+            // 显示UI字段
+            var 显示UIRect = new Rect(position.x, currentY, position.width, lineHeight);
+            EditorGUI.PropertyField(显示UIRect, 显示UIProp, new GUIContent("显示UI"));
+            currentY += lineHeight + spacing;
+
+            // 奖励描述字段 - 使用TextArea
+            float 奖励描述Height = EditorGUI.GetPropertyHeight(奖励描述Prop, true);
+            var 奖励描述Rect = new Rect(position.x, currentY, position.width, 奖励描述Height);
+            EditorGUI.PropertyField(奖励描述Rect, 奖励描述Prop, new GUIContent("奖励描述"), true);
 
             EditorGUI.indentLevel = indent;
             EditorGUI.EndProperty();
@@ -180,13 +194,14 @@ namespace MiGame.Reward.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             var 奖励类型Prop = property.FindPropertyRelative("奖励类型");
+            var 奖励描述Prop = property.FindPropertyRelative("奖励描述");
             奖励类型 selectedType = (奖励类型)奖励类型Prop.enumValueIndex;
             
             float lineHeight = EditorGUIUtility.singleLineHeight;
             float spacing = EditorGUIUtility.standardVerticalSpacing;
             
-            // 基础高度：奖励类型 + 数量 + 两个间距
-            float height = lineHeight * 2 + spacing * 2;
+            // 基础高度：奖励类型 + 数量 + 显示UI + 奖励描述 + 间距
+            float height = lineHeight * 3 + spacing * 3;
             
             // 根据奖励类型添加对应配置字段的高度
             switch (selectedType)
@@ -199,8 +214,16 @@ namespace MiGame.Reward.Editor
                     break;
             }
             
+            // 添加奖励描述的实际高度（TextArea），并设置更大的最小高度
+            float 奖励描述Height = EditorGUI.GetPropertyHeight(奖励描述Prop, true);
+            if (奖励描述Height < lineHeight * 4)
+            {
+                奖励描述Height = lineHeight * 4;
+            }
+            height += 奖励描述Height - lineHeight; // 减去已经计算的基础高度
+            
             // 确保最小高度，避免布局问题
-            float minHeight = lineHeight * 3 + spacing * 2;
+            float minHeight = lineHeight * 4 + spacing * 3;
             return Mathf.Max(height, minHeight);
         }
     }

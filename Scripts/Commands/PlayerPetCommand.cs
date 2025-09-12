@@ -10,6 +10,7 @@ namespace MiGame.Commands
     public enum PetOperationType
     {
         新增,
+        新增最强,
         删除,
         设置,
         栏位设置,
@@ -23,7 +24,7 @@ namespace MiGame.Commands
     [Command("pet", "宠物相关操作")]
     public class PlayerPetCommand : AbstractCommand
     {
-        [CommandParamDesc("操作类型 (新增/删除/设置/栏位设置/栏位新增/栏位减少)")]
+        [CommandParamDesc("操作类型 (新增/新增最强/删除/设置/栏位设置/栏位新增/栏位减少)")]
         public PetOperationType 操作类型;
 
         [CommandParamDesc("目标玩家的UIN")]
@@ -89,6 +90,11 @@ namespace MiGame.Commands
                     }
                     Debug.Log($"向玩家 '{targetPlayerIdentifier}' 新增宠物 '{宠物.name}'。");
                     // TODO: 实现新增宠物的逻辑
+                    break;
+
+                case PetOperationType.新增最强:
+                    Debug.Log($"向玩家 '{targetPlayerIdentifier}' 新增最强宠物。");
+                    // TODO: 实现新增最强宠物的逻辑
                     break;
 
                 case PetOperationType.删除:

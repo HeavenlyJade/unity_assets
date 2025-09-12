@@ -25,6 +25,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 5000
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F975000\u91D1\u5E01"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
       \"\u91D1\u5E01\", \"\u6570\u91CF\": 5000, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
       }"
@@ -36,6 +38,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 10
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F9710\u4E2A\u5956\u676F"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
       \"\u5956\u676F\", \"\u6570\u91CF\": 10, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
       }"
@@ -47,6 +51,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 11400000, guid: efda35696cadb6942878823ccc30a18b, type: 2}
       "\u6570\u91CF": 1
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F97\u4F19\u4F34\u9752\u6843\u557E\u557E"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "partner { \"\u64CD\u4F5C\u7C7B\u578B\":
       \"\u65B0\u589E\", \"\u4F19\u4F34\": \"\u9752\u6843\u557E\u557E\" }"
   - "\u65F6\u95F4\u8282\u70B9": 600
@@ -57,6 +63,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 20
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F9720\u4E2A\u5956\u676F"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
       \"\u5956\u676F\", \"\u6570\u91CF\": 20, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
       }"
@@ -68,6 +76,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 10000
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F971\u4E07\u91D1\u5E01"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
       \"\u91D1\u5E01\", \"\u6570\u91CF\": 10000, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
       }"
@@ -79,6 +89,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 20
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F9720\u4E2A\u5956\u676F"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
       \"\u5956\u676F\", \"\u6570\u91CF\": 20, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
       }"
@@ -90,6 +102,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: 98aac678f8b8f214b84b6871654d58cd, type: 2}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F97\u5BA0\u7269\u9752\u6843\u557E\u557E"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "pet { \"\u64CD\u4F5C\u7C7B\u578B\":
       \"\u65B0\u589E\", \"\u5BA0\u7269\": \"\u5154\u5154\u5C0F\u7075\" }"
   - "\u65F6\u95F4\u8282\u70B9": 2100
@@ -100,6 +114,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 50000
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F975\u4E07\u91D1\u5E01"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
       \"\u91D1\u5E01\", \"\u6570\u91CF\": 50000, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
       }"
@@ -111,6 +127,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 100
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F97\u5956\u676F100\u4E2A"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
       \"\u5956\u676F\", \"\u6570\u91CF\": 100, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
       }"
@@ -122,6 +140,8 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: 08ff8a1c02d65074dba751916406c9a7, type: 2}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F97\u5BA0\u7269\u5E7D\u7D2B\u706F\u706F"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "pet { \"\u64CD\u4F5C\u7C7B\u578B\":
       \"\u65B0\u589E\", \"\u5BA0\u7269\": \"\u5E7D\u7D2B\u706F\u706F\" }"
   - "\u65F6\u95F4\u8282\u70B9": 3600
@@ -131,17 +151,21 @@ MonoBehaviour:
       "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
-      "\u6570\u91CF": 100000
+      "\u6570\u91CF": 2000000
+      "\u663E\u793AUI": 
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F97\u91D1\u5E01200W"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
-      \"\u91D1\u5E01\", \"\u6570\u91CF\": 100000, \"\u64CD\u4F5C\u7C7B\u578B\": \"\u65B0\u589E\"
-      }"
+      \"\u91D1\u5E01\", \"\u6570\u91CF\": 2000000, \"\u64CD\u4F5C\u7C7B\u578B\":
+      \"\u65B0\u589E\" }"
   - "\u65F6\u95F4\u8282\u70B9": 5400
     "\u5956\u52B1\u7269\u54C1":
       "\u5956\u52B1\u7C7B\u578B": 2
       "\u7269\u54C1": {fileID: 0}
       "\u7FC5\u8180\u914D\u7F6E": {fileID: 0}
-      "\u5BA0\u7269\u914D\u7F6E": {fileID: 11400000, guid: a445572c34c3b154f9d58fdda5abb6fc, type: 2}
+      "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u6570\u91CF": 1
+      "\u663E\u793AUI": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u7269\u54C1\u56FE\u6807/\u94BB\u77F3\u5F00\u86CB\uFF08\u5BA0\u7269\uFF09.png"
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F97\u4F60\u80CC\u5305\u5BA0\u7269\u6700\u9AD8\u52A0\u6210\u76841\u661F\u7248\u672C"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "pet { \"\u64CD\u4F5C\u7C7B\u578B\":
-      \"\u65B0\u589E\", \"\u5BA0\u7269\": \"\u4E1C\u6D77\u5E1D\u7687\" }"
+      \"\u65B0\u589E\u6700\u5F3A\" }"

@@ -53,6 +53,13 @@ namespace MiGame.Reward
         
         [Tooltip("奖励数量")]
         public int 数量;
+        
+        [Tooltip("UI资源路径（用于显示此奖励的UI资源）")]
+        public string 显示UI = "";
+        
+        [Tooltip("奖励描述（用于UI显示）")]
+        [TextArea(1, 3)]
+        public string 奖励描述 = "";
     }
 
     /// <summary>

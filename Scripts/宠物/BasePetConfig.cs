@@ -239,7 +239,7 @@ namespace MiGame.Pet
         public string 效果数值;
 
         [Tooltip("加成类型")]
-        public 加成类型 加成类型 = 加成类型.玩家属性;
+        public 加成类型 加成类型 = 加成类型.空;
 
         [Tooltip("加成目标")]
         public ItemType 物品目标;

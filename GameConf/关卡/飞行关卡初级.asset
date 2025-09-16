@@ -58,7 +58,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=600000
     "\u89C4\u5219ID": rule_0018
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=700000
     "\u89C4\u5219ID": rule_0002
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
@@ -70,7 +70,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=1200000
     "\u89C4\u5219ID": rule_0020
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=1200000
     "\u89C4\u5219ID": rule_0021
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: f2d48dde173288e47a0e765851f78578, type: 2}
@@ -90,7 +90,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=1800000
     "\u89C4\u5219ID": rule_0022
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=1900000
     "\u89C4\u5219ID": rule_0004
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
@@ -106,7 +106,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=2400000
     "\u89C4\u5219ID": rule_0024
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=2500000
     "\u89C4\u5219ID": rule_0005
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
@@ -122,7 +122,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=3000000
     "\u89C4\u5219ID": rule_0026
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=3100000
     "\u89C4\u5219ID": rule_0006
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
@@ -134,7 +134,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=3600000
     "\u89C4\u5219ID": rule_0028
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=3600000
     "\u89C4\u5219ID": rule_0029
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: f2d48dde173288e47a0e765851f78578, type: 2}
@@ -154,7 +154,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=4200000
     "\u89C4\u5219ID": rule_0030
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=4300000
     "\u89C4\u5219ID": rule_0008
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
@@ -166,7 +166,7 @@ MonoBehaviour:
   - "\u89E6\u53D1\u6761\u4EF6": distance>=4800000
     "\u89C4\u5219ID": rule_0032
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: 972ef5c3e2eed39439cb9da23c3b6a5d, type: 2}
-    "\u5956\u52B1\u516C\u5F0F": 80
+    "\u5956\u52B1\u516C\u5F0F": 60
   - "\u89E6\u53D1\u6761\u4EF6": distance>=4800000
     "\u89C4\u5219ID": rule_0033
     "\u5956\u52B1\u7269\u54C1": {fileID: 11400000, guid: f2d48dde173288e47a0e765851f78578, type: 2}

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using MiGame.Items;
 using MiGame.Utils;
+using MiGame.Pet;
+using MiGame.Trail;
 
 namespace MiGame.Lottery
 {
@@ -40,7 +42,9 @@ namespace MiGame.Lottery
         [Tooltip("高级翅膀抽奖")]
         高级翅膀,
         [Tooltip("礼包抽奖")]
-        礼包抽奖
+        礼包抽奖,
+        [Tooltip("蛋蛋抽奖")]
+        蛋蛋抽奖
     }
 
     /// <summary>
@@ -88,16 +92,16 @@ namespace MiGame.Lottery
         public ItemType 物品;
         
         [Tooltip("翅膀配置（奖励类型为翅膀时使用）")]
-        public ScriptableObject 翅膀配置;
+        public WingConfig 翅膀配置;
         
         [Tooltip("宠物配置（奖励类型为宠物时使用）")]
-        public ScriptableObject 宠物配置;
+        public PetConfig 宠物配置;
         
         [Tooltip("伙伴配置（奖励类型为伙伴时使用）")]
-        public ScriptableObject 伙伴配置;
+        public PartnerConfig 伙伴配置;
         
         [Tooltip("尾迹配置（奖励类型为尾迹时使用）")]
-        public ScriptableObject 尾迹配置;
+        public BaseTrailConfig 尾迹配置;
         
         [Tooltip("奖励数量")]
         public int 数量 = 1;
@@ -146,6 +150,38 @@ namespace MiGame.Lottery
     }
 
     /// <summary>
+    /// 保底配置结构
+    /// </summary>
+    [Serializable]
+    public class 保底配置
+    {
+        [Tooltip("奖励类型")]
+        public 奖励类型 奖励类型 = 奖励类型.物品;
+        
+        [Tooltip("需要抽奖次数")]
+        public int 需要抽奖次数 = 10;
+        
+        [Tooltip("物品（奖励类型为物品时使用）")]
+        public ItemType 物品;
+        
+        [Tooltip("翅膀配置（奖励类型为翅膀时使用）")]
+        public WingConfig 翅膀配置;
+        
+        [Tooltip("宠物配置（奖励类型为宠物时使用）")]
+        public PetConfig 宠物配置;
+        
+        [Tooltip("伙伴配置（奖励类型为伙伴时使用）")]
+        public PartnerConfig 伙伴配置;
+        
+        [Tooltip("尾迹配置（奖励类型为尾迹时使用）")]
+        public BaseTrailConfig 尾迹配置;
+        
+        [Tooltip("奖励数量")]
+        public int 数量 = 1;
+    }
+
+
+    /// <summary>
     /// 抽奖配置类
     /// </summary>
     [CreateAssetMenu(fileName = "NewLottery", menuName = "配置/抽奖配置")]
@@ -185,6 +221,10 @@ namespace MiGame.Lottery
         [Tooltip("十连抽奖的消耗配置")]
         public 十连消耗配置 十连消耗;
 
+        [Header("保底配置")]
+        [Tooltip("保底配置列表")]
+        public List<保底配置> 保底配置列表 = new List<保底配置>();
+
         [Header("其他设置")]
         [Tooltip("是否启用此抽奖配置")]
         public bool 是否启用 = true;
@@ -194,6 +234,34 @@ namespace MiGame.Lottery
         
         [Tooltip("每日抽奖次数限制")]
         public int 每日次数限制 = -1; // -1表示无限制
+
+        /// <summary>
+        /// 获取指定奖励类型的保底配置
+        /// </summary>
+        /// <param name="奖励类型">奖励类型</param>
+        /// <returns>保底配置，如果不存在则返回null</returns>
+        public 保底配置 获取保底配置(奖励类型 奖励类型)
+        {
+            return 保底配置列表.Find(x => x.奖励类型 == 奖励类型);
+        }
+
+        /// <summary>
+        /// 设置指定奖励类型的保底配置
+        /// </summary>
+        /// <param name="奖励类型">奖励类型</param>
+        /// <param name="保底配置">保底配置</param>
+        public void 设置保底配置(奖励类型 奖励类型, 保底配置 保底配置)
+        {
+            var 配置项 = 保底配置列表.Find(x => x.奖励类型 == 奖励类型);
+            if (配置项 != null)
+            {
+                配置项 = 保底配置;
+            }
+            else
+            {
+                保底配置列表.Add(保底配置);
+            }
+        }
 
         private void OnValidate()
         {

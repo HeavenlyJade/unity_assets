@@ -106,10 +106,12 @@ namespace MiGame.Reward.Editor
 
             // 获取子属性
             var 奖励类型Prop = property.FindPropertyRelative("奖励类型");
+            var 特殊标注Prop = property.FindPropertyRelative("特殊标注");
             var 物品Prop = property.FindPropertyRelative("物品");
             var 翅膀配置Prop = property.FindPropertyRelative("翅膀配置");
             var 宠物配置Prop = property.FindPropertyRelative("宠物配置");
             var 伙伴配置Prop = property.FindPropertyRelative("伙伴配置");
+            var 尾迹配置Prop = property.FindPropertyRelative("尾迹配置");
             var 数量Prop = property.FindPropertyRelative("数量");
             var 显示UIProp = property.FindPropertyRelative("显示UI");
             var 奖励描述Prop = property.FindPropertyRelative("奖励描述");
@@ -122,6 +124,11 @@ namespace MiGame.Reward.Editor
             // 奖励类型
             var 奖励类型Rect = new Rect(position.x, currentY, position.width, lineHeight);
             EditorGUI.PropertyField(奖励类型Rect, 奖励类型Prop, new GUIContent("奖励类型"));
+            currentY += lineHeight + spacing;
+
+            // 特殊标注
+            var 特殊标注Rect = new Rect(position.x, currentY, position.width, lineHeight);
+            EditorGUI.PropertyField(特殊标注Rect, 特殊标注Prop, new GUIContent("特殊标注"));
             currentY += lineHeight + spacing;
 
             // 根据奖励类型显示对应字段并清空其他字段
@@ -143,6 +150,10 @@ namespace MiGame.Reward.Editor
             if (selectedType != 奖励类型.伙伴)
             {
                 伙伴配置Prop.objectReferenceValue = null;
+            }
+            if (selectedType != 奖励类型.尾迹)
+            {
+                尾迹配置Prop.stringValue = "";
             }
             
             switch (selectedType)
@@ -168,6 +179,12 @@ namespace MiGame.Reward.Editor
                 case 奖励类型.伙伴:
                     var 伙伴配置Rect = new Rect(position.x, currentY, position.width, lineHeight);
                     伙伴配置Prop.objectReferenceValue = EditorGUI.ObjectField(伙伴配置Rect, new GUIContent("伙伴配置"), 伙伴配置Prop.objectReferenceValue, typeof(PartnerConfig), false);
+                    currentY += lineHeight + spacing;
+                    break;
+                    
+                case 奖励类型.尾迹:
+                    var 尾迹配置Rect = new Rect(position.x, currentY, position.width, lineHeight);
+                    EditorGUI.PropertyField(尾迹配置Rect, 尾迹配置Prop, new GUIContent("尾迹配置"));
                     currentY += lineHeight + spacing;
                     break;
             }
@@ -200,8 +217,8 @@ namespace MiGame.Reward.Editor
             float lineHeight = EditorGUIUtility.singleLineHeight;
             float spacing = EditorGUIUtility.standardVerticalSpacing;
             
-            // 基础高度：奖励类型 + 数量 + 显示UI + 奖励描述 + 间距
-            float height = lineHeight * 3 + spacing * 3;
+            // 基础高度：奖励类型 + 特殊标注 + 数量 + 显示UI + 奖励描述 + 间距
+            float height = lineHeight * 4 + spacing * 4;
             
             // 根据奖励类型添加对应配置字段的高度
             switch (selectedType)
@@ -210,6 +227,7 @@ namespace MiGame.Reward.Editor
                 case 奖励类型.翅膀:
                 case 奖励类型.宠物:
                 case 奖励类型.伙伴:
+                case 奖励类型.尾迹:
                     height += lineHeight + spacing;
                     break;
             }
@@ -223,7 +241,7 @@ namespace MiGame.Reward.Editor
             height += 奖励描述Height - lineHeight; // 减去已经计算的基础高度
             
             // 确保最小高度，避免布局问题
-            float minHeight = lineHeight * 4 + spacing * 3;
+            float minHeight = lineHeight * 5 + spacing * 4;
             return Mathf.Max(height, minHeight);
         }
     }

@@ -18,7 +18,20 @@ namespace MiGame.Reward
         [Tooltip("宠物")]
         宠物,
         [Tooltip("伙伴")]
-        伙伴
+        伙伴,
+        [Tooltip("尾迹")]
+        尾迹
+    }
+
+    /// <summary>
+    /// 特殊标注枚举
+    /// </summary>
+    public enum 特殊标注
+    {
+        [Tooltip("空")]
+        空,
+        [Tooltip("宠物标注")]
+        宠物标注
     }
 
     /// <summary>
@@ -39,6 +52,9 @@ namespace MiGame.Reward
         [Tooltip("奖励类型")]
         public 奖励类型 奖励类型 = 奖励类型.物品;
         
+        [Tooltip("特殊标注（用于标记特殊奖励或备注信息）")]
+        public 特殊标注 特殊标注 = 特殊标注.空;
+        
         [Tooltip("物品（奖励类型为物品时使用）")]
         public ItemType 物品;
         
@@ -50,6 +66,9 @@ namespace MiGame.Reward
         
         [Tooltip("伙伴配置（奖励类型为伙伴时使用）")]
         public ScriptableObject 伙伴配置;
+        
+        [Tooltip("尾迹配置（奖励类型为尾迹时使用）")]
+        public string 尾迹配置 = "";
         
         [Tooltip("奖励数量")]
         public int 数量;

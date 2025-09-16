@@ -330,7 +330,7 @@ public class GenerateIntermediatePetLotteryConfigs : EditorWindow
     /// </summary>
     /// <param name="petName">宠物名称</param>
     /// <returns>宠物配置引用</returns>
-    private static ScriptableObject GetPetConfig(string petName)
+    private static PetConfig GetPetConfig(string petName)
     {
         // 根据抽奖区域确定宠物配置的目录
         string[] searchPaths = {
@@ -358,7 +358,7 @@ public class GenerateIntermediatePetLotteryConfigs : EditorWindow
     /// </summary>
     /// <param name="petName">宠物名称</param>
     /// <returns>宠物配置引用</returns>
-    private static ScriptableObject GetAdvancedPetConfig(string petName)
+    private static PetConfig GetAdvancedPetConfig(string petName)
     {
         // 根据抽奖区域确定宠物配置的目录
         string[] searchPaths = {

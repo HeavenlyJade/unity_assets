@@ -26,6 +26,7 @@ namespace MiGame.Reward.Editor
             var 翅膀配置Prop = property.FindPropertyRelative("翅膀配置");
             var 宠物配置Prop = property.FindPropertyRelative("宠物配置");
             var 伙伴配置Prop = property.FindPropertyRelative("伙伴配置");
+            var 尾迹配置Prop = property.FindPropertyRelative("尾迹配置");
             var 数量Prop = property.FindPropertyRelative("数量");
             var 星级Prop = property.FindPropertyRelative("星级");
 
@@ -59,6 +60,10 @@ namespace MiGame.Reward.Editor
             {
                 伙伴配置Prop.objectReferenceValue = null;
             }
+            if (selectedType != 奖励类型.尾迹)
+            {
+                尾迹配置Prop.stringValue = "";
+            }
             
             switch (selectedType)
             {
@@ -83,6 +88,12 @@ namespace MiGame.Reward.Editor
                 case 奖励类型.伙伴:
                     var 伙伴配置Rect = new Rect(position.x, currentY, position.width, lineHeight);
                     伙伴配置Prop.objectReferenceValue = EditorGUI.ObjectField(伙伴配置Rect, new GUIContent("伙伴配置"), 伙伴配置Prop.objectReferenceValue, typeof(PartnerConfig), false);
+                    currentY += lineHeight + spacing;
+                    break;
+                    
+                case 奖励类型.尾迹:
+                    var 尾迹配置Rect = new Rect(position.x, currentY, position.width, lineHeight);
+                    EditorGUI.PropertyField(尾迹配置Rect, 尾迹配置Prop, new GUIContent("尾迹配置"));
                     currentY += lineHeight + spacing;
                     break;
             }
@@ -118,6 +129,7 @@ namespace MiGame.Reward.Editor
                 case 奖励类型.翅膀:
                 case 奖励类型.宠物:
                 case 奖励类型.伙伴:
+                case 奖励类型.尾迹:
                     height += lineHeight + spacing;
                     break;
             }

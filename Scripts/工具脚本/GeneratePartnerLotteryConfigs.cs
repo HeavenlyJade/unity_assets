@@ -284,7 +284,7 @@ public class GeneratePartnerLotteryConfigs : EditorWindow
     /// <param name="partnerName">伙伴名称</param>
     /// <param name="目录名">目录名</param>
     /// <returns>伙伴配置引用</returns>
-    private static ScriptableObject GetPartnerConfig(string partnerName, string 目录名)
+    private static PartnerConfig GetPartnerConfig(string partnerName, string 目录名)
     {
         // 根据目录名确定伙伴配置的搜索路径
         string[] searchPaths = 目录名 switch

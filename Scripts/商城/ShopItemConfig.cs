@@ -87,7 +87,8 @@ namespace MiGame.Shop
         金币专区,
         会员特权,
         指令执行,
-        礼包
+        礼包,
+        飞行币专区
     }
     
     /// <summary>
@@ -211,7 +212,8 @@ namespace MiGame.Shop
         水晶 = 0,
         金币 = 1,
         [Tooltip("空")]
-        空 = 2
+        空 = 2,
+        飞行币 = 3
     }
     
     /// <summary>

@@ -46,6 +46,9 @@ namespace MiGame.Tools
         [Tooltip("奖杯物品类型")]
         public ItemType 奖杯物品类型;
         
+        [Tooltip("飞行币物品类型")]
+        public ItemType 飞行币物品类型;
+        
         [Header("生成结果")]
         [Tooltip("生成的奖励规则列表")]
         public List<RealtimeRewardRule> 生成的奖励规则 = new List<RealtimeRewardRule>();
@@ -216,6 +219,12 @@ namespace MiGame.Tools
                 自动查找奖杯物品();
             }
             
+            // 自动查找飞行币物品类型
+            if (飞行币物品类型 == null)
+            {
+                自动查找飞行币物品();
+            }
+            
             // 动态计算最大距离以支持指定的轮次数量
             int 实际最大距离 = 轮次数量 * 800000;
             if (实际最大距离 > 最大距离)
@@ -275,6 +284,16 @@ namespace MiGame.Tools
                     {
                         Debug.Log($"生成80万阶段规则: 距离>={距离80万}, 奖杯={八十万奖杯}");
                     }
+
+                    // 在80万阶段追加飞行币×150的奖励
+                    var 飞行币规则 = 创建奖励规则自定义物品($"distance>={距离80万}", $"rule_{规则计数器:D4}", 飞行币物品类型, 150);
+                    生成的奖励规则.Add(飞行币规则);
+                    规则计数器++;
+                    
+                    if (输出调试信息)
+                    {
+                        Debug.Log($"生成80万阶段飞行币规则: 距离>={距离80万}, 飞行币=150");
+                    }
                 }
             }
             
@@ -326,6 +345,36 @@ namespace MiGame.Tools
             
             Debug.LogWarning("未找到奖杯物品类型，请手动设置！");
         }
+
+        /// <summary>
+        /// 自动查找飞行币物品类型
+        /// </summary>
+        private void 自动查找飞行币物品()
+        {
+            var 物品列表 = Resources.FindObjectsOfTypeAll<ItemType>();
+            foreach (var 物品 in 物品列表)
+            {
+                if (物品.name.Contains("飞行币"))
+                {
+                    飞行币物品类型 = 物品;
+                    Debug.Log($"自动找到飞行币物品: {物品.name}");
+                    return;
+                }
+            }
+            
+            // 兼容英文或缩写
+            foreach (var 物品 in 物品列表)
+            {
+                if (物品.name.ToLower().Contains("fly") && 物品.name.ToLower().Contains("coin"))
+                {
+                    飞行币物品类型 = 物品;
+                    Debug.Log($"自动找到飞行币物品(英文匹配): {物品.name}");
+                    return;
+                }
+            }
+            
+            Debug.LogWarning("未找到飞行币物品类型，请手动设置！");
+        }
         
         /// <summary>
         /// 创建奖励规则
@@ -338,6 +387,20 @@ namespace MiGame.Tools
                 规则ID = 规则ID,
                 奖励物品 = 奖杯物品类型,
                 奖励公式 = 奖杯数量.ToString()
+            };
+        }
+
+        /// <summary>
+        /// 创建奖励规则（自定义奖励物品）
+        /// </summary>
+        private RealtimeRewardRule 创建奖励规则自定义物品(string 触发条件, string 规则ID, ItemType 奖励物品, int 奖励数量)
+        {
+            return new RealtimeRewardRule
+            {
+                触发条件 = 触发条件,
+                规则ID = 规则ID,
+                奖励物品 = 奖励物品,
+                奖励公式 = 奖励数量.ToString()
             };
         }
         

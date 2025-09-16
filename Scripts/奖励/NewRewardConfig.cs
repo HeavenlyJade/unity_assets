@@ -13,7 +13,9 @@ namespace MiGame.Reward
         [Tooltip("活动奖励")]
         活动奖励,
         [Tooltip("累计充值")]
-        累计充值
+        累计充值,
+        [Tooltip("好友邀请")]
+        好友邀请
     }
 
     /// <summary>
@@ -39,7 +41,9 @@ namespace MiGame.Reward
         [Tooltip("迷你币")]
         迷你币,
         [Tooltip("其它")]
-        其它
+        其它,
+        [Tooltip("邀请数量")]
+        邀请数量
     }
 
     /// <summary>
@@ -62,6 +66,9 @@ namespace MiGame.Reward
         
         [Tooltip("伙伴配置（奖励类型为伙伴时使用）")]
         public ScriptableObject 伙伴配置;
+        
+        [Tooltip("尾迹配置（奖励类型为尾迹时使用）")]
+        public string 尾迹配置 = "";
         
         [Tooltip("奖励数量")]
         public int 数量;

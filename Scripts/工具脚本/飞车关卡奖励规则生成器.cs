@@ -39,6 +39,9 @@ namespace MiGame.Tools
         
         [Tooltip("奖杯物品类型")]
         public ItemType 奖杯物品类型;
+
+        [Tooltip("飞行币物品类型")]
+        public ItemType 飞行币物品类型;
         
         [Header("生成结果")]
         [Tooltip("生成的奖励规则列表")]
@@ -220,10 +223,16 @@ namespace MiGame.Tools
             {
                 自动查找奖杯物品();
             }
+            // 自动查找飞行币物品类型
+            if (飞行币物品类型 == null)
+            {
+                自动查找飞行币物品();
+            }
             
             生成的奖励规则.Clear();
             
             int 规则计数器 = 1;
+            var 已使用规则ID = new HashSet<string>();
             
             // 生成10万等差数列的规则：10万、70万、130万、190万...
             for (int i = 0; i <= (最大距离 - 100000) / 600000; i++)
@@ -231,9 +240,9 @@ namespace MiGame.Tools
                 int 距离 = 100000 + i * 600000; // 10万 + i×60万
                 if (距离 >= 最短距离 && 距离 <= 最大距离)
                 {
-                    var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 十万奖杯);
+                    var 规则ID = 生成唯一规则ID(ref 规则计数器, 已使用规则ID);
+                    var 规则 = 创建奖励规则($"distance>={距离}", 规则ID, 十万奖杯);
                     生成的奖励规则.Add(规则);
-                    规则计数器++;
                     
                     if (输出调试信息)
                     {
@@ -248,9 +257,9 @@ namespace MiGame.Tools
                 int 距离 = 300000 + i * 600000; // 30万 + i×60万
                 if (距离 >= 最短距离 && 距离 <= 最大距离)
                 {
-                    var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 三十万奖杯);
+                    var 规则ID = 生成唯一规则ID(ref 规则计数器, 已使用规则ID);
+                    var 规则 = 创建奖励规则($"distance>={距离}", 规则ID, 三十万奖杯);
                     生成的奖励规则.Add(规则);
-                    规则计数器++;
                     
                     if (输出调试信息)
                     {
@@ -265,13 +274,23 @@ namespace MiGame.Tools
                 int 距离 = 600000 + i * 600000; // 60万 + i×60万
                 if (距离 >= 最短距离 && 距离 <= 最大距离)
                 {
-                    var 规则 = 创建奖励规则($"distance>={距离}", $"rule_{规则计数器:D4}", 六十万奖杯);
+                    var 规则ID = 生成唯一规则ID(ref 规则计数器, 已使用规则ID);
+                    var 规则 = 创建奖励规则($"distance>={距离}", 规则ID, 六十万奖杯);
                     生成的奖励规则.Add(规则);
-                    规则计数器++;
                     
                     if (输出调试信息)
                     {
                         Debug.Log($"生成60万等差数列规则: 距离>={距离}, 奖杯={六十万奖杯}");
+                    }
+
+                    // 同一触发点增加飞行币x60的奖励
+                    var 飞行币规则ID = 生成唯一规则ID(ref 规则计数器, 已使用规则ID);
+                    var 飞行币规则 = 创建奖励规则自定义物品($"distance>={距离}", 飞行币规则ID, 飞行币物品类型, 60);
+                    生成的奖励规则.Add(飞行币规则);
+
+                    if (输出调试信息)
+                    {
+                        Debug.Log($"生成60万等差数列飞行币规则: 距离>={距离}, 飞行币=60");
                     }
                 }
             }
@@ -316,6 +335,36 @@ namespace MiGame.Tools
             
             Debug.LogWarning("未找到奖杯物品类型，请手动设置！");
         }
+
+        /// <summary>
+        /// 自动查找飞行币物品类型
+        /// </summary>
+        private void 自动查找飞行币物品()
+        {
+            var 物品列表 = Resources.FindObjectsOfTypeAll<ItemType>();
+            foreach (var 物品 in 物品列表)
+            {
+                if (物品.name.Contains("飞行币"))
+                {
+                    飞行币物品类型 = 物品;
+                    Debug.Log($"自动找到飞行币物品: {物品.name}");
+                    return;
+                }
+            }
+
+            // 兼容英文或缩写
+            foreach (var 物品 in 物品列表)
+            {
+                if (物品.name.ToLower().Contains("fly") && 物品.name.ToLower().Contains("coin"))
+                {
+                    飞行币物品类型 = 物品;
+                    Debug.Log($"自动找到飞行币物品(英文匹配): {物品.name}");
+                    return;
+                }
+            }
+
+            Debug.LogWarning("未找到飞行币物品类型，请手动设置！");
+        }
         
         /// <summary>
         /// 创建奖励规则
@@ -328,6 +377,36 @@ namespace MiGame.Tools
                 规则ID = 规则ID,
                 奖励物品 = 奖杯物品类型,
                 奖励公式 = 奖杯数量.ToString()
+            };
+        }
+
+        /// <summary>
+        /// 生成唯一的规则ID，避免重复
+        /// </summary>
+        private string 生成唯一规则ID(ref int 规则计数器, HashSet<string> 已使用)
+        {
+            while (true)
+            {
+                string id = $"rule_{规则计数器:D4}";
+                规则计数器++;
+                if (已使用.Add(id))
+                {
+                    return id;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 创建奖励规则（自定义奖励物品）
+        /// </summary>
+        private RealtimeRewardRule 创建奖励规则自定义物品(string 触发条件, string 规则ID, ItemType 奖励物品类型, int 奖励数量)
+        {
+            return new RealtimeRewardRule
+            {
+                触发条件 = 触发条件,
+                规则ID = 规则ID,
+                奖励物品 = 奖励物品类型,
+                奖励公式 = 奖励数量.ToString()
             };
         }
         

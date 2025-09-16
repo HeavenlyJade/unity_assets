@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using MiGame.Lottery;
 using MiGame.Items;
+using MiGame.Pet;
 using System;
 
 /// <summary>
@@ -237,7 +238,7 @@ public class GenerateWingLotteryConfigs : EditorWindow
     /// <param name="wingName">翅膀名称</param>
     /// <param name="所在区域">所在区域</param>
     /// <returns>翅膀配置引用</returns>
-    private static ScriptableObject GetWingConfig(string wingName, string 所在区域)
+    private static WingConfig GetWingConfig(string wingName, string 所在区域)
     {
         // 根据所在区域确定翅膀配置的搜索路径
         string[] searchPaths = 所在区域 switch
@@ -253,7 +254,7 @@ public class GenerateWingLotteryConfigs : EditorWindow
         foreach (string path in searchPaths)
         {
             string assetPath = Path.Combine(path, wingName + ".asset").Replace("\\", "/");
-            var wingConfig = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
+            var wingConfig = AssetDatabase.LoadAssetAtPath<WingConfig>(assetPath);
             if (wingConfig != null)
             {
                 return wingConfig;

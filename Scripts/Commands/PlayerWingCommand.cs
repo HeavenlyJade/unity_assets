@@ -12,7 +12,9 @@ namespace MiGame.Commands
         新增,
         删除,
         设置,
-        栏位设置
+        栏位设置,
+        栏位新增,
+        栏位减少
     }
 
     /// <summary>
@@ -52,6 +54,22 @@ namespace MiGame.Commands
         [ConditionalField("操作类型", WingOperationType.栏位设置)]
         [CommandParamDesc("设置玩家翅膀背包的总容量")]
         public int 背包 = -1;
+
+        [ConditionalField("操作类型", WingOperationType.栏位新增)]
+        [CommandParamDesc("新增可携带栏位数量")]
+        public int 新增可携带 = 0;
+
+        [ConditionalField("操作类型", WingOperationType.栏位新增)]
+        [CommandParamDesc("新增背包容量")]
+        public int 新增背包 = 0;
+
+        [ConditionalField("操作类型", WingOperationType.栏位减少)]
+        [CommandParamDesc("减少可携带栏位数量")]
+        public int 减少可携带 = 0;
+
+        [ConditionalField("操作类型", WingOperationType.栏位减少)]
+        [CommandParamDesc("减少背包容量")]
+        public int 减少背包 = 0;
 
         public override void Execute()
         {
@@ -122,6 +140,34 @@ namespace MiGame.Commands
                     if (背包 > 0) settings += $"背包容量设置为 {背包} ";
                     Debug.Log($"为玩家 '{targetPlayerIdentifier}' 设置: {settings.Trim()}。");
                     // TODO: 实现栏位设置的逻辑
+                    break;
+
+                case WingOperationType.栏位新增:
+                    if (新增可携带 <= 0 && 新增背包 <= 0)
+                    {
+                        Debug.LogError("栏位新增失败：必须至少提供 '新增可携带' 或 '新增背包' 中的一个，并且值必须大于0。");
+                        return;
+                    }
+
+                    string addSettings = "";
+                    if (新增可携带 > 0) addSettings += $"新增可携带栏位 {新增可携带} ";
+                    if (新增背包 > 0) addSettings += $"新增背包容量 {新增背包} ";
+                    Debug.Log($"为玩家 '{targetPlayerIdentifier}' {addSettings.Trim()}。");
+                    // TODO: 实现栏位新增的逻辑
+                    break;
+
+                case WingOperationType.栏位减少:
+                    if (减少可携带 <= 0 && 减少背包 <= 0)
+                    {
+                        Debug.LogError("栏位减少失败：必须至少提供 '减少可携带' 或 '减少背包' 中的一个，并且值必须大于0。");
+                        return;
+                    }
+
+                    string reduceSettings = "";
+                    if (减少可携带 > 0) reduceSettings += $"减少可携带栏位 {减少可携带} ";
+                    if (减少背包 > 0) reduceSettings += $"减少背包容量 {减少背包} ";
+                    Debug.Log($"为玩家 '{targetPlayerIdentifier}' {reduceSettings.Trim()}。");
+                    // TODO: 实现栏位减少的逻辑
                     break;
             }
         }

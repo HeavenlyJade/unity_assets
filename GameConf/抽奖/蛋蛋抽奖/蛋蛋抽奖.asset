@@ -108,6 +108,6 @@ MonoBehaviour:
     "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
     "\u5C3E\u8FF9\u914D\u7F6E": {fileID: 0}
     "\u6570\u91CF": 1
-  "\u662F\u5426\u542F\u7528": 0
+  "\u662F\u5426\u542F\u7528": 1
   "\u51B7\u5374\u65F6\u95F4": 0
-  "\u6BCF\u65E5\u6B21\u6570\u9650\u5236": -1
+  "\u6BCF\u65E5\u6B21\u6570\u9650\u5236": 5000

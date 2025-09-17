@@ -32,8 +32,6 @@ namespace MiGame.Shop
         public PriceConfig 价格 = new PriceConfig();
         
         // [Header("购买限制")]
-        [TextArea(3, 12)]
-
         public PurchaseLimitConfig 限购配置 = new PurchaseLimitConfig();
         
         [Tooltip("获得物品列表")]
@@ -88,7 +86,7 @@ namespace MiGame.Shop
         会员特权,
         指令执行,
         礼包,
-        飞行币专区
+        飞行币
     }
     
     /// <summary>
@@ -157,6 +155,9 @@ namespace MiGame.Shop
         
         [Tooltip("效果配置器，用于根据玩家变量等级动态计算价格")]
         public EffectLevelConfig 效果配置器;
+        
+        [Tooltip("变量类型")]
+        public 变量类型 变量类型 = 变量类型.空;
         
         [Tooltip("玩家变量名称，用于获取对应等级效果配置来动态设定金币价格")]
         public string 玩家变量 = "";
@@ -391,5 +392,16 @@ namespace MiGame.Shop
         大于等于,
         小于等于,
         不等于
+    }
+    
+    /// <summary>
+    /// 变量类型枚举
+    /// </summary>
+    public enum 变量类型
+    {
+        [Tooltip("空")]
+        空,
+        玩家变量,
+        玩家属性
     }
 }

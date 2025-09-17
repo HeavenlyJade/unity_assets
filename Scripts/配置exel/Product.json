@@ -5,7 +5,7 @@
 		"GoodsName": "特权卡",
 		"Icon": "",
 		"LimitPurchaseQuantity": 100,
-		"Price": 1 
+		"Price": 300 
 	},
 	{
 		"CurrencyType": 1,
@@ -166,5 +166,133 @@
 		"Icon": "",
 		"LimitPurchaseQuantity": 300,
 		"Price": 100 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "轨迹蓝粉五角星",
+		"GoodsName": "蓝粉五角星",
+		"Icon": "",
+		"LimitPurchaseQuantity": 10,
+		"Price": 50 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "轨迹银河",
+		"GoodsName": "银河",
+		"Icon": "",
+		"LimitPurchaseQuantity": 10,
+		"Price": 400 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "轨迹彩虹",
+		"GoodsName": "彩虹",
+		"Icon": "",
+		"LimitPurchaseQuantity": 10,
+		"Price": 800 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "顶级整合包",
+		"GoodsName": "顶级整合包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 10,
+		"Price": 3888 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "高级整合包",
+		"GoodsName": "高级整合包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 10,
+		"Price": 688 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "3星大龙魂",
+		"GoodsName": "龙魂礼包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 10,
+		"Price": 200 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "尾迹随机礼包",
+		"GoodsName": "尾迹随机礼包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 60 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "伙伴随机礼包",
+		"GoodsName": "伙伴随机礼包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 60 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "宠物随机礼包",
+		"GoodsName": "宠物随机礼包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 60 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "翅膀随机礼包",
+		"GoodsName": "翅膀随机礼包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 60 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "新手大礼包",
+		"GoodsName": "新手大礼包",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1,
+		"Price": 60 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "金币3亿",
+		"GoodsName": "金币3亿",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 600 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "金币1.5亿",
+		"GoodsName": "金币1.5亿",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 300 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "金币1000万",
+		"GoodsName": "金币1000万",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 100 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "金币500万",
+		"GoodsName": "金币500万",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 50 
+	},
+	{
+		"CurrencyType": 1,
+		"Description": "金币100万",
+		"GoodsName": "金币100万",
+		"Icon": "",
+		"LimitPurchaseQuantity": 1000,
+		"Price": 10 
 	} 
 ] 

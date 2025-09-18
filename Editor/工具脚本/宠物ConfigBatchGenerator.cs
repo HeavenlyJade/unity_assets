@@ -24,7 +24,7 @@ public class 宠物ConfigBatchGenerator : EditorWindow
 
     private static void GenerateAllPetConfigs()
     {
-        string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/宠物.json");
+        string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/宠物_数据_转换后_按抽奖区域排序.json");
         if (!File.Exists(jsonPath))
         {
             Debug.LogError($"未找到json文件: {jsonPath}");
@@ -71,15 +71,11 @@ public class 宠物ConfigBatchGenerator : EditorWindow
             string assetPath = Path.Combine(folder, pet.宠物名称 + ".asset").Replace("\\", "/");
             PetConfig asset = AssetDatabase.LoadAssetAtPath<PetConfig>(assetPath);
             
-            // 检查是否已存在相同的配置，避免重复导出
+            // 检查是否已存在配置文件，如果存在则跳过
             if (asset != null)
             {
-                // 检查配置是否相同，如果相同则跳过
-                if (IsPetConfigSame(asset, pet))
-                {
-                    Debug.Log($"跳过已存在的宠物配置: {pet.宠物名称}");
-                    continue;
-                }
+                Debug.Log($"跳过已存在的宠物配置: {pet.宠物名称}");
+                continue;
             }
             
             if (asset == null)
@@ -137,32 +133,6 @@ public class 宠物ConfigBatchGenerator : EditorWindow
         Debug.Log("批量生成宠物配置完成");
     }
 
-    private static bool IsPetConfigSame(PetConfig existing, PetJsonData newData)
-    {
-        if (existing.宠物名称 != newData.宠物名称) return false;
-        if (existing.稀有度 != ParseQuality(newData.品级)) return false;
-        if (existing.头像资源 != newData.图片资源) return false;
-        if (existing.模型资源 != newData.模型) return false;
-        if (existing.动画资源 != newData.动画) return false;
-        
-        // 检查获取方式
-        var existingGetWay = existing.获取方式 != null && existing.获取方式.Count > 0 ? existing.获取方式[0] : "";
-        var newGetWay = !string.IsNullOrEmpty(newData.抽奖区域) ? newData.抽奖区域 : "";
-        if (existingGetWay != newGetWay) return false;
-        
-        // 检查携带效果
-        if (existing.携带效果 != null && existing.携带效果.Count > 0)
-        {
-            var existingEffect = existing.携带效果[0];
-            if (existingEffect.效果数值 != newData.加成_百分比_训练加成) return false;
-        }
-        else if (!string.IsNullOrEmpty(newData.加成_百分比_训练加成))
-        {
-            return false;
-        }
-        
-        return true;
-    }
 
     [Serializable]
     private class PetJsonData

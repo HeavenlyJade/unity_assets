@@ -22,6 +22,7 @@ namespace MiGame.Shop.Editor
             var 货币类型Prop = property.FindPropertyRelative("货币类型");
             var 价格数量Prop = property.FindPropertyRelative("价格数量");
             var 效果配置器Prop = property.FindPropertyRelative("效果配置器");
+            var 效果配置变量Prop = property.FindPropertyRelative("效果配置变量");
             var 变量类型Prop = property.FindPropertyRelative("变量类型");
             var 玩家变量Prop = property.FindPropertyRelative("玩家变量");
             var 迷你币类型Prop = property.FindPropertyRelative("迷你币类型");
@@ -32,7 +33,7 @@ namespace MiGame.Shop.Editor
 
             // 计算字段高度
             float lineHeight = EditorGUIUtility.singleLineHeight;
-            float spacing = EditorGUIUtility.standardVerticalSpacing * 6.0f; // 增加间距
+            float spacing = EditorGUIUtility.standardVerticalSpacing * 4.0f; // 进一步增加间距
             float currentY = position.y;
 
             // 绘制折叠标题
@@ -44,11 +45,6 @@ namespace MiGame.Shop.Editor
             {
                 EditorGUI.indentLevel++;
 
-                // 添加分隔线
-                var separatorRect = new Rect(position.x, currentY, position.width, 1);
-                EditorGUI.DrawRect(separatorRect, new Color(0.3f, 0.3f, 0.3f, 1f));
-                currentY += 2 + spacing;
-
                 // 货币类型
                 var 货币类型Rect = new Rect(position.x, currentY, position.width, lineHeight);
                 EditorGUI.PropertyField(货币类型Rect, 货币类型Prop, new GUIContent("货币类型"));
@@ -59,14 +55,14 @@ namespace MiGame.Shop.Editor
                 EditorGUI.PropertyField(价格数量Rect, 价格数量Prop, new GUIContent("价格数量"));
                 currentY += lineHeight + spacing;
 
-                // 添加效果配置分组标题
-                var effectGroupRect = new Rect(position.x, currentY, position.width, lineHeight);
-                EditorGUI.LabelField(effectGroupRect, "效果配置", EditorStyles.boldLabel);
-                currentY += lineHeight + spacing * 0.5f;
-
                 // 效果配置器 - 美化显示
                 var 效果配置器Rect = new Rect(position.x, currentY, position.width, lineHeight);
                 EditorGUI.PropertyField(效果配置器Rect, 效果配置器Prop, new GUIContent("⚙️ 效果配置器", "选择EffectLevelConfig资源，用于动态计算价格"));
+                currentY += lineHeight + spacing;
+
+                // 效果配置变量
+                var 效果配置变量Rect = new Rect(position.x, currentY, position.width, lineHeight);
+                EditorGUI.PropertyField(效果配置变量Rect, 效果配置变量Prop, new GUIContent("🎯 效果配置变量", "输入效果配置变量名称"));
                 currentY += lineHeight + spacing;
 
                 // 变量类型
@@ -81,7 +77,7 @@ namespace MiGame.Shop.Editor
                 if (string.IsNullOrEmpty(玩家变量Prop.stringValue))
                 {
                     var helpBoxRect = new Rect(position.x, currentY, position.width, lineHeight * 1.5f);
-                    EditorGUI.HelpBox(helpBoxRect, "💡 玩家变量名称，用于获取对应等级效果配置来动态设定金币价格", MessageType.Info);
+                    // EditorGUI.HelpBox(helpBoxRect, "💡 玩家变量名称，用于获取对应等级效果配置来动态设定金币价格", MessageType.Info);
                     currentY += lineHeight * 1.5f + spacing;
                 }
                 
@@ -92,14 +88,9 @@ namespace MiGame.Shop.Editor
                     GUI.backgroundColor = new Color(1f, 1f, 0.8f, 1f); // 淡黄色背景提示
                 }
                 
-                EditorGUI.PropertyField(玩家变量Rect, 玩家变量Prop, new GUIContent("🎯 玩家变量", "输入玩家变量名称，配合效果配置器使用"));
+                // EditorGUI.PropertyField(玩家变量Rect, 玩家变量Prop, new GUIContent("🎯 玩家变量", "输入玩家变量名称，配合效果配置器使用"));
                 GUI.backgroundColor = originalColor;
                 currentY += lineHeight + spacing;
-
-                // 添加迷你币配置分组标题
-                var miniCoinGroupRect = new Rect(position.x, currentY, position.width, lineHeight);
-                EditorGUI.LabelField(miniCoinGroupRect, "迷你币配置", EditorStyles.boldLabel);
-                currentY += lineHeight + spacing * 0.5f;
 
                 // 迷你币类型
                 var 迷你币类型Rect = new Rect(position.x, currentY, position.width, lineHeight);
@@ -115,11 +106,6 @@ namespace MiGame.Shop.Editor
                 var 变量键Rect = new Rect(position.x, currentY, position.width, lineHeight);
                 EditorGUI.PropertyField(变量键Rect, 变量键Prop, new GUIContent("变量键"));
                 currentY += lineHeight + spacing;
-
-                // 添加广告配置分组标题
-                var adGroupRect = new Rect(position.x, currentY, position.width, lineHeight);
-                EditorGUI.LabelField(adGroupRect, "广告配置", EditorStyles.boldLabel);
-                currentY += lineHeight + spacing * 0.5f;
 
                 // 广告模式
                 var 广告模式Rect = new Rect(position.x, currentY, position.width, lineHeight);
@@ -140,15 +126,15 @@ namespace MiGame.Shop.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float lineHeight = EditorGUIUtility.singleLineHeight;
-            float spacing = EditorGUIUtility.standardVerticalSpacing * 6.0f; // 与OnGUI中的间距保持一致
+            float spacing = EditorGUIUtility.standardVerticalSpacing * 4.0f; // 与OnGUI中的间距保持一致
 
             if (!property.isExpanded)
             {
                 return lineHeight; // 只显示折叠标题
             }
 
-            // 展开时的高度：分隔线 + 货币类型 + 价格数量 + 效果配置标题 + 效果配置器 + 变量类型 + 玩家变量(可能包含帮助框) + 迷你币配置标题 + 迷你币类型 + 迷你币数量 + 变量键 + 广告配置标题 + 广告模式 + 广告次数
-            int fieldCount = 12; // 基础字段数 + 分组标题数
+            // 展开时的高度：货币类型 + 价格数量 + 效果配置器 + 效果配置变量 + 变量类型 + 玩家变量(可能包含帮助框) + 迷你币类型 + 迷你币数量 + 变量键 + 广告模式 + 广告次数
+            int fieldCount = 10;
             
             // 检查是否需要显示玩家变量帮助框
             var 玩家变量Prop = property.FindPropertyRelative("玩家变量");

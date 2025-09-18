@@ -6,19 +6,79 @@ using System.Linq;
 using System.Collections.Generic;
 using MiGame.Pet;
 
-public static class PetEffectBatchUpdater
+public class PetEffectBatchUpdater : EditorWindow
 {
+    private bool updateAllPets = false;
+    private bool updateByDirectory = true;  // 默认选择按目录更新
+    private Vector2 scrollPosition;
+    
+    // 预定义的目录选项
+    private readonly string[] predefinedDirectories = {
+        "GameConf/宠物/中级终极",
+        "GameConf/宠物/高级初级",
+        "GameConf/宠物/高级中级",
+        "GameConf/宠物/高级高级",
+        "GameConf/宠物/扭蛋商城", 
+        "GameConf/宠物/商城"
+    };
+    
+    // 选中的目录索引
+    private int selectedDirectoryIndex = 0;
+
+    [MenuItem("Tools/批量标准化宠物携带效果")]
+    public static void ShowWindow()
+    {
+        GetWindow<PetEffectBatchUpdater>("批量更新宠物携带效果");
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Label("批量更新宠物携带效果", EditorStyles.boldLabel);
+        
+        EditorGUILayout.HelpBox("从宠物JSON读取\"加成_百分比_训练加成\"，批量更新宠物配置的携带效果数值。\n匹配规则：优先按路径 Assets/GameConf/宠物/{品级}/{宠物名称}.asset 加载；失败则扫描全局同名 PetConfig。", MessageType.Info);
+
+        EditorGUILayout.Space();
+        
+        // 更新方式选择
+        GUILayout.Label("更新方式:", EditorStyles.boldLabel);
+        updateAllPets = EditorGUILayout.Toggle("更新所有宠物", updateAllPets);
+        
+        if (!updateAllPets)
+        {
+            updateByDirectory = EditorGUILayout.Toggle("按目录更新", updateByDirectory);
+            
+            if (updateByDirectory)
+            {
+                EditorGUILayout.Space();
+                GUILayout.Label("选择目标目录:", EditorStyles.boldLabel);
+                selectedDirectoryIndex = EditorGUILayout.Popup("目录", selectedDirectoryIndex, predefinedDirectories);
+                
+                EditorGUILayout.HelpBox($"将更新目录 \"{predefinedDirectories[selectedDirectoryIndex]}\" 下的所有宠物配置", MessageType.Info);
+            }
+        }
+
+        EditorGUILayout.Space();
+        if (GUILayout.Button("更新携带效果", GUILayout.Height(30)))
+        {
+            if (updateAllPets)
+            {
+                UpdatePetTrainingBonusFromJson();
+            }
+            else if (updateByDirectory)
+            {
+                UpdatePetTrainingBonusFromJsonByDirectory();
+            }
+        }
+    }
+
     /// <summary>
-    /// 从宠物JSON读取“加成_百分比_训练加成”，批量更新 GameConf/宠物 下对应资源的携带效果数值。
-    /// 匹配规则：优先按 路径 Assets/GameConf/宠物/{品级}/{宠物名称}.asset 加载；失败则扫描全局同名 PetConfig。
-    /// 当资源中不存在携带效果时，会创建一个默认项，变量名称为“训练加成”，作用类型为“单独相加”。
+    /// 从宠物JSON读取"加成_百分比_训练加成"，批量更新所有宠物的携带效果数值。
     /// </summary>
-    [MenuItem("Tools/宠物/批量更新训练加成效果数值")] 
     public static void UpdatePetTrainingBonusFromJson()
     {
         try
         {
-            string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/宠物.json");
+            string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/宠物_数据_转换后_按抽奖区域排序.json");
             if (!File.Exists(jsonPath))
             {
                 Debug.LogError($"未找到宠物配置JSON文件: {jsonPath}");
@@ -106,6 +166,174 @@ public static class PetEffectBatchUpdater
         catch (Exception ex)
         {
             Debug.LogError($"批量更新出现异常: {ex.Message}\n{ex.StackTrace}");
+        }
+    }
+
+    /// <summary>
+    /// 从宠物JSON读取"加成_百分比_训练加成"，批量更新指定目录下的宠物携带效果数值。
+    /// </summary>
+    private void UpdatePetTrainingBonusFromJsonByDirectory()
+    {
+        try
+        {
+            string targetDirectory = predefinedDirectories[selectedDirectoryIndex];
+            string fullPath = "Assets/" + targetDirectory;
+            
+            // 查找指定目录下的所有PetConfig资产
+            string[] guids = AssetDatabase.FindAssets("t:PetConfig", new[] { fullPath });
+            List<PetConfig> directoryPetConfigs = new List<PetConfig>();
+            
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                PetConfig config = AssetDatabase.LoadAssetAtPath<PetConfig>(path);
+                if (config != null)
+                {
+                    directoryPetConfigs.Add(config);
+                }
+            }
+
+            if (directoryPetConfigs.Count == 0)
+            {
+                EditorUtility.DisplayDialog("提示", $"目录 \"{targetDirectory}\" 下没有找到宠物配置文件！", "确定");
+                return;
+            }
+
+            // 读取JSON数据
+            string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/宠物_数据_转换后_按抽奖区域排序.json");
+            if (!File.Exists(jsonPath))
+            {
+                EditorUtility.DisplayDialog("错误", $"未找到宠物配置JSON文件: {jsonPath}", "确定");
+                return;
+            }
+
+            string jsonText = File.ReadAllText(jsonPath);
+            
+            List<PetJsonData> jsonList;
+            try
+            {
+                jsonList = JsonUtilityWrapper.FromJsonArray<PetJsonData>(jsonText);
+                if (jsonList == null || jsonList.Count == 0)
+                {
+                    EditorUtility.DisplayDialog("错误", "宠物配置JSON解析失败或数据为空", "确定");
+                    return;
+                }
+                
+                Debug.Log($"JSON解析成功，共解析出 {jsonList.Count} 个宠物");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"JSON解析异常: {ex.Message}\n{ex.StackTrace}");
+                EditorUtility.DisplayDialog("错误", $"JSON解析异常: {ex.Message}", "确定");
+                return;
+            }
+
+            int updateCount = 0;
+            int notFoundCount = 0;
+            int skippedCount = 0;
+            List<string> notFoundNames = new List<string>();
+
+            // 调试：输出JSON中所有宠物名称
+            Debug.Log($"JSON中共有 {jsonList.Count} 个宠物:");
+            foreach (var item in jsonList)
+            {
+                Debug.Log($"JSON宠物: '{item.宠物名称}' (长度: {item.宠物名称?.Length})");
+            }
+
+            // 为每个目录中的宠物查找对应的JSON数据并更新
+            foreach (var pet in directoryPetConfigs)
+            {
+                if (string.IsNullOrEmpty(pet.宠物名称))
+                {
+                    skippedCount++;
+                    continue;
+                }
+
+                // 在JSON中查找对应的宠物数据
+                var jsonItem = jsonList.FirstOrDefault(item => item.宠物名称 == pet.宠物名称);
+                if (jsonItem == null)
+                {
+                    // 添加调试信息，查看具体的名称比较
+                    Debug.LogWarning($"未找到JSON数据 - 宠物名称: '{pet.宠物名称}' (长度: {pet.宠物名称?.Length})");
+                    
+                    // 检查JSON中是否真的存在这个名称
+                    var exactMatch = jsonList.FirstOrDefault(item => item.宠物名称 == pet.宠物名称);
+                    if (exactMatch != null)
+                    {
+                        Debug.LogWarning($"奇怪，应该能找到: {exactMatch.宠物名称}");
+                    }
+                    else
+                    {
+                        // 尝试查找相似的名称
+                        var similarItems = jsonList.Where(item => 
+                            !string.IsNullOrEmpty(item.宠物名称) && 
+                            (item.宠物名称.Contains(pet.宠物名称) || pet.宠物名称.Contains(item.宠物名称))
+                        ).ToList();
+                        
+                        if (similarItems.Count > 0)
+                        {
+                            Debug.LogWarning($"找到相似名称: {string.Join(", ", similarItems.Select(s => $"'{s.宠物名称}'"))}");
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"在JSON中完全找不到包含 '{pet.宠物名称}' 的项");
+                        }
+                    }
+                    
+                    notFoundCount++;
+                    notFoundNames.Add(pet.宠物名称);
+                    continue;
+                }
+
+                // 从JSON读取效果数值
+                string effectValue = jsonItem.加成_百分比_训练加成;
+                if (string.IsNullOrEmpty(effectValue))
+                {
+                    skippedCount++;
+                    continue;
+                }
+
+                // 更新携带效果
+                bool changed = ApplyTrainingBonusEffect(pet, effectValue);
+                if (changed)
+                {
+                    EditorUtility.SetDirty(pet);
+                    updateCount++;
+                }
+                else
+                {
+                    skippedCount++;
+                }
+            }
+
+            if (updateCount > 0)
+            {
+                AssetDatabase.SaveAssets();
+            }
+
+            // 避免导入期间刷新问题，使用延迟调用
+            EditorApplication.delayCall += () =>
+            {
+                if (!AssetDatabase.IsAssetImportWorkerProcess())
+                {
+                    AssetDatabase.Refresh();
+                }
+            };
+
+            EditorUtility.DisplayDialog("操作完成", 
+                $"批量更新目录 \"{targetDirectory}\" 下的宠物携带效果完成！\n\n" +
+                $"成功更新 {updateCount} 个宠物，跳过 {skippedCount} 个，未找到JSON数据 {notFoundCount} 个。", "确定");
+
+            Debug.Log($"宠物训练加成批量更新完成：成功 {updateCount} 项，跳过 {skippedCount} 项，未找到 {notFoundCount} 项");
+            if (notFoundNames.Count > 0)
+            {
+                Debug.LogWarning("未找到JSON数据的宠物：" + string.Join("，", notFoundNames));
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"批量更新出现异常: {ex.Message}\n{ex.StackTrace}");
+            EditorUtility.DisplayDialog("错误", $"批量更新出现异常: {ex.Message}", "确定");
         }
     }
 

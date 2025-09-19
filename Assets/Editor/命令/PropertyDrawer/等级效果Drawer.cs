@@ -47,19 +47,30 @@ public class 等级效果Drawer : PropertyDrawer
         }
 
         // 2. 根据效果类型绘制效果字段名称或物品类型
-        if (type == PlayerVariableType.物品)
+        if (type == PlayerVariableType.玩家变量 && 加成类型Prop != null)
         {
-            // 当效果类型为物品时，显示ItemType选择器
-            var itemTypeRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-            EditorGUI.PropertyField(itemTypeRect, 物品类型Prop, new GUIContent("物品类型"));
-            currentY += singleLineHeight + verticalSpacing;
+            var bonusTypeForEffect = (加成类型)加成类型Prop.enumValueIndex;
+            if (bonusTypeForEffect == 加成类型.物品)
+            {
+                // 当加成类型为物品时，显示ItemType选择器
+                var itemTypeRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+                EditorGUI.PropertyField(itemTypeRect, 物品类型Prop, new GUIContent("物品类型"));
+                currentY += singleLineHeight + verticalSpacing;
+            }
+            else
+            {
+                // 当加成类型为玩家变量或玩家属性时，显示字符串下拉菜单
+                List<string> nameList = (bonusTypeForEffect == 加成类型.玩家变量) ? _variableNames : _statNames;
+                var fieldNameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+                DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, nameList);
+                currentY += singleLineHeight + verticalSpacing;
+            }
         }
-        else
+        else if (type == PlayerVariableType.玩家属性)
         {
-            // 当效果类型为玩家变量或玩家属性时，显示字符串下拉菜单
-            List<string> nameList = (type == PlayerVariableType.玩家变量) ? _variableNames : _statNames;
+            // 当效果类型为玩家属性时，显示字符串下拉菜单
             var fieldNameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-            DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, nameList);
+            DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, _statNames);
             currentY += singleLineHeight + verticalSpacing;
         }
 

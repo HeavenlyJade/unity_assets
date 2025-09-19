@@ -76,8 +76,7 @@ namespace MiGame.Achievement
     public enum PlayerVariableType
     {
         玩家变量,
-        玩家属性,
-        物品
+        玩家属性
     }
 
     /// <summary>
@@ -104,16 +103,12 @@ namespace MiGame.Achievement
         [Tooltip("效果描述")]
         public string 效果描述;
 
-        // 以下为新增：与伙伴/宠物的"携带效果"对齐的配置
+        // 以下为新增：与伙伴/宠物的“携带效果”对齐的配置
         [Tooltip("伙伴加成类型（与伙伴携带效果的加成类型一致）")]
         public 加成类型 加成类型;
 
         [Tooltip("物品目标（当加成类型为物品时有效）")]
         public ItemType 物品目标;
-
-        // 新增：当效果类型为物品时，直接选择具体的ItemType资产
-        [Tooltip("物品类型（当效果类型为物品时有效，直接选择ItemType资产）")]
-        public ItemType 物品类型;
     }
 
     /// <summary>

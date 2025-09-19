@@ -156,6 +156,9 @@ namespace MiGame.Shop
         [Tooltip("效果配置器，用于根据玩家变量等级动态计算价格")]
         public EffectLevelConfig 效果配置器;
         
+        [Tooltip("效果配置变量名称，用于从效果配置器中获取对应的变量值")]
+        public string 效果配置变量 = "";
+        
         [Tooltip("变量类型")]
         public 变量类型 变量类型 = 变量类型.空;
         

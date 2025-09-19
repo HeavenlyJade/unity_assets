@@ -237,7 +237,7 @@ public class PetEffectBatchUpdater : EditorWindow
             Debug.Log($"JSON中共有 {jsonList.Count} 个宠物:");
             foreach (var item in jsonList)
             {
-                Debug.Log($"JSON宠物: '{item.宠物名称}' (长度: {item.宠物名称?.Length})");
+                // Debug.Log($"JSON宠物: '{item.宠物名称}' (长度: {item.宠物名称?.Length})");
             }
 
             // 为每个目录中的宠物查找对应的JSON数据并更新

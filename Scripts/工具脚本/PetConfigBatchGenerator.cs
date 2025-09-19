@@ -4,9 +4,13 @@ using System.IO;
 using System.Collections.Generic;
 using MiGame.Pet;
 using System;
+using System.Linq;
 
 public class PetConfigBatchGenerator : EditorWindow
 {
+    private bool generateAll = false;  // 默认选择按抽奖区域生成
+    private string targetLotteryArea = "";
+
     [MenuItem("Tools/批量生成伙伴配置")]
     public static void ShowWindow()
     {
@@ -15,9 +19,42 @@ public class PetConfigBatchGenerator : EditorWindow
 
     private void OnGUI()
     {
-        if (GUILayout.Button("一键生成所有伙伴配置"))
+        GUILayout.Label("批量生成伙伴配置", EditorStyles.boldLabel);
+        
+        EditorGUILayout.HelpBox("选择生成方式：生成所有伙伴配置或按抽奖区域生成", MessageType.Info);
+
+        EditorGUILayout.Space();
+        
+        // 生成方式选择
+        GUILayout.Label("生成方式:", EditorStyles.boldLabel);
+        generateAll = EditorGUILayout.Toggle("生成所有伙伴配置", generateAll);
+        
+        if (!generateAll)
         {
-            GenerateAllPetConfigs();
+            EditorGUILayout.Space();
+            GUILayout.Label("指定抽奖区域:", EditorStyles.boldLabel);
+            targetLotteryArea = EditorGUILayout.TextField("抽奖区域", targetLotteryArea);
+            
+            EditorGUILayout.HelpBox($"将只生成抽奖区域为 \"{targetLotteryArea}\" 的伙伴配置", MessageType.Info);
+        }
+
+        EditorGUILayout.Space();
+        if (GUILayout.Button("生成配置", GUILayout.Height(30)))
+        {
+            if (!generateAll && string.IsNullOrWhiteSpace(targetLotteryArea))
+            {
+                EditorUtility.DisplayDialog("错误", "请输入抽奖区域名称！", "确定");
+                return;
+            }
+
+            if (generateAll)
+            {
+                GenerateAllPetConfigs();
+            }
+            else
+            {
+                GeneratePetConfigsByLotteryArea();
+            }
         }
     }
 
@@ -92,6 +129,108 @@ public class PetConfigBatchGenerator : EditorWindow
             }
         };
         Debug.Log("批量生成伙伴配置完成");
+    }
+
+    private void GeneratePetConfigsByLotteryArea()
+    {
+        string jsonPath = Path.Combine(Application.dataPath, "Scripts/配置exel/伙伴.json");
+        if (!File.Exists(jsonPath))
+        {
+            Debug.LogError($"未找到json文件: {jsonPath}");
+            EditorUtility.DisplayDialog("错误", $"未找到json文件: {jsonPath}", "确定");
+            return;
+        }
+        
+        string jsonText = File.ReadAllText(jsonPath);
+        var petList = JsonUtilityWrapper.FromJsonArray<PetJsonData>(jsonText);
+        if (petList == null)
+        {
+            Debug.LogError("json解析失败");
+            EditorUtility.DisplayDialog("错误", "json解析失败", "确定");
+            return;
+        }
+
+        // 过滤出指定抽奖区域的伙伴
+        var filteredPets = petList.Where(pet => 
+            !string.IsNullOrEmpty(pet.名称) && 
+            !string.IsNullOrEmpty(pet.抽奖区域) && 
+            pet.抽奖区域 == targetLotteryArea
+        ).ToList();
+
+        if (filteredPets.Count == 0)
+        {
+            EditorUtility.DisplayDialog("提示", $"未找到抽奖区域为 \"{targetLotteryArea}\" 的伙伴数据", "确定");
+            return;
+        }
+
+        Debug.Log($"找到 {filteredPets.Count} 个抽奖区域为 \"{targetLotteryArea}\" 的伙伴");
+
+        string baseDir = "Assets/GameConf/伙伴";
+        int generatedCount = 0;
+        
+        foreach (var pet in filteredPets)
+        {
+            string quality = pet.抽奖区域;
+            string folder = Path.Combine(baseDir, quality);
+            if (!AssetDatabase.IsValidFolder(folder))
+            {
+                string parent = baseDir;
+                string newFolder = quality;
+                AssetDatabase.CreateFolder(parent, newFolder);
+            }
+            
+            string assetPath = Path.Combine(folder, pet.名称 + ".asset").Replace("\\", "/");
+            PartnerConfig asset = AssetDatabase.LoadAssetAtPath<PartnerConfig>(assetPath);
+            if (asset == null)
+            {
+                asset = ScriptableObject.CreateInstance<PartnerConfig>();
+            }
+            
+            asset.宠物名称 = pet.名称;
+            asset.稀有度 = ParseQuality(pet.商店区域);
+            asset.头像资源 = pet.图片;
+            asset.模型资源 = pet.模型;
+            asset.动画资源 = pet.动画;
+            asset.携带效果 = new List<携带效果>
+            {
+                new 携带效果
+                {
+                    变量类型 = 变量类型.玩家变量,
+                    变量名称 = "加成_百分比_金币获取",
+                    效果数值 = pet.加成_百分比_金币获取
+                },
+                new 携带效果
+                {
+                    变量类型 = 变量类型.玩家变量,
+                    变量名称 = "加成_百分比_训练加成",
+                    效果数值 = pet.加成_百分比_训练加成
+                }
+            };
+            
+            EditorUtility.SetDirty(asset);
+            if (AssetDatabase.GetAssetPath(asset) == "")
+            {
+                AssetDatabase.CreateAsset(asset, assetPath);
+            }
+            else
+            {
+                AssetDatabase.SaveAssets();
+            }
+            
+            generatedCount++;
+        }
+        
+        AssetDatabase.SaveAssets();
+        // 使用延迟调用来避免在资源导入期间刷新
+        EditorApplication.delayCall += () => {
+            if (!AssetDatabase.IsAssetImportWorkerProcess())
+            {
+                AssetDatabase.Refresh();
+            }
+        };
+        
+        EditorUtility.DisplayDialog("完成", $"成功生成 {generatedCount} 个抽奖区域为 \"{targetLotteryArea}\" 的伙伴配置", "确定");
+        Debug.Log($"批量生成抽奖区域为 \"{targetLotteryArea}\" 的伙伴配置完成，共生成 {generatedCount} 个");
     }
 
     [Serializable]

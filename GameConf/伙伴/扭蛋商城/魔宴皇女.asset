@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bee944fbfd296aa4398c56ef9920b817, type: 3}
-  m_Name: "\u673A\u6838\u88C2\u5203"
+  m_Script: {fileID: 11500000, guid: b1bbb91b96db7f746a0ebcc3ffcf758d, type: 3}
+  m_Name: "\u9B54\u5BB4\u7687\u5973"
   m_EditorClassIdentifier: 
-  "\u5BA0\u7269\u540D\u79F0": "\u673A\u6838\u88C2\u5203"
-  "\u5BA0\u7269\u63CF\u8FF0": "\u79FB\u52A8\u901F\u5EA6 \t\u661F\u7EA7*10\n\u91D1\u5E01\u52A0\u6210 
-    \t\u661F\u7EA7*15\n\u52A0\u901F\u5EA6\u52A0\u6210  \u661F\u7EA7*15"
+  "\u5BA0\u7269\u540D\u79F0": "\u9B54\u5BB4\u7687\u5973"
+  "\u5BA0\u7269\u63CF\u8FF0": "\u91D1\u5E01\u52A0\u6210 \u661F\u7EA7*8\n\u8BAD\u7EC3\u52A0\u6210
+    \u661F\u7EA7*5"
   "\u7A00\u6709\u5EA6": 4
   "\u521D\u59CB\u7B49\u7EA7": 1
   "\u6700\u5927\u7B49\u7EA7": 100
@@ -24,7 +24,7 @@ MonoBehaviour:
   "\u5347\u661F\u6D88\u8017\u5217\u8868":
   - "\u661F\u7EA7": 2
     "\u6D88\u8017\u6750\u6599":
-    - "\u6D88\u8017\u7C7B\u578B": 3
+    - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
       "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
       "\u9700\u8981\u6570\u91CF": 3
@@ -32,7 +32,7 @@ MonoBehaviour:
     "\u6210\u529F\u7387": 100
   - "\u661F\u7EA7": 3
     "\u6D88\u8017\u6750\u6599":
-    - "\u6D88\u8017\u7C7B\u578B": 3
+    - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
       "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
       "\u9700\u8981\u6570\u91CF": 3
@@ -40,7 +40,7 @@ MonoBehaviour:
     "\u6210\u529F\u7387": 100
   - "\u661F\u7EA7": 4
     "\u6D88\u8017\u6750\u6599":
-    - "\u6D88\u8017\u7C7B\u578B": 3
+    - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
       "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
       "\u9700\u8981\u6570\u91CF": 3
@@ -48,7 +48,7 @@ MonoBehaviour:
     "\u6210\u529F\u7387": 100
   - "\u661F\u7EA7": 5
     "\u6D88\u8017\u6750\u6599":
-    - "\u6D88\u8017\u7C7B\u578B": 3
+    - "\u6D88\u8017\u7C7B\u578B": 2
       "\u6750\u6599\u7269\u54C1": {fileID: 0}
       "\u6D88\u8017\u540D\u79F0": {fileID: 11400000}
       "\u9700\u8981\u6570\u91CF": 3
@@ -57,25 +57,18 @@ MonoBehaviour:
   "\u7279\u6B8A\u52A0\u6210": 0
   "\u643A\u5E26\u6548\u679C":
   - "\u53D8\u91CF\u7C7B\u578B": 1
-    "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u79FB\u52A8\u52A0\u6210"
-    "\u6548\u679C\u6570\u503C": S_LVL*10
-    "\u52A0\u6210\u7C7B\u578B": 3
-    "\u7269\u54C1\u76EE\u6807": {fileID: 0}
-    "\u76EE\u6807\u53D8\u91CF": "\u6570\u636E_\u56FA\u5B9A\u503C_\u79FB\u52A8\u901F\u5EA6"
-    "\u4F5C\u7528\u7C7B\u578B": "\u5355\u72EC\u76F8\u52A0"
-  - "\u53D8\u91CF\u7C7B\u578B": 1
     "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u91D1\u5E01\u52A0\u6210"
-    "\u6548\u679C\u6570\u503C": S_LVL*15
+    "\u6548\u679C\u6570\u503C": S_LVL*8
     "\u52A0\u6210\u7C7B\u578B": 1
     "\u7269\u54C1\u76EE\u6807": {fileID: 11400000, guid: 230400512f50896489d3534b6cfdaad1, type: 2}
     "\u76EE\u6807\u53D8\u91CF": 
     "\u4F5C\u7528\u7C7B\u578B": "\u5355\u72EC\u76F8\u52A0"
   - "\u53D8\u91CF\u7C7B\u578B": 1
-    "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u52A0\u901F\u5EA6\u52A0\u6210"
-    "\u6548\u679C\u6570\u503C": S_LVL*15
-    "\u52A0\u6210\u7C7B\u578B": 3
+    "\u53D8\u91CF\u540D\u79F0": "\u52A0\u6210_\u767E\u5206\u6BD4_\u8BAD\u7EC3\u52A0\u6210"
+    "\u6548\u679C\u6570\u503C": S_LVL*5
+    "\u52A0\u6210\u7C7B\u578B": 2
     "\u7269\u54C1\u76EE\u6807": {fileID: 0}
-    "\u76EE\u6807\u53D8\u91CF": "\u6570\u636E_\u56FA\u5B9A\u503C_\u52A0\u901F\u5EA6"
+    "\u76EE\u6807\u53D8\u91CF": "\u6570\u636E_\u56FA\u5B9A\u503C_\u6218\u529B\u503C"
     "\u4F5C\u7528\u7C7B\u578B": "\u5355\u72EC\u76F8\u52A0"
   "\u6548\u679C\u7B49\u7EA7\u914D\u7F6E": {fileID: 0}
   "\u6280\u80FD\u5217\u8868": []
@@ -84,8 +77,8 @@ MonoBehaviour:
     "\u9700\u8981\u6750\u6599": []
   "\u8FDB\u5316\u540E\u5F62\u6001": 
   "\u83B7\u53D6\u65B9\u5F0F": []
-  "\u6A21\u578B\u8D44\u6E90": resId&usev2=1://413182614690091008
-  "\u5934\u50CF\u8D44\u6E90": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u7FC5\u8180\u7ACB\u7ED8/\u673A\u6838\u88C2\u5203.png"
-  "\u52A8\u753B\u8D44\u6E90": 
+  "\u6A21\u578B\u8D44\u6E90": resId&usev2=1://430557210324619266
+  "\u5934\u50CF\u8D44\u6E90": "sandboxId://FlyUi/\u8FF7\u4F60\u754C\u9762/\u65B0\u7248\u7ACB\u7ED8/\u4F19\u4F34/\u9B54\u5BB4\u7687\u5973.png"
+  "\u52A8\u753B\u8D44\u6E90": resId&usev2=1://430557259221815303
   "\u97F3\u6548\u8D44\u6E90": 
   "\u7279\u6B8A\u6807\u7B7E": []

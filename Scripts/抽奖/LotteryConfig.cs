@@ -43,6 +43,8 @@ namespace MiGame.Lottery
         高级翅膀,
         [Tooltip("礼包抽奖")]
         礼包抽奖,
+        [Tooltip("终级宠物")]
+        终级宠物,
         [Tooltip("蛋蛋抽奖")]
         蛋蛋抽奖
     }

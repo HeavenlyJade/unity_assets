@@ -174,11 +174,11 @@ MonoBehaviour:
       "\u5BA0\u7269\u914D\u7F6E": {fileID: 0}
       "\u4F19\u4F34\u914D\u7F6E": {fileID: 0}
       "\u5C3E\u8FF9\u914D\u7F6E": 
-      "\u6570\u91CF": 2000
+      "\u6570\u91CF": 500
       "\u663E\u793AUI": 
-      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F972000\u98DE\u884C\u5E01"
+      "\u5956\u52B1\u63CF\u8FF0": "\u83B7\u5F97500\u98DE\u884C\u5E01"
     "\u4E34\u53D6\u6267\u884C\u6307\u4EE4": "PlayerItem { \"\u7269\u54C1\u7C7B\u578B\":
-      \"\u98DE\u884C\u5E01\", \"\u6570\u91CF\": 2000, \"\u64CD\u4F5C\u7C7B\u578B\":
+      \"\u98DE\u884C\u5E01\", \"\u6570\u91CF\": 500, \"\u64CD\u4F5C\u7C7B\u578B\":
       \"\u65B0\u589E\" }"
   - "\u65F6\u95F4\u8282\u70B9": 5400
     "\u5956\u52B1\u7269\u54C1":

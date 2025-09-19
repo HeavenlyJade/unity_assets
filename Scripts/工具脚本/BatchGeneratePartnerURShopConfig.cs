@@ -180,7 +180,7 @@ namespace MiGame.Tools
                 // 设置奖励内容
                 var reward = new 商品奖励配置();
                 reward.商品类型 = 商品类型.伙伴;
-                reward.商品名称 = partnerConfig; // 关联到对应的伙伴配置
+                reward.伙伴配置 = partnerConfig; // 关联到对应的伙伴配置
                 reward.数量 = 1;
                 shopConfig.获得物品.Add(reward);
                 

@@ -26,8 +26,9 @@ namespace MiGame.Shop.Editor
 
             // 计算字段高度
             float lineHeight = EditorGUIUtility.singleLineHeight;
-            float spacing = EditorGUIUtility.standardVerticalSpacing * 5.0f; // 增加间距
-            float currentY = position.y;
+            float spacing = EditorGUIUtility.standardVerticalSpacing * 8.0f; // 增加间距，让字段之间有更多空间
+            float topMargin = EditorGUIUtility.standardVerticalSpacing * 4.0f; // 顶部额外间距，避免与价格配置重叠
+            float currentY = position.y + topMargin;
 
             // 绘制折叠标题
             var foldoutRect = new Rect(position.x, currentY, position.width, lineHeight);
@@ -69,15 +70,17 @@ namespace MiGame.Shop.Editor
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float lineHeight = EditorGUIUtility.singleLineHeight;
-            float spacing = EditorGUIUtility.standardVerticalSpacing * 3.0f; // 与OnGUI中的间距保持一致
+            float spacing = EditorGUIUtility.standardVerticalSpacing * 8.0f; // 与OnGUI中的间距保持一致
+            float topMargin = EditorGUIUtility.standardVerticalSpacing * 4.0f; // 顶部额外间距，避免与价格配置重叠
 
             if (!property.isExpanded)
             {
-                return lineHeight; // 只显示折叠标题
+                return lineHeight + topMargin; // 折叠标题 + 顶部间距
             }
 
-            // 展开时的高度：限购类型 + 限购次数 + 重置时间 + 购买条件
-            float totalHeight = lineHeight; // 折叠标题
+            // 展开时的高度：顶部间距 + 折叠标题 + 限购类型 + 限购次数 + 重置时间 + 购买条件
+            float totalHeight = topMargin; // 顶部间距
+            totalHeight += lineHeight; // 折叠标题
             
             // 添加字段高度
             totalHeight += lineHeight + spacing; // 限购类型

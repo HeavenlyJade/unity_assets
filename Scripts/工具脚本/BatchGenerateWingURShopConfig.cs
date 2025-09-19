@@ -207,7 +207,7 @@ namespace MiGame.Tools
                 // 设置奖励内容
                 var reward = new 商品奖励配置();
                 reward.商品类型 = 商品类型.翅膀;
-                reward.商品名称 = wingConfig; // 关联到对应的翅膀配置
+                reward.翅膀配置 = wingConfig; // 关联到对应的翅膀配置
                 reward.数量 = 1;
                 shopConfig.获得物品.Add(reward);
                 

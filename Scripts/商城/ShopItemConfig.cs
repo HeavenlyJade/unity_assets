@@ -118,18 +118,30 @@ namespace MiGame.Shop
     [Serializable]
     public class 商品奖励配置
     {
- 
         [Tooltip("商品类型")]
         public 商品类型 商品类型 = 商品类型.物品;
         
-        [Tooltip("商品名称（根据商品类型选择对应的配置）")]
-        public ScriptableObject 商品名称;
+        [Tooltip("物品配置（商品类型为物品时使用）")]
+        public ItemType 物品配置;
         
-        [Tooltip("变量名称（商品类型为玩家变量或玩家属性时使用）")]
+        [Tooltip("伙伴配置（商品类型为伙伴时使用）")]
+        public PartnerConfig 伙伴配置;
+        
+        [Tooltip("宠物配置（商品类型为宠物时使用）")]
+        public PetConfig 宠物配置;
+        
+        [Tooltip("翅膀配置（商品类型为翅膀时使用）")]
+        public WingConfig 翅膀配置;
+        
+        [Tooltip("尾迹配置（商品类型为尾迹时使用）")]
+        public BaseTrailConfig 尾迹配置;
+        
+        [Tooltip("变量名称（商品类型为玩家变量、玩家属性或指令执行时使用）")]
         public string 变量名称 = "";
         
         [Tooltip("奖励数量")]
         public float 数量 = 1f;
+        
         [Tooltip("获得商品描述")]
         public string 获得商品描述 = "";
         
@@ -170,9 +182,6 @@ namespace MiGame.Shop
         
         [Tooltip("迷你币数量")]
         public int 迷你币数量 = -1;
-        
-        [Tooltip("购买次数记录变量")]
-        public string 变量键 = "购买次数";
         
         [Tooltip("广告模式")]
         public AdMode 广告模式 = AdMode.不可看广告;
@@ -268,7 +277,8 @@ namespace MiGame.Shop
         每日,
         每周,
         每月,
-        永久一次
+        永久一次,
+        固定次数
     }
     
     /// <summary>
@@ -362,40 +372,10 @@ namespace MiGame.Shop
     [Serializable]
     public class ModifiersConfig
     {
-        [Tooltip("条件类型")]
-        public ConditionType 条件类型 = ConditionType.玩家等级;
-        
-        [Tooltip("条件值")]
-        public string 条件值 = "1";
-        
-        [Tooltip("比较操作符")]
-        public ComparisonOperator 比较操作符 = ComparisonOperator.大于等于;
+        [Tooltip("购买前置条件描述")]
+        public string 条件描述 = "";
     }
     
-    /// <summary>
-    /// 条件类型枚举
-    /// </summary>
-    public enum ConditionType
-    {
-        玩家等级,
-        任务完成,
-        道具拥有,
-        时间限制,
-        其他
-    }
-    
-    /// <summary>
-    /// 比较操作符枚举
-    /// </summary>
-    public enum ComparisonOperator
-    {
-        等于,
-        大于,
-        小于,
-        大于等于,
-        小于等于,
-        不等于
-    }
     
     /// <summary>
     /// 变量类型枚举

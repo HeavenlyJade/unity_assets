@@ -70,10 +70,35 @@ namespace MiGame.EditorTools
 					foreach (var r in config.获得物品)
 					{
 						if (r == null) continue;
-						// 物品/伙伴/宠物/翅膀/尾迹 需要 指向的对象不为空；玩家变量/玩家属性 需要 变量名称非空
-						bool namedType = r.商品类型 == 商品类型.物品 || r.商品类型 == 商品类型.伙伴 || r.商品类型 == 商品类型.宠物 || r.商品类型 == 商品类型.翅膀 || r.商品类型 == 商品类型.尾迹;
-						bool variableType = r.商品类型 == 商品类型.玩家变量 || r.商品类型 == 商品类型.玩家属性;
-						if ((namedType && r.商品名称 != null) || (variableType && !string.IsNullOrEmpty(r.变量名称)))
+						
+						// 检查不同类型的配置是否有效
+						bool isValidReward = false;
+						
+						switch (r.商品类型)
+						{
+							case 商品类型.物品:
+								isValidReward = r.物品配置 != null;
+								break;
+							case 商品类型.伙伴:
+								isValidReward = r.伙伴配置 != null;
+								break;
+							case 商品类型.宠物:
+								isValidReward = r.宠物配置 != null;
+								break;
+							case 商品类型.翅膀:
+								isValidReward = r.翅膀配置 != null;
+								break;
+							case 商品类型.尾迹:
+								isValidReward = r.尾迹配置 != null;
+								break;
+							case 商品类型.玩家变量:
+							case 商品类型.玩家属性:
+							case 商品类型.指令执行:
+								isValidReward = !string.IsNullOrEmpty(r.变量名称);
+								break;
+						}
+						
+						if (isValidReward)
 						{
 							hasReward = true;
 							break;

@@ -27,7 +27,6 @@ namespace MiGame.Shop.Editor
             var 玩家变量Prop = property.FindPropertyRelative("玩家变量");
             var 迷你币类型Prop = property.FindPropertyRelative("迷你币类型");
             var 迷你币数量Prop = property.FindPropertyRelative("迷你币数量");
-            var 变量键Prop = property.FindPropertyRelative("变量键");
             var 广告模式Prop = property.FindPropertyRelative("广告模式");
             var 广告次数Prop = property.FindPropertyRelative("广告次数");
 
@@ -70,26 +69,8 @@ namespace MiGame.Shop.Editor
                 EditorGUI.PropertyField(变量类型Rect, 变量类型Prop, new GUIContent("📋 变量类型", "选择变量类型：玩家变量或玩家属性"));
                 currentY += lineHeight + spacing;
 
-                // 玩家变量 - 优化显示格式
-                var 玩家变量Rect = new Rect(position.x, currentY, position.width, lineHeight);
-                
-                // 添加帮助框提示（仅在字段为空时显示）
-                if (string.IsNullOrEmpty(玩家变量Prop.stringValue))
-                {
-                    var helpBoxRect = new Rect(position.x, currentY, position.width, lineHeight * 1.5f);
-                    // EditorGUI.HelpBox(helpBoxRect, "💡 玩家变量名称，用于获取对应等级效果配置来动态设定金币价格", MessageType.Info);
-                    currentY += lineHeight * 1.5f + spacing;
-                }
-                
-                // 绘制玩家变量字段，使用更清晰的标签和样式
-                var originalColor = GUI.backgroundColor;
-                if (string.IsNullOrEmpty(玩家变量Prop.stringValue))
-                {
-                    GUI.backgroundColor = new Color(1f, 1f, 0.8f, 1f); // 淡黄色背景提示
-                }
-                
-                // EditorGUI.PropertyField(玩家变量Rect, 玩家变量Prop, new GUIContent("🎯 玩家变量", "输入玩家变量名称，配合效果配置器使用"));
-                GUI.backgroundColor = originalColor;
+                // 玩家变量字段（已注释掉，但保留间距计算）
+                // 注意：玩家变量字段已被注释，但为了保持布局一致性，这里保留一个间距
                 currentY += lineHeight + spacing;
 
                 // 迷你币类型
@@ -100,11 +81,6 @@ namespace MiGame.Shop.Editor
                 // 迷你币数量
                 var 迷你币数量Rect = new Rect(position.x, currentY, position.width, lineHeight);
                 EditorGUI.PropertyField(迷你币数量Rect, 迷你币数量Prop, new GUIContent("迷你币数量"));
-                currentY += lineHeight + spacing;
-
-                // 变量键
-                var 变量键Rect = new Rect(position.x, currentY, position.width, lineHeight);
-                EditorGUI.PropertyField(变量键Rect, 变量键Prop, new GUIContent("变量键"));
                 currentY += lineHeight + spacing;
 
                 // 广告模式
@@ -133,17 +109,25 @@ namespace MiGame.Shop.Editor
                 return lineHeight; // 只显示折叠标题
             }
 
-            // 展开时的高度：货币类型 + 价格数量 + 效果配置器 + 效果配置变量 + 变量类型 + 玩家变量(可能包含帮助框) + 迷你币类型 + 迷你币数量 + 变量键 + 广告模式 + 广告次数
-            int fieldCount = 10;
+            // 展开时的高度计算：折叠标题 + 各字段 + 间距
+            float totalHeight = lineHeight; // 折叠标题
             
-            // 检查是否需要显示玩家变量帮助框
-            var 玩家变量Prop = property.FindPropertyRelative("玩家变量");
-            if (string.IsNullOrEmpty(玩家变量Prop.stringValue))
-            {
-                fieldCount += 1; // 帮助框额外占用1.5行高度
-            }
+            // 添加各字段高度和间距
+            totalHeight += lineHeight + spacing; // 货币类型
+            totalHeight += lineHeight + spacing; // 价格数量
+            totalHeight += lineHeight + spacing; // 效果配置器
+            totalHeight += lineHeight + spacing; // 效果配置变量
+            totalHeight += lineHeight + spacing; // 变量类型
+            
+            // 玩家变量字段（已注释掉，但保留间距计算）
+            totalHeight += lineHeight + spacing; // 保持布局一致性
+            
+            totalHeight += lineHeight + spacing; // 迷你币类型
+            totalHeight += lineHeight + spacing; // 迷你币数量
+            totalHeight += lineHeight + spacing; // 广告模式
+            totalHeight += lineHeight; // 广告次数（最后一个字段不需要间距）
 
-            return lineHeight * fieldCount + spacing * (fieldCount - 1);
+            return totalHeight;
         }
 
 

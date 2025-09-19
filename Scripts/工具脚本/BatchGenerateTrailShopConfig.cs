@@ -275,7 +275,7 @@ namespace MiGame.Tools
                 // 设置奖励内容
                 var reward = new 商品奖励配置();
                 reward.商品类型 = 商品类型.尾迹;
-                reward.商品名称 = trailConfig;
+                reward.尾迹配置 = trailConfig;
                 reward.数量 = 1;
                 shopConfig.获得物品.Add(reward);
                 

@@ -19,9 +19,7 @@ namespace MiGame.Shop.Editor
             EditorGUI.indentLevel = 0;
 
             // 获取子属性
-            var 条件类型Prop = property.FindPropertyRelative("条件类型");
-            var 条件值Prop = property.FindPropertyRelative("条件值");
-            var 比较操作符Prop = property.FindPropertyRelative("比较操作符");
+            var 条件描述Prop = property.FindPropertyRelative("条件描述");
 
             // 计算字段高度
             float lineHeight = EditorGUIUtility.singleLineHeight;
@@ -37,20 +35,9 @@ namespace MiGame.Shop.Editor
             {
                 EditorGUI.indentLevel++;
 
-                // 条件类型
-                var 条件类型Rect = new Rect(position.x, currentY, position.width, lineHeight);
-                EditorGUI.PropertyField(条件类型Rect, 条件类型Prop, new GUIContent("📝 条件类型", "选择条件类型：玩家等级、任务完成、道具拥有等"));
-                currentY += lineHeight + spacing;
-
-                // 条件值
-                var 条件值Rect = new Rect(position.x, currentY, position.width, lineHeight);
-                EditorGUI.PropertyField(条件值Rect, 条件值Prop, new GUIContent("💯 条件值", "输入条件的具体数值"));
-                currentY += lineHeight + spacing;
-
-                // 比较操作符
-                var 比较操作符Rect = new Rect(position.x, currentY, position.width, lineHeight);
-                EditorGUI.PropertyField(比较操作符Rect, 比较操作符Prop, new GUIContent("⚖️ 比较操作符", "选择比较方式：等于、大于、小于等"));
-                currentY += lineHeight + spacing;
+                // 条件描述
+                var 条件描述Rect = new Rect(position.x, currentY, position.width, lineHeight);
+                EditorGUI.PropertyField(条件描述Rect, 条件描述Prop, new GUIContent("📝 条件描述", "输入购买前置条件的描述"));
 
                 EditorGUI.indentLevel--;
             }
@@ -69,11 +56,9 @@ namespace MiGame.Shop.Editor
                 return lineHeight; // 只显示折叠标题
             }
 
-            // 展开时的高度：条件类型 + 条件值 + 比较操作符
+            // 展开时的高度：折叠标题 + 条件描述
             float totalHeight = lineHeight; // 折叠标题
-            totalHeight += lineHeight + spacing; // 条件类型
-            totalHeight += lineHeight + spacing; // 条件值
-            totalHeight += lineHeight + spacing; // 比较操作符
+            totalHeight += lineHeight + spacing; // 条件描述
 
             return totalHeight;
         }

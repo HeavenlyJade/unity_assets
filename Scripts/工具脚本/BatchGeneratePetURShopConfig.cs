@@ -163,7 +163,7 @@ namespace MiGame.Tools
                 // 设置奖励内容
                 var reward = new 商品奖励配置();
                 reward.商品类型 = 商品类型.宠物;
-                reward.商品名称 = petConfig;
+                reward.宠物配置 = petConfig;
                 reward.数量 = 1;
                 shopConfig.获得物品.Add(reward);
                 

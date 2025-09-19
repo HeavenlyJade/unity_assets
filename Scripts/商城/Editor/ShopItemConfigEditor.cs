@@ -94,14 +94,12 @@ namespace MiGame.Shop.Editor
             // 强制刷新变量名数据，确保数据同步
             ForceRefreshVariableNames();
 
-            // 计算布局 - 不使用PrefixLabel，直接使用完整位置
+            // 计算布局
             var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
             // 获取子属性
             var 商品类型Prop = property.FindPropertyRelative("商品类型");
-            var 商品名称Prop = property.FindPropertyRelative("商品名称");
-            var 变量名称Prop = property.FindPropertyRelative("变量名称");
             var 数量Prop = property.FindPropertyRelative("数量");
             var 获得商品描述Prop = property.FindPropertyRelative("获得商品描述");
             var 简单描述Prop = property.FindPropertyRelative("简单描述");
@@ -119,94 +117,79 @@ namespace MiGame.Shop.Editor
 
             // 根据商品类型显示对应的配置选择器
             商品类型 selectedType = (商品类型)商品类型Prop.enumValueIndex;
-            
-            if (selectedType == 商品类型.玩家变量 || selectedType == 商品类型.玩家属性)
+
+            SerializedProperty configProp = null;
+            switch (selectedType)
             {
-                // 参照BasePetConfig的逻辑，使用变量名称字符串字段
+                case 商品类型.物品:
+                    configProp = property.FindPropertyRelative("物品配置");
+                    break;
+                case 商品类型.伙伴:
+                    configProp = property.FindPropertyRelative("伙伴配置");
+                    break;
+                case 商品类型.宠物:
+                    configProp = property.FindPropertyRelative("宠物配置");
+                    break;
+                case 商品类型.翅膀:
+                    configProp = property.FindPropertyRelative("翅膀配置");
+                    break;
+                case 商品类型.尾迹:
+                    configProp = property.FindPropertyRelative("尾迹配置");
+                    break;
+            }
+
+            if (configProp != null)
+            {
+                var configRect = new Rect(position.x, currentY, position.width, lineHeight);
+                EditorGUI.PropertyField(configRect, configProp, new GUIContent(GetConfigLabel(selectedType)));
+                currentY += lineHeight + spacing;
+            }
+            else if (selectedType == 商品类型.玩家变量 || selectedType == 商品类型.玩家属性)
+            {
+                var 变量名称Prop = property.FindPropertyRelative("变量名称");
                 var 变量名称Rect = new Rect(position.x, currentY, position.width, lineHeight);
                 string labelText = GetConfigLabel(selectedType);
                 
-                // 先显示标题标签
                 EditorGUI.LabelField(变量名称Rect, new GUIContent(labelText));
                 currentY += lineHeight + spacing;
                 
-                // 创建下拉选择器
                 var dropdownRect = new Rect(position.x, currentY, position.width, lineHeight);
-                
-                // 显示当前值或"请选择"
                 string currentValue = 变量名称Prop.stringValue;
                 string displayValue = string.IsNullOrEmpty(currentValue) ? "请选择" : currentValue;
+
                 if (EditorGUI.DropdownButton(dropdownRect, new GUIContent(displayValue), FocusType.Keyboard))
                 {
                     var menu = new GenericMenu();
-                    
-                    if (selectedType == 商品类型.玩家变量)
-                    {
-                        // 动态创建玩家变量选项
-                        CreateVariableMenu(menu, playerVariables, currentValue, 变量名称Prop);
-                    }
-                    else if (selectedType == 商品类型.玩家属性)
-                    {
-                        // 动态创建玩家属性选项
-                        CreateVariableMenu(menu, playerStats, currentValue, 变量名称Prop);
-                    }
-                    
+                    var options = (selectedType == 商品类型.玩家变量) ? playerVariables : playerStats;
+                    CreateVariableMenu(menu, options, currentValue, 变量名称Prop);
                     menu.ShowAsContext();
                 }
                 currentY += lineHeight + spacing;
-                
-                // 清空商品名称字段
-                商品名称Prop.objectReferenceValue = null;
             }
             else if (selectedType == 商品类型.指令执行)
             {
-                // 指令执行类型直接显示字符串输入框
-                var 指令配置Rect = new Rect(position.x, currentY, position.width, lineHeight * 3); // 高度设为3行
+                var 变量名称Prop = property.FindPropertyRelative("变量名称");
+                var 指令配置Rect = new Rect(position.x, currentY, position.width, lineHeight * 3);
                 EditorGUI.PropertyField(指令配置Rect, 变量名称Prop, new GUIContent("指令配置"));
-                currentY += lineHeight * 3 + spacing; // 高度设为3行
-                
-                // 清空商品名称字段
-                商品名称Prop.objectReferenceValue = null;
-            }
-            else
-            {
-                // 商品名称配置选择器
-                var 商品名称Rect = new Rect(position.x, currentY, position.width, lineHeight);
-                string labelText = GetConfigLabel(selectedType);
-                System.Type configType = GetConfigType(selectedType);
-                
-                if (selectedType == 商品类型.物品)
-                {
-                    // 为物品类型提供ItemType选择器
-                    var itemType = 商品名称Prop.objectReferenceValue as ScriptableObject;
-                    商品名称Prop.objectReferenceValue = EditorGUI.ObjectField(商品名称Rect, new GUIContent(labelText), itemType, typeof(ScriptableObject), false);
-                }
-                else
-                {
-                    商品名称Prop.objectReferenceValue = EditorGUI.ObjectField(商品名称Rect, new GUIContent(labelText), 商品名称Prop.objectReferenceValue, configType, false);
-                }
-                currentY += lineHeight + spacing;
-                
-                // 清空变量名称字段
-                变量名称Prop.stringValue = "";
+                currentY += lineHeight * 3 + spacing;
             }
 
-            // 数量字段（所有类型都显示）
+            // 数量字段
             var 数量Rect = new Rect(position.x, currentY, position.width, lineHeight);
             EditorGUI.PropertyField(数量Rect, 数量Prop, new GUIContent("数量"));
             currentY += lineHeight + spacing;
 
-            // 获得商品描述字段（所有类型都显示）
+            // 获得商品描述字段
             var 获得商品描述Rect = new Rect(position.x, currentY, position.width, lineHeight);
             EditorGUI.PropertyField(获得商品描述Rect, 获得商品描述Prop, new GUIContent("获得商品描述"));
             currentY += lineHeight + spacing;
 
-            // 简单描述字段（所有类型都显示）
+            // 简单描述字段
             var 简单描述Rect = new Rect(position.x, currentY, position.width, lineHeight);
             EditorGUI.PropertyField(简单描述Rect, 简单描述Prop, new GUIContent("简单描述"));
             currentY += lineHeight + spacing;
 
-            // 资源图标字段（所有类型都显示）
+            // 资源图标字段
             var 资源图标Rect = new Rect(position.x, currentY, position.width, lineHeight);
             EditorGUI.PropertyField(资源图标Rect, 资源图标Prop, new GUIContent("资源图标"));
 
@@ -251,25 +234,22 @@ namespace MiGame.Shop.Editor
             float lineHeight = EditorGUIUtility.singleLineHeight;
             float spacing = EditorGUIUtility.standardVerticalSpacing;
             
-            // 获取商品类型来判断高度
             var 商品类型Prop = property.FindPropertyRelative("商品类型");
+            if (商品类型Prop == null) return lineHeight;
+
             商品类型 selectedType = (商品类型)商品类型Prop.enumValueIndex;
             
+            int lineCount = 6; // Default lines: 类型, 数量, 获得描述, 简单描述, 资源图标 + 1 config line
             if (selectedType == 商品类型.玩家变量 || selectedType == 商品类型.玩家属性)
             {
-                // 玩家变量/玩家属性：商品类型 + 标题 + 下拉选择器 + 数量 + 获得商品描述 + 简单描述 + 资源图标 + 七个间距
-                return lineHeight * 7 + spacing * 7;
+                lineCount = 7; // Adds a label line for dropdown
             }
             else if (selectedType == 商品类型.指令执行)
             {
-                // 指令执行：商品类型 + 指令配置(3行) + 数量 + 获得商品描述 + 简单描述 + 资源图标 + 六个间距
-                return lineHeight * 8 + spacing * 6;
+                lineCount = 5 + 3; // 5 standard fields + 3 lines for the command text area
             }
-            else
-            {
-                // 其他类型：商品类型 + 商品名称 + 数量 + 获得商品描述 + 简单描述 + 资源图标 + 六个间距
-                return lineHeight * 6 + spacing * 6;
-            }
+            
+            return lineHeight * lineCount + spacing * (lineCount);
         }
 
         private void SetStringValue(SerializedProperty property, string value)

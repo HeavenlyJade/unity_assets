@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using MiGame.Commands;
 using MiGame.Items;
@@ -45,13 +46,56 @@ namespace MiGame.Commands
         [Range(1, 100)]
         public int 过期天数 = 30;
         
-        [CommandParamDesc("邮件中包含的附件和数量")]
-        public ItemTypeIntDictionary 附件;
+        [CommandParamDesc("邮件中包含的附件配置列表")]
+        public List<邮件附件配置> 附件 = new List<邮件附件配置>();
 
         public override void Execute()
         {
             // 在这里实现邮件命令的具体逻辑
             Debug.Log($"正在执行邮件命令: 投递方式={投递方式}, 发件人={发件人}, 标题={标题}");
+            
+            // 输出完整的邮件JSON（不包含instanceID）
+            string 完整邮件JSON = 获取完整邮件JSON();
+            Debug.Log("完整邮件JSON:");
+            Debug.Log(完整邮件JSON);
+        }
+
+        /// <summary>
+        /// 获取完整的邮件JSON（包含正确的附件格式）
+        /// </summary>
+        public string 获取完整邮件JSON()
+        {
+            var jsonBuilder = new System.Text.StringBuilder();
+            jsonBuilder.Append("{");
+            jsonBuilder.Append($"\"投递方式\":\"{投递方式}\",");
+            
+            if (投递方式 == DeliveryMethod.个人)
+            {
+                jsonBuilder.Append($"\"收件人\":{收件人},");
+            }
+            
+            jsonBuilder.Append($"\"发件人\":\"{发件人}\",");
+            jsonBuilder.Append($"\"标题\":\"{标题}\",");
+            jsonBuilder.Append($"\"内容\":\"{内容}\",");
+            jsonBuilder.Append($"\"过期天数\":{过期天数},");
+            
+            // 生成附件JSON
+            jsonBuilder.Append("\"附件\":[");
+            if (附件 != null && 附件.Count > 0)
+            {
+                for (int i = 0; i < 附件.Count; i++)
+                {
+                    jsonBuilder.Append(附件[i].导出为JSON());
+                    if (i < 附件.Count - 1)
+                    {
+                        jsonBuilder.Append(",");
+                    }
+                }
+            }
+            jsonBuilder.Append("]");
+            
+            jsonBuilder.Append("}");
+            return jsonBuilder.ToString();
         }
     }
 } 

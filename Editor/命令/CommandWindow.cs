@@ -374,6 +374,12 @@ namespace MiGame.CommandSystem.Editor
                 return $"[ {string.Join(", ", entries)} ]";
             }
 
+            // 特殊处理邮件附件配置
+            if (value is 邮件附件配置 附件配置)
+            {
+                return 附件配置.导出为JSON();
+            }
+
             if (value is IList iList)
             {
                 var entries = new List<string>();

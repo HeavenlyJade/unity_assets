@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using MiGame.Items;
 using MiGame.Level;
+using MiGame.Core;
 
 namespace MiGame.Data
 {
@@ -53,6 +54,10 @@ namespace MiGame.Data
 
         [Tooltip("根据最终排名配置的奖励")]
         public List<LevelRankReward> 排名奖励;
+
+        [Header("加成变量配置")]
+        [Tooltip("关卡节点的加成变量列表")]
+        public List<LevelNodeBonus> 加成变量列表 = new List<LevelNodeBonus>();
 
         [Header("实时奖励")]
         [Tooltip("实时奖励触发规则列表，当满足指定条件时立即给予奖励")]

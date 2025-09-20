@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using MiGame.Items;
+using MiGame.Core;
+using MiGame;
 
 namespace MiGame.Level
 {
@@ -12,6 +14,17 @@ namespace MiGame.Level
     {
         [Tooltip("物品")]
         物品
+    }
+
+    /// <summary>
+    /// 加成变量类型枚举
+    /// </summary>
+    public enum BonusVariableType
+    {
+        [Tooltip("玩家变量")]
+        玩家变量,
+        [Tooltip("玩家属性")]
+        玩家属性
     }
 
     /// <summary>
@@ -39,6 +52,10 @@ namespace MiGame.Level
         
         [Tooltip("音效节点字段")]
         public string 音效节点字段;
+
+        [Header("加成变量配置")]
+        [Tooltip("关卡节点的加成变量列表")]
+        public List<LevelNodeBonus> 加成变量列表 = new List<LevelNodeBonus>();
 
         [Header("节点奖励配置")]
         [Tooltip("关卡节点的奖励列表")]
@@ -103,5 +120,27 @@ namespace MiGame.Level
                 唯一ID = Guid.NewGuid().ToString();
             }
         }
+    }
+
+    /// <summary>
+    /// 关卡节点加成变量结构
+    /// </summary>
+    [Serializable]
+    public class LevelNodeBonus
+    {
+        [Tooltip("变量名称")]
+        public string 变量名称;
+
+        [Tooltip("变量属性")]
+        public BonusVariableType 变量属性 = BonusVariableType.玩家变量;
+
+        [Tooltip("作用目标")]
+        public string 作用目标;
+
+        [Tooltip("加成方式")]
+        public BonusCalculationMethod 加成方式 = BonusCalculationMethod.单独相加;
+
+        [Tooltip("加成数值")]
+        public float 加成数值 = 1f;
     }
 }

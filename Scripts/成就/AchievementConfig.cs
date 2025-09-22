@@ -109,6 +109,9 @@ namespace MiGame.Achievement
 
         [Tooltip("物品目标（当加成类型为物品时有效）")]
         public ItemType 物品目标;
+
+        [Tooltip("目标变量（根据加成类型显示对应的变量名称）")]
+        public string 目标变量;
     }
 
     /// <summary>

@@ -26,7 +26,7 @@ public class 等级效果Drawer : PropertyDrawer
         var 效果描述Prop = property.FindPropertyRelative("效果描述");
         var 加成类型Prop = property.FindPropertyRelative("加成类型");
         var 物品目标Prop = property.FindPropertyRelative("物品目标");
-        var 物品类型Prop = property.FindPropertyRelative("物品类型");
+        var 目标变量Prop = property.FindPropertyRelative("目标变量");
 
         // 计算基础行高和间距
         float singleLineHeight = EditorGUIUtility.singleLineHeight;
@@ -46,29 +46,17 @@ public class 等级效果Drawer : PropertyDrawer
             LoadAllLists();
         }
 
-        // 2. 根据效果类型绘制效果字段名称或物品类型
-        if (type == PlayerVariableType.玩家变量 && 加成类型Prop != null)
+        // 2. 根据效果类型绘制效果字段名称
+        if (type == PlayerVariableType.玩家变量)
         {
-            var bonusTypeForEffect = (加成类型)加成类型Prop.enumValueIndex;
-            if (bonusTypeForEffect == 加成类型.物品)
-            {
-                // 当加成类型为物品时，显示ItemType选择器
-                var itemTypeRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-                EditorGUI.PropertyField(itemTypeRect, 物品类型Prop, new GUIContent("物品类型"));
-                currentY += singleLineHeight + verticalSpacing;
-            }
-            else
-            {
-                // 当加成类型为玩家变量或玩家属性时，显示字符串下拉菜单
-                List<string> nameList = (bonusTypeForEffect == 加成类型.玩家变量) ? _variableNames : _statNames;
-                var fieldNameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
-                DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, nameList);
-                currentY += singleLineHeight + verticalSpacing;
-            }
+            // 当效果类型为玩家变量时，直接显示玩家变量列表
+            var fieldNameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, _variableNames);
+            currentY += singleLineHeight + verticalSpacing;
         }
         else if (type == PlayerVariableType.玩家属性)
         {
-            // 当效果类型为玩家属性时，显示字符串下拉菜单
+            // 当效果类型为玩家属性时，显示玩家属性列表
             var fieldNameRect = new Rect(position.x, currentY, position.width, singleLineHeight);
             DrawStringPopup(fieldNameRect, "效果字段名称", 效果字段名称Prop, _statNames);
             currentY += singleLineHeight + verticalSpacing;
@@ -103,6 +91,29 @@ public class 等级效果Drawer : PropertyDrawer
             currentY += singleLineHeight + verticalSpacing;
         }
 
+        // 8. 绘制目标变量（根据加成类型显示对应的变量列表）
+        if (currentBonusType == 加成类型.玩家变量)
+        {
+            // 当加成类型为玩家变量时，显示玩家变量列表
+            var targetRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            DrawStringPopup(targetRect, "目标变量", 目标变量Prop, _variableNames);
+            currentY += singleLineHeight + verticalSpacing;
+        }
+        else if (currentBonusType == 加成类型.玩家属性)
+        {
+            // 当加成类型为玩家属性时，显示玩家属性列表
+            var targetRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            DrawStringPopup(targetRect, "目标变量", 目标变量Prop, _statNames);
+            currentY += singleLineHeight + verticalSpacing;
+        }
+        else if (currentBonusType == 加成类型.物品)
+        {
+            // 当加成类型为物品时，显示物品类型列表
+            var targetRect = new Rect(position.x, currentY, position.width, singleLineHeight);
+            DrawItemTypePopup(targetRect, "目标变量", 目标变量Prop);
+            currentY += singleLineHeight + verticalSpacing;
+        }
+
         // 8. 绘制效果描述
         var descriptionRect = new Rect(position.x, currentY, position.width, singleLineHeight);
         EditorGUI.PropertyField(descriptionRect, 效果描述Prop, new GUIContent("效果描述"));
@@ -114,7 +125,8 @@ public class 等级效果Drawer : PropertyDrawer
     {
         // 基础：效果类型 + 效果字段名称 + 基础数值 + 效果数值 + 效果等级配置 + 加成类型 + 效果描述 = 7 行
         // 若加成类型为 物品，再加 1 行（物品目标）
-        float baseLines = 7f;
+        // 目标变量：根据加成类型显示，总是显示 1 行
+        float baseLines = 8f; // 7 + 1 (目标变量)
 
         var 加成类型Prop = property.FindPropertyRelative("加成类型");
         if (加成类型Prop != null && 加成类型Prop.propertyType == SerializedPropertyType.Enum)
@@ -122,7 +134,7 @@ public class 等级效果Drawer : PropertyDrawer
             var currentBonusType = (加成类型)加成类型Prop.enumValueIndex;
             if (currentBonusType == 加成类型.物品)
             {
-                baseLines += 1f;
+                baseLines += 1f; // 物品目标
             }
         }
 
@@ -167,6 +179,65 @@ public class 等级效果Drawer : PropertyDrawer
             
             menu.ShowAsContext();
         }
+    }
+
+    private void DrawItemTypePopup(Rect rect, string label, SerializedProperty property)
+    {
+        // 获取所有ItemType资源
+        var itemTypes = LoadAllItemTypes();
+        
+        // 找到当前值的索引
+        int currentIndex = itemTypes.IndexOf(property.stringValue);
+        string displayValue = currentIndex >= 0 ? property.stringValue : "请选择";
+        
+        // 创建下拉菜单
+        if (EditorGUI.DropdownButton(rect, new GUIContent(displayValue), FocusType.Keyboard))
+        {
+            var menu = new GenericMenu();
+            
+            // 添加"请选择"选项
+            menu.AddItem(new GUIContent("请选择"), currentIndex < 0, () => {
+                property.stringValue = "";
+            });
+            
+            // 添加分隔线
+            menu.AddSeparator("");
+            
+            // 添加所有ItemType选项
+            for (int i = 0; i < itemTypes.Count; i++)
+            {
+                string option = itemTypes[i];
+                bool isSelected = option == property.stringValue;
+                menu.AddItem(new GUIContent(option), isSelected, () => {
+                    property.stringValue = option;
+                    property.serializedObject.ApplyModifiedProperties();
+                });
+            }
+            
+            menu.ShowAsContext();
+        }
+    }
+
+    private List<string> LoadAllItemTypes()
+    {
+        var itemTypeNames = new List<string>();
+        
+        // 查找所有ItemType资源
+        string[] guids = UnityEditor.AssetDatabase.FindAssets("t:ItemType");
+        foreach (string guid in guids)
+        {
+            string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            var itemType = UnityEditor.AssetDatabase.LoadAssetAtPath<MiGame.Items.ItemType>(path);
+            if (itemType != null && !string.IsNullOrEmpty(itemType.名字))
+            {
+                itemTypeNames.Add(itemType.名字);
+            }
+        }
+        
+        // 按名称排序
+        itemTypeNames.Sort();
+        
+        return itemTypeNames;
     }
 
     private void LoadAllLists()

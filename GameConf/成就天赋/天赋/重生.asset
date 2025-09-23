@@ -34,5 +34,6 @@ MonoBehaviour:
     "\u6548\u679C\u6570\u503C": 
     "\u6548\u679C\u7B49\u7EA7\u914D\u7F6E": {fileID: 11400000, guid: 31896793e913caa448ad30cecfa23e6f, type: 2}
     "\u6548\u679C\u63CF\u8FF0": "\u91CD\u751F\u680F\u4F4D\u589E\u52A0\uFF0CT_LVL\u662F\u5929\u8D4B\u7B49\u7EA7"
-    "\u52A0\u6210\u7C7B\u578B": 2
+    "\u52A0\u6210\u7C7B\u578B": 0
     "\u7269\u54C1\u76EE\u6807": {fileID: 0}
+    "\u76EE\u6807\u53D8\u91CF": 

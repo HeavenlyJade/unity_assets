@@ -33,7 +33,8 @@ namespace MiGame.Commands
         宠物,
         伙伴,
         尾迹,
-        玩家变量
+        玩家变量,
+        指令执行
     }
 
     /// <summary>
@@ -69,6 +70,12 @@ namespace MiGame.Commands
         [Tooltip("数值（玩家变量时使用）")]
         public float 数值 = 0f;
 
+        [Tooltip("指令文本（类型为指令执行时使用）")]
+        public string 命令 = "";
+
+        [Tooltip("指令参数（类型为指令执行时使用，字符串）")]
+        public string 命令参数 = "";
+
         /// <summary>
         /// 获取配置的名称（用于JSON导出）
         /// </summary>
@@ -86,6 +93,8 @@ namespace MiGame.Commands
                     return 尾迹配置 != null ? 尾迹配置.名称 : "未选择";
                 case 附件类型.玩家变量:
                     return 变量名称;
+                case 附件类型.指令执行:
+                    return string.IsNullOrEmpty(命令) ? "未设置指令" : 命令;
                 default:
                     return "未知";
             }
@@ -104,6 +113,15 @@ namespace MiGame.Commands
             {
                 jsonBuilder.Append($"\"变量名\":\"{变量名称}\",");
                 jsonBuilder.Append($"\"数值\":{数值}");
+            }
+            else if (类型 == 附件类型.指令执行)
+            {
+                jsonBuilder.Append($"\"命令\":\"{命令}\"");
+                if (!string.IsNullOrEmpty(命令参数))
+                {
+                    jsonBuilder.Append(",");
+                    jsonBuilder.Append($"\"命令参数\":\"{命令参数}\"");
+                }
             }
             else
             {

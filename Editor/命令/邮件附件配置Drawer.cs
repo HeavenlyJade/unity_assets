@@ -16,7 +16,14 @@ namespace MiGame.CommandSystem.Editor
     {
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUIUtility.singleLineHeight * 4 + 6; // 4行高度 + 间距
+            var 类型Prop = property.FindPropertyRelative("类型");
+            附件类型 当前类型 = 类型Prop != null ? (附件类型)类型Prop.enumValueIndex : 附件类型.物品;
+            int 行数 = 4;
+            if (当前类型 == 附件类型.指令执行)
+            {
+                行数 = 5; // 额外一行用于命令参数
+            }
+            return EditorGUIUtility.singleLineHeight * 行数 + 6;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -31,6 +38,8 @@ namespace MiGame.CommandSystem.Editor
                 var 伙伴配置Prop = property.FindPropertyRelative("伙伴配置");
                 var 尾迹配置Prop = property.FindPropertyRelative("尾迹配置");
                 var 变量名称Prop = property.FindPropertyRelative("变量名称");
+                var 命令Prop = property.FindPropertyRelative("命令");
+                var 命令参数Prop = property.FindPropertyRelative("命令参数");
                 var 数量Prop = property.FindPropertyRelative("数量");
                 var 星级Prop = property.FindPropertyRelative("星级");
                 var 数值Prop = property.FindPropertyRelative("数值");
@@ -72,18 +81,28 @@ namespace MiGame.CommandSystem.Editor
                     case 附件类型.玩家变量:
                         EditorGUI.PropertyField(配置Rect, 变量名称Prop, new GUIContent("变量名称"));
                         break;
+                    case 附件类型.指令执行:
+                        EditorGUI.PropertyField(配置Rect, 命令Prop, new GUIContent("命令"));
+                        break;
                 }
                 currentY += lineHeight + spacing;
 
                 // 第三行：数量和星级/数值
                 Rect 数量Rect = new Rect(position.x, currentY, position.width * 0.5f - 2, lineHeight);
-                EditorGUI.PropertyField(数量Rect, 数量Prop, new GUIContent("数量"));
+                if (当前类型 == 附件类型.物品 || 当前类型 == 附件类型.宠物 || 当前类型 == 附件类型.伙伴 || 当前类型 == 附件类型.尾迹)
+                {
+                    EditorGUI.PropertyField(数量Rect, 数量Prop, new GUIContent("数量"));
+                }
 
                 if (当前类型 == 附件类型.玩家变量)
                 {
                     // 玩家变量显示数值
                     Rect 数值Rect = new Rect(position.x + position.width * 0.5f + 2, currentY, position.width * 0.5f - 2, lineHeight);
                     EditorGUI.PropertyField(数值Rect, 数值Prop, new GUIContent("数值"));
+                }
+                else if (当前类型 == 附件类型.指令执行)
+                {
+                    // 指令执行不显示第三行右半部分（占位空白）
                 }
                 else
                 {
@@ -93,9 +112,17 @@ namespace MiGame.CommandSystem.Editor
                 }
                 currentY += lineHeight + spacing;
 
-                // 第四行：显示配置信息
+                // 第四行（指令执行时）：命令参数
+                if (当前类型 == 附件类型.指令执行)
+                {
+                    Rect 命令参数Rect = new Rect(position.x, currentY, position.width, lineHeight);
+                    EditorGUI.PropertyField(命令参数Rect, 命令参数Prop, new GUIContent("命令参数"));
+                    currentY += lineHeight + spacing;
+                }
+
+                // 第五/最后一行：显示配置信息
                 Rect 信息Rect = new Rect(position.x, currentY, position.width, lineHeight);
-                string 显示信息 = GetDisplayInfo(当前类型, 物品配置Prop, 宠物配置Prop, 伙伴配置Prop, 尾迹配置Prop, 变量名称Prop, 数量Prop, 星级Prop, 数值Prop);
+                string 显示信息 = GetDisplayInfo(当前类型, 物品配置Prop, 宠物配置Prop, 伙伴配置Prop, 尾迹配置Prop, 变量名称Prop, 数量Prop, 星级Prop, 数值Prop, 命令Prop);
                 EditorGUI.LabelField(信息Rect, 显示信息, EditorStyles.miniLabel);
             }
             catch (System.Exception e)
@@ -109,7 +136,7 @@ namespace MiGame.CommandSystem.Editor
 
         private string GetDisplayInfo(附件类型 类型, SerializedProperty 物品配置Prop, SerializedProperty 宠物配置Prop, 
             SerializedProperty 伙伴配置Prop, SerializedProperty 尾迹配置Prop, SerializedProperty 变量名称Prop, 
-            SerializedProperty 数量Prop, SerializedProperty 星级Prop, SerializedProperty 数值Prop)
+            SerializedProperty 数量Prop, SerializedProperty 星级Prop, SerializedProperty 数值Prop, SerializedProperty 命令Prop)
         {
             string 类型名称 = 类型.ToString();
             int 数量 = 数量Prop.intValue;
@@ -140,6 +167,14 @@ namespace MiGame.CommandSystem.Editor
                     string 变量名 = 变量名称Prop.stringValue;
                     float 数值 = 数值Prop.floatValue;
                     return $"{类型名称}: {变量名} = {数值}";
+                
+                case 附件类型.指令执行:
+                    string 命令 = 命令Prop != null ? 命令Prop.stringValue : "";
+                    if (string.IsNullOrEmpty(命令))
+                    {
+                        return $"{类型名称}: 未设置命令";
+                    }
+                    return $"{类型名称}: {命令}";
                 
                 default:
                     return $"{类型名称}: 未知配置";
